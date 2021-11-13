@@ -1,11 +1,10 @@
 import Vue from 'vue';
 import App from './App.vue';
-import router from './router';
+import router from '@router/index';
 import VueCompositionAPI from '@vue/composition-api';
 
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import "@style/app.scss";
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
