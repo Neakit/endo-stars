@@ -15,9 +15,25 @@
       "webpack-env"
     ],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      // assets
+      "@img/*"         : [ "./src/assets/img/*"   ],
+      "@font/*"        : [ "./src/assets/font/*"  ],
+      "@style/*"       : [ "./src/assets/style/*" ],
+      // "@lang"          : [ ".src/assets/lang/*"  ],
+      // mock
+      "@mock/*"        : [ "./src/mock/*"         ],
+      // system
+      "@entity/*"      : [ "./src/entity/*"      ],
+      "@enum/*"        : [ "./src/enum/*"        ],
+      "@plugins/*"     : [ "./src/plugins/*"     ], 
+      "@router/*"      : [ "./src/router/*"      ],
+      "@type/*"        : [ "./src/type/*"        ],
+      // base
+      "@layouts/*"     : [ "./src/layout/*"      ],
+      "@pages/*"       : [ "./src/pages/*"       ],
+      "@components/*"  : [ "./src/components/*"  ],
+      "@composition/*" : [ "./src/composition/*" ],
+      "@services/*"    : [ "./src/services/*"    ],
     },
     "lib": [
       "esnext",
@@ -31,7 +47,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
   ],
   "exclude": [
     "node_modules"
