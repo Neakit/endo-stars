@@ -1,29 +1,45 @@
-import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue';
+import VueRouter, { RouteConfig } from 'vue-router';
+import { Roles, Layouts } from '@enum/index';
+// groups
+import baseLayoutRoutes from './base';
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/auth/',
+    component: () => import('@layouts/auth.vue'),
+    redirect: '/auth/login',
+    children: [
+      {
+        path: 'login',
+        component: () => import('@pages/Login.vue')
+      },
+    ]
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/',
+    component: () => import('@layouts/default.vue'),
+    redirect: '/dashboard',
+    meta: { 
+      authorize: [Roles.Admin],
+      layout: Layouts.Default 
+    },
+    children: baseLayoutRoutes
+  },
+  { path: "*", component: () => import('@pages/404.vue') }
 ]
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  // base: process.env.BASE_URL,
   routes
 })
+
+// router.beforeEach((to, from, next) => {
+//  TODO: add roles check   
+//   next();
+// });
 
 export default router
