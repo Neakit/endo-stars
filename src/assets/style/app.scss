@@ -1,0 +1,51 @@
+// Define variable defaults
+// $body-bg: #000;
+// $body-color: #111;
+
+// Then import Bootstrap an BootstrapVue SCSS files (order is important)
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+
+.as-navbar {
+    border-bottom: 1px solid #E9E9E9; // as variable
+}
+
+// FONT todo
+.as-title {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 15px;
+    color: #000000;
+}
+
+.es-title-h1 {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 23px;
+    color: #000000;
+}
+
+.es-avatar {
+    position: relative;
+    &__title {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        p {
+            margin: 0px; 
+            margin-left: 2px; 
+        }
+    }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
