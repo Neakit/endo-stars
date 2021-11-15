@@ -49,6 +49,14 @@ const baseLayoutRoutes: Array<IBaseRouteItem> = [
       showNavLink: true
     }
   },
+  {
+    path: 'register',
+    component: () => import('@pages/Register.vue'),
+    meta: {
+      title: "Регистрация нового пользователя",
+      showNavLink: false,
+    }
+  },
 ]
 
 export default baseLayoutRoutes;
