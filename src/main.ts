@@ -11,6 +11,9 @@ Vue.use(BootstrapVueIcons)
 
 Vue.use(VueCompositionAPI)
 
+import { mask } from "vue-the-mask"
+Vue.directive('mask', mask);
+
 Vue.config.productionTip = false
 
 new Vue({
