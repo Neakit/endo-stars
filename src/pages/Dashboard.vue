@@ -40,12 +40,10 @@
 
 <script>
 import { defineComponent, ref } from '@vue/composition-api'
-import ActionsSection from '@components/actions-section.vue';
 import ESButton from '@components/es-button.vue';
 
 export default defineComponent({
   components: {
-    ActionsSection,
     "es-button": ESButton
   },
   setup() {
