@@ -1,56 +1,92 @@
 <template>
-    <b-navbar class="as-navbar" toggleable="lg" type="light">
-        <b-container>
-            <Logo class="mr-4" />
-            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+  <b-navbar class="as-navbar" toggleable="lg" type="light">
+    <b-container>
+      <router-link to="/dashboard/commercial-offer" class="mr-2">
+        <img class="" src="@img/logo.svg" alt="" />
+      </router-link>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-            <b-collapse id="nav-collapse" is-nav>
-                <b-navbar-nav>
-                    <b-nav-item
-                        class="as-title"  
-                        v-for="(item, index) in navigationItems" 
-                        :to="item.to"
-                        :key="index"
-                    >
-                        {{ item.title }}
-                    </b-nav-item>
-                </b-navbar-nav>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item class="as-title" v-for="(item, index) in navigationItems" :to="item.to" :key="index">
+            {{ item.title }}
+          </b-nav-item>
+        </b-navbar-nav>
 
-                <!-- Right aligned nav items -->
-                <b-navbar-nav class="ml-auto">
-                    <b-nav-item-dropdown right  no-caret>
-                        <template #button-content>
-                            <Avatar />
-                        </template>
-                        <b-dropdown-item href="#">Profile</b-dropdown-item>
-                        <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-                    </b-nav-item-dropdown>
-                </b-navbar-nav>
-            </b-collapse>
-        </b-container>
-    </b-navbar>
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item-dropdown right no-caret>
+            <template #button-content>
+              <Avatar />
+            </template>
+
+            <b-dropdown-item
+              v-for="(item, index) in navItems"
+              :to="item.to"
+              style="width: 208px; white-space: wrap"
+              :key="index"
+              @click="item.action"
+            >
+              <span class="es-dropdown-item-text" :class="{ 'es-dropdown-item-text--bold': item.bold }">
+                {{ item.title }}
+              </span>
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-container>
+  </b-navbar>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-import Logo from "@img/logo.svg";
-import Avatar from "@components/Avatar.vue"  
+import { defineComponent } from "@vue/composition-api";
+import Avatar from "@components/Avatar.vue";
+import { useAuth } from "@composition/useAuth";
+
+class NavItem {
+  to: string;
+  title: string;
+  action: any;
+  bold: boolean;
+
+  constructor(data: any) {
+    this.title = data.title || "";
+    this.to = data.to || null;
+    this.action = data.action || (() => undefined);
+    this.bold = data.bold || false;
+  }
+}
 
 export default defineComponent({
-    components: {
-        Logo,
-        Avatar
+  components: {
+    Avatar,
+  },
+  props: {
+    navigationItems: {
+      required: true,
+      type: Array,
     },
-    props: {
-        navigationItems: {
-            required: true,
-            type: Array
-        }
-    },
-    setup() {
-        return {
-            // navigationItems
-        }
-    },
-})
+  },
+  setup(_, { root }) {
+    const { userRole, user, logout } = useAuth();
+
+    const logoutHandler = () => {
+      logout();
+      root.$router.push("/auth/login/");
+    };
+
+    const navItems = [
+      new NavItem({ title: user.value.fullname, to: "/dashboard", bold: true }),
+      ...(userRole.value === "ADMIN"
+        ? [new NavItem({ title: "Регистрация нового пользователя", to: "/dashboard" })]
+        : []),
+      new NavItem({ title: "Настроки", to: "/dashboard" }),
+      new NavItem({ title: "Выход", action: logoutHandler }),
+    ];
+
+    return {
+      navItems,
+    };
+  },
+});
 </script>
