@@ -1,24 +1,42 @@
 <template>
   <div class="es-avatar">
-    <ProfileSVG class="es-avatar__svg" />
+    <img src="@img/profile.svg" alt="avatar-img" />
     <div class="es-avatar__title">
-        <p class="es-title-h1">A</p>
+      <span to="/dashboard/profile" class="es-avatar-text ml-1">{{ avatarTitle }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
-import ProfileSVG from "@img/profile.svg"
+import { defineComponent, computed } from "@vue/composition-api";
+import { useAuth } from "@composition/useAuth";
 
 export default defineComponent({
-    components: {
-        ProfileSVG
-    },
-    setup() {
-        return {
-            //
-        }
-    },
-})
+  setup() {
+    const { user } = useAuth();
+    const avatarTitle = computed(() => {
+      return user.value.firstname.substring(0, 1).toUpperCase();
+    });
+    return {
+      avatarTitle,
+    };
+  },
+});
 </script>
+
+<style lang="scss" scoped>
+.es-avatar {
+  max-width: 42px;
+  position: relative;
+  &__title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+</style>
