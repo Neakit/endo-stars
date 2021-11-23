@@ -108,10 +108,13 @@ axiosApiInstance.interceptors.request.use(
 
 axiosApiInstance.interceptors.response.use(
   (response) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (response.config.responsePrepare) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       response.data = response.config.responsePrepare(response.data);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       delete response.config.responsePrepare;
     }
@@ -135,6 +138,7 @@ const prepareUrl = (requestUrl: string) => {
     // @ts-ignore
     if (HOST_SCHEMA[host]) {
       // requestUrl = HOST_SCHEMA[host as keyof typeof HOST_SCHEMA] + requestUrlArray[1];
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       requestUrl = HOST_SCHEMA[host] + requestUrlArray[1];
     } else {
