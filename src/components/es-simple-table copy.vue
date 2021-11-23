@@ -1,16 +1,31 @@
 <template>
-  <div class="position-relative">
-    <b-table ref="my-table" id="table-id" :items="items" :fields="fields" sticky-header="200px">
+  <div>
+    <!-- fixed -->
+    <b-table
+      ref="simpleTable"
+      class="es-simple-table"
+      :sticky-header="stickyHeader"
+      :items="items"
+      :fields="fields"
+      v-bind="$attrs"
+    >
+      <!-- <template #table-colgroup="scope">
+            <col
+                v-for="field in scope.fields"
+                :key="field.key"
+                :style="{ width: field.width ? field.width : '' }"
+            >
+        </template> -->
       <template #cell()="data">
         <span class="text-overflow">{{ data.value }}</span>
       </template>
+      <b-overlay :show="isBusy" no-wrap opacity="0.5"></b-overlay>
     </b-table>
-    <b-overlay :show="isBusy" no-wrap opacity="0.5"></b-overlay>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, watch, ref } from "@vue/composition-api";
 
 export default defineComponent({
   props: {
@@ -27,47 +42,27 @@ export default defineComponent({
       requred: false,
     },
   },
-  mounted() {
-    const tableScrollBody = this.$refs["my-table"].$el;
-    /* Consider debouncing the event call */
-    tableScrollBody.addEventListener("scroll", this.onScroll);
-  },
-  beforeDestroy() {
-    /* Clean up just to be sure */
-    const tableScrollBody = this.$refs["my-table"].$el;
-    tableScrollBody.removeEventListener("scroll", this.onScroll);
-  },
-  data() {
+  setup(_, { emit }) {
+    const isBusy = ref(false);
+    const simpleTable = ref(null);
+    console.log(simpleTable);
+    // const tableScrollBody = this.$refs["simpleTable"].$el;
+
+    watch(isBusy, (newVal, oldVal) => {
+      if (newVal !== oldVal) {
+        const tableScrollBody = this.$refs["simpleTable"].$el;
+        if (newVal === true) {
+          tableScrollBody.classList.add("overflow-hidden");
+        } else {
+          tableScrollBody.classList.remove("overflow-hidden");
+        }
+      }
+    });
+
     return {
-      // items: [],
-      // currentPage: 0,
-      // perPage: 10,
-      // totalItems: database.length,
-      isBusy: false,
+      simpleTable,
     };
   },
-  methods: {
-    onScroll(event) {
-      if (event.target.scrollTop + event.target.clientHeight >= event.target.scrollHeight) {
-        // if (!this.isBusy) {
-        this.$emit("infinite");
-        // }
-      }
-    },
-  },
-  // watch: {
-  //   /* Optionally hide scrollbar when loading */
-  //   isBusy(newVal, oldVal) {
-  //     if (newVal !== oldVal) {
-  //       const tableScrollBody = this.$refs["my-table"].$el;
-  //       if (newVal === true) {
-  //         tableScrollBody.classList.add("overflow-hidden");
-  //       } else {
-  //         tableScrollBody.classList.remove("overflow-hidden");
-  //       }
-  //     }
-  //   },
-  // },
 });
 </script>
 

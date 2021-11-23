@@ -8,9 +8,28 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item class="as-title" v-for="(item, index) in navigationItems" :to="item.to" :key="index">
-            {{ item.title }}
-          </b-nav-item>
+          <template v-for="(item, index) in navigationItems">
+            <b-nav-item v-if="!item.children" class="es-nav-link" :to="item.to" :key="index">
+              {{ item.title }}
+            </b-nav-item>
+
+            <b-nav-item-dropdown v-else right no-caret :key="index" class="es-nav-link">
+              <template #button-content>
+                <span>{{ item.title }}</span>
+              </template>
+
+              <b-dropdown-item
+                v-for="(i, key) in item.children"
+                :key="key + 'req'"
+                :to="i.to"
+                style="width: 208px; white-space: wrap"
+              >
+                <span class="es-dropdown-item-text" :class="{ 'es-dropdown-item-text--bold': item.bold }">
+                  {{ i.title }}
+                </span>
+              </b-dropdown-item>
+            </b-nav-item-dropdown>
+          </template>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -90,3 +109,5 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped></style>
