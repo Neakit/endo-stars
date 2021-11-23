@@ -108,8 +108,11 @@ axiosApiInstance.interceptors.request.use(
 
 axiosApiInstance.interceptors.response.use(
   (response) => {
+    // @ts-ignore
     if (response.config.responsePrepare) {
+      // @ts-ignore
       response.data = response.config.responsePrepare(response.data);
+      // @ts-ignore
       delete response.config.responsePrepare;
     }
     return response;
@@ -128,8 +131,10 @@ const prepareUrl = (requestUrl: string) => {
     console.warn("[REQUEST MANAGER] prepareUrl not correct requestUrl", requestUrl);
   } else if (requestUrlArray.length === 2) {
     const host = requestUrlArray[0].toUpperCase();
+    // @ts-ignore
     if (HOST_SCHEMA[host]) {
       // requestUrl = HOST_SCHEMA[host as keyof typeof HOST_SCHEMA] + requestUrlArray[1];
+      // @ts-ignore
       requestUrl = HOST_SCHEMA[host] + requestUrlArray[1];
     } else {
       console.warn("[REQUEST MANAGER] prepareUrl not correct hostSchema", requestUrl);

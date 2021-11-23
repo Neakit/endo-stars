@@ -5,7 +5,7 @@ export const usePaginate = () => {
   const tableLoading = ref(false);
   const dataLoaded = ref(false);
 
-  const handleResponse = (result) => {
+  const handleResponse = (result: any) => {
     if (result.length !== 0) {
       page.value++;
     } else {
