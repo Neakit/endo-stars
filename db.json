@@ -1,9 +1,206 @@
 {
   "users": [
     {
-      "email": "nilson@email.com",
-      "password": "$2a$10$7l1g4oDtoD/BC9w79avgl.FAavaO4wscDFfikuXTm8D7S17Cfqk0C",
+      "email": "admin@gmail.com",
+      "password": "$2a$10$qTsaN6kL4uyMz9zNvXMLqeKuQWU5JfdEeR.i3dYULSAk90tS5CLuu",
+      "role": "ADMIN",
+      "firstname": "admin",
+      "lastname": "Иванович",
+      "phone": "+79185669889",
       "id": 1
+    },
+    {
+      "email": "supervisor@gmail.com",
+      "password": "$2a$10$qTsaN6kL4uyMz9zNvXMLqeKuQWU5JfdEeR.i3dYULSAk90tS5CLuu",
+      "role": "SUPERVISOR",
+      "firstname": "Supervisor",
+      "lastname": "Петрович",
+      "phone": "+79185669889",
+      "id": 2
+    },
+    {
+      "email": "manager@gmail.com",
+      "password": "$2a$10$qTsaN6kL4uyMz9zNvXMLqeKuQWU5JfdEeR.i3dYULSAk90tS5CLuu",
+      "role": "MANAGER",
+      "firstname": "Manager",
+      "lastname": "Васильевич",
+      "phone": "+79185669889",
+      "id": 3
+    }
+  ],
+  "contractor": [
+    {
+      "id": 0,
+      "contractor": "1Дорн Медицина",
+      "inn": "545117267",
+      "address": "Россия, г.Новосибирск, ул. Депутатская, 46, оф. 1173",
+      "phone": "+7 (923) 226-97-86",
+      "mail": "julburdukova@gmail.com",
+      "contact": "Константин Константинович Константинов",
+      "discount": "30%"
+    },
+    {
+      "id": 1,
+      "contractor": "2ООО МГ РУС",
+      "inn": "545117267",
+      "address": "Россия, г.Новосибирск, ул. Депутатская, 46, оф. 1173",
+      "phone": "+7 (923) 226-97-86",
+      "mail": "julburdukova@gmail.com",
+      "contact": "Константин Константинович Константинов",
+      "discount": "30%"
+    },
+    {
+      "id": 2,
+      "contractor": "3Дорн Медицина",
+      "inn": "545117267",
+      "address": "Россия, г.Новосибирск, ул. Депутатская, 46, оф. 1173",
+      "phone": "+7 (923) 226-97-86",
+      "mail": "julburdukova@gmail.com",
+      "contact": "Константин Константинович Константинов",
+      "discount": "30%"
+    },
+    {
+      "id": 3,
+      "contractor": "4ООО МГ РУС",
+      "inn": "545117267",
+      "address": "Россия, г.Новосибирск, ул. Депутатская, 46, оф. 1173",
+      "phone": "+7 (923) 226-97-86",
+      "mail": "julburdukova@gmail.com",
+      "contact": "Константин Константинович Константинов",
+      "discount": "30%"
+    },
+    {
+      "contractor": "Вася",
+      "inn": "123456",
+      "address": "ул Кукущкина",
+      "phone": "+7 (918) 566-98-89",
+      "mail": "admin@gmail.com",
+      "contact": "ВАся",
+      "discount": "30",
+      "id": 4
+    },
+    {
+      "contractor": "Вася",
+      "inn": "123654",
+      "address": "ул. Кукушкина",
+      "phone": "+7 (918) 566-98-99",
+      "mail": "admin@gmail1.com",
+      "contact": "Вася",
+      "discount": "54",
+      "id": 5
+    },
+    {
+      "id": 6
+    },
+    {
+      "id": 7
+    }
+  ],
+  "endclient": [
+    {
+      "id": 0,
+      "client": "ГБУЗ НСО 'Бердская ЦГБ'",
+      "inn": "545117267",
+      "region": "Новосибирск",
+      "fullname": "Соколов Артем Николаевич"
+    },
+    {
+      "id": 1,
+      "client": "ГБУЗ НСО 'Бердская ЦГБ'",
+      "inn": "545117267",
+      "region": "Новосибирск",
+      "fullname": "Соколов Артем Николаевич"
+    },
+    {
+      "id": 2,
+      "client": "ГБУЗ НСО 'Бердская ЦГБ'",
+      "inn": "545117267",
+      "region": "Новосибирск",
+      "fullname": "Соколов Артем Николаевич"
+    },
+    {
+      "id": 3,
+      "client": "ГБУЗ НСО 'Бердская ЦГБ'",
+      "inn": "545117267",
+      "region": "Новосибирск",
+      "fullname": "Соколов Артем Николаевич"
+    },
+    {
+      "client": "sdfsd",
+      "inn": "1223",
+      "region": "123654",
+      "fullname": "asdas asdasd asdas",
+      "id": 4
+    },
+    {
+      "client": "ГБУЗ АМК \"Бердская\"",
+      "inn": "12345678",
+      "region": "г. Псков",
+      "fullname": "Иванов Иван Иванович",
+      "id": 5
+    },
+    {
+      "client": "adas",
+      "inn": "asdas",
+      "region": "asdas",
+      "fullname": "asdas",
+      "id": 6
+    },
+    {
+      "client": "sdf",
+      "inn": "sdfs",
+      "region": "sdfsd",
+      "fullname": "sdfsd",
+      "id": 7
+    },
+    {
+      "client": "1111",
+      "inn": "1111",
+      "region": "1111",
+      "fullname": "1111",
+      "id": 8
+    }
+  ],
+  "companyRequisites": [
+    {
+      "id": 0,
+      "company": "Эндо Сервис",
+      "inn": "545117267",
+      "address": "Россия, г.Новосибирск, ул. Депутатская, 46, оф. 1173",
+      "phone": "+7 (923) 226-97-86",
+      "mail": "julburdukova@gmail.com"
+    },
+    {
+      "id": 1,
+      "company": "Эндо Сервис",
+      "inn": "545117267",
+      "address": "Россия, г.Новосибирск, ул. Депутатская, 46, оф. 1173",
+      "phone": "+7 (923) 226-97-86",
+      "mail": "julburdukova@gmail.com"
+    },
+    {
+      "id": 2,
+      "company": "Эндо Сервис",
+      "inn": "545117267",
+      "address": "Россия, г.Новосибирск, ул. Депутатская, 46, оф. 1173",
+      "phone": "+7 (923) 226-97-86",
+      "mail": "julburdukova@gmail.com"
+    },
+    {
+      "id": 3,
+      "company": "Эндо Сервис",
+      "inn": "545117267",
+      "address": "Россия, г.Новосибирск, ул. Депутатская, 46, оф. 1173",
+      "phone": "+7 (923) 226-97-86",
+      "mail": "julburdukova@gmail.com"
+    },
+    {
+      "companyname": "asda",
+      "inn": "2222",
+      "address": "asdas",
+      "phone": "+7 (111) 111-11-11",
+      "mail": "admin@gmail.com",
+      "id": 4
     }
   ]
 }
