@@ -131,6 +131,7 @@ const prepareUrl = (requestUrl: string) => {
     console.warn("[REQUEST MANAGER] prepareUrl not correct requestUrl", requestUrl);
   } else if (requestUrlArray.length === 2) {
     const host = requestUrlArray[0].toUpperCase();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (HOST_SCHEMA[host]) {
       // requestUrl = HOST_SCHEMA[host as keyof typeof HOST_SCHEMA] + requestUrlArray[1];
