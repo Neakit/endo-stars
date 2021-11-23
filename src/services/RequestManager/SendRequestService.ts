@@ -13,11 +13,16 @@ enum METHOD_TYPES {
   DELETE = "DELETE",
 }
 
-enum HOST_SCHEMA {
-  HTTP = process.env.HTTP,
-  HTTPS = process.env.HTTPS,
-  API = process.env.API,
-}
+// const HOST_SCHEMA = {
+//   HTTP: process.env.HTTP,
+//   HTTPS: process.env.HTTPS,
+//   API: process.env.API,
+// };
+const HOST_SCHEMA = {
+  HTTP: "https://tranquil-bayou-55359.herokuapp.com/",
+  HTTPS: "https://tranquil-bayou-55359.herokuapp.com/",
+  API: "https://tranquil-bayou-55359.herokuapp.com/",
+};
 
 type RequestData = {
   params?: any;
@@ -123,8 +128,9 @@ const prepareUrl = (requestUrl: string) => {
     console.warn("[REQUEST MANAGER] prepareUrl not correct requestUrl", requestUrl);
   } else if (requestUrlArray.length === 2) {
     const host = requestUrlArray[0].toUpperCase();
-    if (host in HOST_SCHEMA) {
-      requestUrl = HOST_SCHEMA[host as keyof typeof HOST_SCHEMA] + requestUrlArray[1];
+    if (HOST_SCHEMA[host]) {
+      // requestUrl = HOST_SCHEMA[host as keyof typeof HOST_SCHEMA] + requestUrlArray[1];
+      requestUrl = HOST_SCHEMA[host] + requestUrlArray[1];
     } else {
       console.warn("[REQUEST MANAGER] prepareUrl not correct hostSchema", requestUrl);
     }

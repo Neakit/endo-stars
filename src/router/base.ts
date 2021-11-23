@@ -3,6 +3,14 @@ import { Roles } from "@enum/index";
 
 const baseLayoutRoutes = [
   {
+    path: "offer",
+    component: () => import("@pages/Offer.vue"),
+    meta: {
+      title: "Личный какбинет",
+      showNavLink: false,
+    },
+  },
+  {
     path: "profile",
     component: () => import("@pages/Dashboard.vue"),
     meta: {
