@@ -6,11 +6,7 @@
           <img class="login-page-logo" src="@img/logo.svg" alt="" />
         </div>
 
-        <b-form-group
-          id="fieldset-1"
-          label-for="input-email"
-          :invalid-feedback="invalidFeedback.email"
-        >
+        <b-form-group id="fieldset-1" label-for="input-email" :invalid-feedback="invalidFeedback.email">
           <b-form-input
             placeholder="Логин"
             id="input-email"
@@ -20,11 +16,7 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group
-          id="fieldset-1"
-          label-for="input-password"
-          :invalid-feedback="invalidFeedback.password"
-        >
+        <b-form-group id="fieldset-1" label-for="input-password" :invalid-feedback="invalidFeedback.password">
           <b-form-input
             type="password"
             placeholder="Пароль"
@@ -54,8 +46,8 @@ import { useAuth } from "@composition/useAuth";
 export default defineComponent({
   setup(_, { root }) {
     const form = reactive({
-      email: "admin@gmail.com",
-      password: "12345678",
+      email: "admin@mail.com",
+      password: "adminadmin",
     });
 
     const validation = reactive({

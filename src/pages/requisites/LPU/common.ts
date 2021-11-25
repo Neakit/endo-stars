@@ -1,6 +1,6 @@
 export const fields = [
   {
-    key: "client",
+    key: "abbreviated_name",
     label: "Конечный заказчик",
     sortable: false,
   },
@@ -14,7 +14,11 @@ export const fields = [
     label: "Регион",
   },
   {
-    key: "fullname",
+    key: "actual_address_city",
+    label: "Город",
+  },
+  {
+    key: "director_full_name",
     label: "ФИО заведующего эндоскопии",
     sortable: false,
   },

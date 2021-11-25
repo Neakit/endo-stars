@@ -2,16 +2,16 @@
   <b-container>
     <b-row class="mt-5 mb-5">
       <b-col cols="7">
-        <es-input-search v-model="searchQuery" placeholder="Поиск" />
+        <es-input-search class="my-1" v-model="searchQuery" placeholder="Поиск" />
       </b-col>
-      <b-col cols="2">
-        <b-button @click="searchData" variant="default" block>Поиск</b-button>
+      <b-col>
+        <b-button class="my-1" @click="searchData" variant="default" block>Поиск</b-button>
       </b-col>
-      <b-col cols="2">
-        <b-button @click="uploadData" variant="default" block>Очистить поиск</b-button>
+      <b-col>
+        <b-button class="my-1" @click="uploadData" variant="default" block>Очистить поиск</b-button>
       </b-col>
     </b-row>
-    <es-simple-table :items="items" :fields="fields" @infinite="infiniteHandler" />
+    <es-simple-table :items="items" :fields="fields" :isBusy="tableLoading" @infinite="infiniteHandler" />
   </b-container>
 </template>
 
@@ -32,30 +32,24 @@ export default defineComponent({
   },
   setup() {
     const { page, tableLoading, dataLoaded, handleResponse, setTableLoading, resetDataFetching } = usePaginate();
-
+    console.log("page", page);
     const searchQuery = ref("");
 
     const items = ref([]);
 
     const uploadData = async () => {
       try {
-        // enable loading
         setTableLoading(true);
-        const result = await RequestManager.Requisites.getEndClientTable({
-          q: searchQuery.value,
-          _page: page.value,
-          // _limit: 2,
-
-          _sort: "id",
-          _order: "desc",
+        const { count, results } = await RequestManager.LPU.getLPUList({
+          page: page.value,
         });
-        items.value = [...items.value, ...result];
-        handleResponse(result);
+        items.value = [...items.value, ...results];
+        handleResponse(results);
       } catch (e) {
-        console.error({ e });
+        handleResponse(e);
+        console.error("[LPU TABLE ERROR] :", { e });
       } finally {
         setTableLoading(false);
-        // disable loading
       }
     };
 
@@ -83,13 +77,11 @@ export default defineComponent({
     return {
       items,
       fields,
-      // actions
+      searchQuery,
+      tableLoading,
       uploadData,
       searchData,
       refreshTable,
-      // form
-      searchQuery,
-      // handler
       infiniteHandler,
     };
   },

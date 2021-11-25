@@ -64,11 +64,11 @@ export default defineComponent({
           },
           {
             title: "Конечный заказчик",
-            to: "/dashboard/requisites/end-client",
+            to: "/dashboard/requisites/lpu",
           },
           {
             title: "Контрагент",
-            to: "/dashboard/requisites/contractor",
+            to: "/dashboard/requisites/counterparty",
           },
         ],
       },

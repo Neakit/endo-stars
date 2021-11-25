@@ -54,7 +54,7 @@ export const useAuth = () => {
 
   // GETTERS
   const authSuccess = computed(() => !isNull(state.token) && !isNull(state.user.email));
-  const userRole = computed(() => state.user.role);
+  const userRole = computed(() => state.user.role || "ADMIN");
   const user = computed(() => state.user);
 
   return {

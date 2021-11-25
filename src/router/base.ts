@@ -20,7 +20,7 @@ const baseLayoutRoutes = [
   },
   {
     path: "commercial-offer",
-    component: () => import("@pages/CommercialOffer.vue"),
+    component: () => import("@pages/offer/index.vue"),
     meta: {
       title: "Коммерческое предложение",
       showNavLink: true,
@@ -69,16 +69,16 @@ const baseLayoutRoutes = [
     },
   },
   {
-    path: "requisites/end-client",
-    component: () => import("@pages/requisites/EndClient/index.vue"),
+    path: "requisites/lpu",
+    component: () => import("@pages/requisites/LPU/index.vue"),
     meta: {
       subtitle: "Конечный заказчик",
       showNavLink: false,
     },
   },
   {
-    path: "requisites/contractor",
-    component: () => import("@pages/requisites/Contractor/index.vue"),
+    path: "requisites/counterparty",
+    component: () => import("@pages/requisites/Counterparty/index.vue"),
     meta: {
       subtitle: "Контрагент",
       showNavLink: false,

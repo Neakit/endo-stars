@@ -88,6 +88,6 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach(guardMyroute);
+// router.beforeEach(guardMyroute);
 
 export default router;

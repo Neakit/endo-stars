@@ -41,13 +41,20 @@ export default defineComponent({
       try {
         // enable loading
         setTableLoading(true);
-        const result = await RequestManager.Requisites.getContractorTable({
-          q: searchQuery.value,
-          _page: page.value,
-          // _limit: 2,
-        });
-        items.value = [...items.value, ...result];
-        handleResponse(result);
+        const { results: itemsList } = await RequestManager.Counterparty.getCounterpartyList();
+        console.log("result", itemsList);
+        // count: 0
+        // next: null
+        // previous: null
+        // results: []
+
+        // const result = await RequestManager.Requisites.getContractorTable({
+        //   q: searchQuery.value,
+        //   _page: page.value,
+        //   _limit: 2,
+        // });
+        // items.value = [...items.value, ...result];
+        // handleResponse(result);
       } catch (e) {
         console.error({ e });
       } finally {

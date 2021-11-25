@@ -1,15 +1,18 @@
 import { ref } from "@vue/composition-api";
 
+const errorMsg = "Invalid page.";
+
 export const usePaginate = () => {
   const page = ref(1);
   const tableLoading = ref(false);
   const dataLoaded = ref(false);
 
   const handleResponse = (result: any) => {
-    if (result.length !== 0) {
-      page.value++;
-    } else {
+    // console.log(result, { result });
+    if (result?.response?.data?.detail === errorMsg) {
       dataLoaded.value = true;
+    } else {
+      page.value++;
     }
   };
 
@@ -18,7 +21,7 @@ export const usePaginate = () => {
   };
 
   const resetDataFetching = () => {
-    page.value = 0;
+    page.value = 1;
     tableLoading.value = false;
     dataLoaded.value = false;
   };

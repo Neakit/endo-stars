@@ -1,6 +1,14 @@
 <template>
   <div class="position-relative">
-    <b-table ref="my-table" id="table-id" :items="items" :fields="fields" sticky-header="200px">
+    <b-table
+      class="es-simple-table"
+      responsive
+      ref="my-table"
+      id="table-id"
+      :items="items"
+      :fields="fields"
+      sticky-header="200px"
+    >
       <template #cell()="data">
         <span class="text-overflow">{{ data.value }}</span>
       </template>
@@ -26,6 +34,11 @@ export default defineComponent({
       type: Array,
       requred: false,
     },
+    isBusy: {
+      type: Boolean,
+      requred: false,
+      default: false,
+    },
   },
   mounted() {
     const tableScrollBody = this.$refs["my-table"].$el;
@@ -36,15 +49,6 @@ export default defineComponent({
     /* Clean up just to be sure */
     const tableScrollBody = this.$refs["my-table"].$el;
     tableScrollBody.removeEventListener("scroll", this.onScroll);
-  },
-  data() {
-    return {
-      // items: [],
-      // currentPage: 0,
-      // perPage: 10,
-      // totalItems: database.length,
-      isBusy: false,
-    };
   },
   methods: {
     onScroll(event) {
@@ -102,7 +106,7 @@ export default defineComponent({
     .text-overflow {
       display: block;
       overflow: hidden;
-      // white-space: nowrap;
+      white-space: nowrap;
       // text-overflow: ellipsis;
       position: relative;
     }

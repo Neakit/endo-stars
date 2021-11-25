@@ -41,4 +41,14 @@ module.exports = {
       })
     ]
   },
+  devServer:{
+    "proxy": {
+      "/api": {
+      "target": 'https://51.250.6.131/api/v1/"',
+      "pathRewrite": { '^/api': '' },
+      "changeOrigin": true,
+      "secure": false
+      }
+    }
+  }
 }

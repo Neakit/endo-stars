@@ -13,16 +13,16 @@ enum METHOD_TYPES {
   DELETE = "DELETE",
 }
 
-// const HOST_SCHEMA = {
-//   HTTP: process.env.HTTP,
-//   HTTPS: process.env.HTTPS,
-//   API: process.env.API,
-// };
 const HOST_SCHEMA = {
   HTTP: "https://tranquil-bayou-55359.herokuapp.com/",
   HTTPS: "https://tranquil-bayou-55359.herokuapp.com/",
-  API: "https://tranquil-bayou-55359.herokuapp.com/",
+  API: "https://51.250.6.131/api/v1/",
 };
+// const HOST_SCHEMA = {
+//   HTTP: "https://tranquil-bayou-55359.herokuapp.com/",
+//   HTTPS: "https://tranquil-bayou-55359.herokuapp.com/",
+//   API: "https://tranquil-bayou-55359.herokuapp.com/",
+// };
 
 type RequestData = {
   params?: any;
@@ -90,9 +90,10 @@ axiosApiInstance.interceptors.request.use(
       "Content-Type": "application/json;charset=utf-8",
     };
 
-    const authToken = LocalStorageWorker.get(AUTH_TOKEN.ACCESS_TOKEN);
+    // const authToken = LocalStorageWorker.get(AUTH_TOKEN.ACCESS_TOKEN);
     if ((<any>config).requestAuthType === REQUEST_AUTH_TYPES.PRIVATE) {
-      config.headers.Authorization = `Bearer ${authToken}`;
+      // config.headers.Authorization = `Bearer ${authToken}`;
+      config.headers.Authorization = "Token b43e18975901f2e73aa9258bbb63488fe47344a7";
     }
     // else if ((<any>config).requestAuthType === REQUEST_AUTH_TYPES.PUBLIC) {
     //   // TODO: do something if necessary
