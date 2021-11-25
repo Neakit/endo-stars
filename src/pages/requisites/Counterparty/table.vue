@@ -2,16 +2,16 @@
   <b-container>
     <b-row class="mt-5 mb-5">
       <b-col cols="7">
-        <es-input-search v-model="searchQuery" placeholder="Поиск" />
+        <es-input-search class="my-1" v-model="searchQuery" placeholder="Поиск" />
       </b-col>
       <b-col cols="2">
-        <b-button @click="searchData" variant="default" block>Поиск</b-button>
+        <b-button class="my-1" @click="searchData" variant="default" block>Поиск</b-button>
       </b-col>
       <b-col cols="2">
-        <b-button @click="uploadData" variant="default" block>Очистить поиск</b-button>
+        <b-button class="my-1" @click="uploadData" variant="default" block>Очистить поиск</b-button>
       </b-col>
     </b-row>
-    <es-simple-table :items="items" :fields="fields" @infinite="infiniteHandler" />
+    <es-simple-table :items="items" :fields="fields" :isBusy="tableLoading" @infinite="infiniteHandler" />
   </b-container>
 </template>
 
@@ -34,32 +34,19 @@ export default defineComponent({
     const { page, tableLoading, dataLoaded, handleResponse, setTableLoading, resetDataFetching } = usePaginate();
 
     const searchQuery = ref("");
-
     const items = ref([]);
 
     const uploadData = async () => {
       try {
-        // enable loading
         setTableLoading(true);
-        const { results: itemsList } = await RequestManager.Counterparty.getCounterpartyList();
-        console.log("result", itemsList);
-        // count: 0
-        // next: null
-        // previous: null
-        // results: []
-
-        // const result = await RequestManager.Requisites.getContractorTable({
-        //   q: searchQuery.value,
-        //   _page: page.value,
-        //   _limit: 2,
-        // });
-        // items.value = [...items.value, ...result];
-        // handleResponse(result);
+        const { results } = await RequestManager.Counterparty.getCounterpartyList();
+        console.log("result", results);
+        items.value = [...items.value, ...results];
+        handleResponse(results);
       } catch (e) {
-        console.error({ e });
+        console.error("[COUNTERPARTY TABLE ERROR] :", { e });
       } finally {
         setTableLoading(false);
-        // disable loading
       }
     };
 
@@ -87,13 +74,11 @@ export default defineComponent({
     return {
       items,
       fields,
-      // actions
+      tableLoading,
+      searchQuery,
       uploadData,
       searchData,
       refreshTable,
-      // form
-      searchQuery,
-      // handler
       infiniteHandler,
     };
   },

@@ -89,7 +89,7 @@ export default defineComponent({
 
     const clearValidation = () => {
       for (const [key] of Object.entries(validation)) {
-        validation[key] = ref(true);
+        validation[key].value = true;
       }
     };
 

@@ -109,28 +109,28 @@ export default class Counterparty {
     constructor(data: any) {
       this.id                     = data?.id                     || null ;
       this.full_name              = data?.full_name              || "_" ;
-      this.abbreviated_name       = data?.abbreviated_name       || "ДОРН Медицина" ; // +
+      this.abbreviated_name       = data?.abbreviated_name       || "" ; // +
       this.inn                    = data?.inn                    || 12345678 ; // +
       this.kpp                    = data?.kpp                    || 0 ;
 
       this.illegal_address_index  = data?.illegal_address_index  || 0 ;
       this.illegal_address_city   = data?.illegal_address_city   || "_" ;
-      this.illegal_address_street = data?.illegal_address_street || "ул. Кукушкина" ; // +
+      this.illegal_address_street = data?.illegal_address_street || "_" ;
       this.actual_address_index   = data?.actual_address_index   || 0 ;
       this.actual_address_city    = data?.actual_address_city    || "_" ;
-      this.actual_address_street  = data?.actual_address_street  || "_" ;
+      this.actual_address_street  = data?.actual_address_street  || "" ; //+
 
-      this.phone_number           = data?.phone_number           || 9185669889 ; // +
-      this.email                  = data?.email                  || "pavliukny@gmail.com" ; // +
+      this.phone_number           = data?.phone_number           || null ; // +
+      this.email                  = data?.email                  || "" ; // +
       this.bank_name              = data?.bank_name              || "_" ;
       this.bank_bik               = data?.bank_bik               || 0 ;
       this.payment_account        = data?.payment_account        || 0 ;
       this.correspondent_account  = data?.correspondent_account  || 0 ;
 
-      this.director_full_name     = data?.director_full_name     || "Иванов Иван Ивановчи" ; // +
+      this.director_full_name     = data?.director_full_name     || "" ; // +
       this.director_position      = data?.director_position      || "_" ;
-      this.discount               = data?.discount               || 50 ; // +
-      this.lpu                    = data?.lpu                    || 123 ;
+      this.discount               = data?.discount               || null ; // +
+      this.lpu                    = data?.lpu                    || null ;
     }
   }
   

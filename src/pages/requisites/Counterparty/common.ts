@@ -1,6 +1,6 @@
 export const fields = [
   {
-    key: "contractor",
+    key: "abbreviated_name",
     label: "Контрагент",
     width: "14%",
   },
@@ -10,20 +10,20 @@ export const fields = [
     width: "10%",
   },
   {
-    key: "address",
+    key: "actual_address_street",
     label: "Адрес",
     width: "20%",
   },
   {
-    key: "phone",
+    key: "phone_number",
     label: "Телефон",
   },
   {
-    key: "mail",
+    key: "email",
     label: "Эл. почта",
   },
   {
-    key: "contact",
+    key: "director_full_name",
     label: "Контактное лицо",
   },
   {

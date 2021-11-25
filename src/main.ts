@@ -7,8 +7,12 @@ import router from "@router/index";
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 import "@style/app.scss";
 
-import RequestManager from "@services/RequestManager";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import VueBootstrapTypeahead from "vue-bootstrap-typeahead";
+// import "bootstrap/scss/bootstrap.scss";
 
+Vue.component("vue-bootstrap-typeahead", VueBootstrapTypeahead);
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 
