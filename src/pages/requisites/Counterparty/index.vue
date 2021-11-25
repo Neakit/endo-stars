@@ -22,7 +22,7 @@ export default defineComponent({
     const { userRole } = useAuth();
     const contractorTable = ref(null);
 
-    const updateTable = () => contractorTable.value.refreshTable();
+    const updateTable = () => contractorTable.value.clearTable();
 
     const showForm = computed(() => {
       return userRole.value === Roles.Admin || userRole.value === Roles.Supervisor;

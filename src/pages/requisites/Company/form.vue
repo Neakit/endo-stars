@@ -1,16 +1,15 @@
 <template>
   <b-container>
-    <!-- {{ validation.abbreviated_name }} -->
     <es-form-row>
       <template v-slot:label>
-        <label class="es-form-label" for="input-abbreviated_name">Контрагент</label>
+        <label class="es-form-label" for="input-abbreviated_name">Компания</label>
       </template>
       <template v-slot:input>
         <b-form-input
           id="input-abbreviated_name"
           v-model="form.abbreviated_name"
           :state="validation.abbreviated_name.value"
-        />
+        ></b-form-input>
       </template>
     </es-form-row>
 
@@ -19,7 +18,7 @@
         <label class="es-form-label" for="input-inn">ИНН</label>
       </template>
       <template v-slot:input>
-        <b-form-input id="input-inn" v-model="form.inn" :state="validation.inn.value" />
+        <b-form-input id="input-inn" v-model="form.inn" :state="validation.inn.value"></b-form-input>
       </template>
     </es-form-row>
 
@@ -32,7 +31,7 @@
           id="input-actual_address_street"
           v-model="form.actual_address_street"
           :state="validation.actual_address_street.value"
-        />
+        ></b-form-textarea>
       </template>
     </es-form-row>
 
@@ -43,7 +42,11 @@
       <template v-slot:input>
         <!-- placeholder="+7 (___) __-__" -->
         <!-- v-mask="'+7 (###) ###-##-##'" -->
-        <b-form-input id="input-phone_number" :state="validation.phone_number.value" v-model="form.phone_number" />
+        <b-form-input
+          id="input-phone_number"
+          :state="validation.phone_number.value"
+          v-model="form.phone_number"
+        ></b-form-input>
       </template>
     </es-form-row>
 
@@ -52,49 +55,16 @@
         <label for="input-email">Эл. почта</label>
       </template>
       <template v-slot:input>
-        <b-form-input id="input-email" :state="validation.email.value" v-model="form.email" />
+        <b-form-input id="input-email" :state="validation.email.value" v-model="form.email"></b-form-input>
       </template>
     </es-form-row>
 
-    <es-form-row>
-      <template v-slot:label>
-        <label class="es-form-label" for="input-director_full_name">Контактное лицо</label>
-      </template>
-      <template v-slot:input>
-        <b-form-input
-          id="input-director_full_name"
-          v-model="form.director_full_name"
-          :state="validation.director_full_name.value"
-        />
-      </template>
-    </es-form-row>
-
-    <es-form-row>
-      <template v-slot:label>
-        <label class="es-form-label" for="input-lpu">Конечный заказчик</label>
-      </template>
-      <template v-slot:input>
-        <vue-bootstrap-typeahead
-          :state="validation.lpu.value"
-          :data="lpuList"
-          :serializer="(item) => item.title"
-          @hit="form.lpu = $event.id"
-        />
-      </template>
-    </es-form-row>
-
-    <es-form-row>
-      <template v-slot:label>
-        <label class="es-form-label" for="input-discount">Скидка</label>
-      </template>
-      <template v-slot:input>
-        <b-form-input id="input-discount" type="number" v-model="form.discount" :state="validation.discount.value" />
-      </template>
-    </es-form-row>
+    <input type="file" @change="fileBlankPhoto" />
+    <input type="file" @change="fileLogo" />
 
     <b-row class="background-gray py-4">
-      <b-col cols="6" offset="2" md="3" lg="2">
-        <es-button :loading="loading" variant="default" @click="addContractorHandler" block>Сохранить</es-button>
+      <b-col cols="2" offset="2">
+        <es-button :loading="loading" variant="default" @click="addCompanyRequisitesHandler" block>Сохранить</es-button>
       </b-col>
     </b-row>
   </b-container>
@@ -105,7 +75,7 @@ import { defineComponent, ref } from "@vue/composition-api";
 import ESButton from "@components/es-button.vue";
 import ESFormRow from "@components/es-form-row.vue";
 import RequestManager from "@services/RequestManager";
-import Counterparty from "@dto/Counterparty";
+import Company from "@dto/Company";
 
 export default defineComponent({
   components: {
@@ -113,9 +83,9 @@ export default defineComponent({
     "es-form-row": ESFormRow,
   },
   setup(_, { emit }) {
-    const form = ref({ ...new Counterparty() });
+    const form = ref({ ...new Company() });
 
-    let validation = { ...new Counterparty() };
+    let validation = { ...new Company() };
     console.log("form", validation);
 
     const initValidation = () => {
@@ -138,46 +108,75 @@ export default defineComponent({
         validation[key].value = false;
       }
     };
+
     const loading = ref(false);
 
-    const addContractorHandler = async () => {
+    const blank_photo = ref(null);
+    const logo = ref(null);
+
+    const fileBlankPhoto = (event) => {
+      const file = event.target.files.item(0);
+      blank_photo.value = file;
+      // const reader = new FileReader();
+      // reader.addEventListener("load", (e) => {
+      // blank_photo.value = e.target.result;
+      // });
+      // reader.readAsDataURL(file);
+    };
+    const fileLogo = (event) => {
+      const file = event.target.files.item(0);
+      logo.value = file;
+
+      // const reader = new FileReader();
+      // reader.addEventListener("load", (e) => {
+      // logo.value = e.target.result;
+      // });
+      // reader.readAsDataURL(file);
+    };
+    // const fileLogo = (event) => {
+    //   const file = event.target.files.item(0);
+    //   const reader = new FileReader();
+    //   reader.addEventListener("load", (e) => {
+    //     logo.value = e.target.result;
+    //   });
+    //   reader.readAsDataURL(file);
+    // };
+
+    const addCompanyRequisitesHandler = async () => {
       clearValidation();
       loading.value = true;
       try {
-        const result = await RequestManager.Counterparty.createCounterparty(form.value);
+        // var formData = new FormData();
+        // formData.append("blank_photo", blank_photo.value);
+        // formData.append("logo", logo.value);
+        // formData.append("image", blank_photo.value);
+        // formData.append("image", logo.value);
+
+        const test = { ...form.value, blank_photo: blank_photo.value, logo: logo.value };
+        debugger;
+        const result = await RequestManager.Company.createCompany(test);
+        // const result = await RequestManager.Company.createCompany(form.value);
         console.log("result", result);
-        form.value = ref({ ...new Counterparty() });
+        form.value = { ...new Company() };
         emit("updateTable");
       } catch (e) {
         handlerFormError(e);
-        console.error("error", { e });
+        console.error(e);
       } finally {
         loading.value = false;
       }
     };
 
-    const lpuList = ref([]);
-
-    const getLPUList = async () => {
-      const { results } = await RequestManager.LPU.getLPUList();
-      lpuList.value = results.map((i) => {
-        return {
-          id: i.id,
-          title: i.abbreviated_name,
-        };
-      });
-    };
-
-    console.log(lpuList);
-
-    getLPUList();
-
     return {
-      addContractorHandler,
+      // actions
+      addCompanyRequisitesHandler,
+      // data
       form,
       validation,
       loading,
-      lpuList,
+      // data
+      fileBlankPhoto,
+      fileLogo,
     };
   },
 });

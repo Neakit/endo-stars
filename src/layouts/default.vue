@@ -60,7 +60,7 @@ export default defineComponent({
         children: [
           {
             title: "Реквизиты компаний",
-            to: "/dashboard/requisites/company-requisites",
+            to: "/dashboard/requisites/company",
           },
           {
             title: "Конечный заказчик",

@@ -61,8 +61,8 @@ const baseLayoutRoutes = [
   },
   // Requisites
   {
-    path: "requisites/company-requisites",
-    component: () => import("@pages/requisites/CompanyRequisites/index.vue"),
+    path: "requisites/company",
+    component: () => import("@pages/requisites/Company/index.vue"),
     meta: {
       subtitle: "Реквизиты компаний",
       showNavLink: false,

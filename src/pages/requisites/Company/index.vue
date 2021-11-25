@@ -19,7 +19,7 @@ export default defineComponent({
   setup() {
     const contractorTable = ref(null);
 
-    const updateTable = () => contractorTable.value.refreshTable();
+    const updateTable = () => contractorTable.value.clearTable();
 
     return {
       contractorTable,

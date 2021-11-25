@@ -1,14 +1,6 @@
 <template>
   <div class="position-relative">
-    <b-table
-      class="es-simple-table"
-      responsive
-      ref="my-table"
-      id="table-id"
-      :items="items"
-      :fields="fields"
-      sticky-header="200px"
-    >
+    <b-table class="es-simple-table" ref="my-table" :items="items" :fields="fields" sticky-header="150px">
       <template #cell()="data">
         <span class="text-overflow">{{ data.value }}</span>
       </template>
@@ -42,6 +34,7 @@ export default defineComponent({
   },
   mounted() {
     const tableScrollBody = this.$refs["my-table"].$el;
+    // debugger;
     /* Consider debouncing the event call */
     tableScrollBody.addEventListener("scroll", this.onScroll);
   },

@@ -11,17 +11,17 @@
         <b-button class="my-1" @click="uploadData" variant="default" block>Очистить поиск</b-button>
       </b-col>
     </b-row>
-    <es-simple-table :items="items" :fields="counterPartyFields" :isBusy="tableLoading" @infinite="infiniteHandler" />
+    <es-simple-table :items="items" :fields="companyFields" @infinite="infiniteHandler" />
   </b-container>
 </template>
 
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent } from "@vue/composition-api";
 import ESButton from "@components/es-button.vue";
 import ESInputSearch from "@components/es-input-search.vue";
 import ESSimpleTable from "@components/es-simple-table.vue";
 import RequestManager from "@services/RequestManager";
-import { counterPartyFields } from "../common.ts";
+import { companyFields } from "../common.ts";
 import { useTableSearch } from "../useTableSearch.ts";
 
 export default defineComponent({
@@ -32,7 +32,7 @@ export default defineComponent({
   },
   setup() {
     const loadService = (params) => {
-      return RequestManager.Counterparty.getCounterpartyList(params);
+      return RequestManager.Company.getCompanyList(params);
     };
 
     const {
@@ -50,6 +50,7 @@ export default defineComponent({
     uploadData();
 
     return {
+      companyFields,
       // actions
       uploadData,
       infiniteHandler,
@@ -59,7 +60,6 @@ export default defineComponent({
       items,
       searchQuery,
       tableLoading,
-      counterPartyFields,
     };
   },
 });
