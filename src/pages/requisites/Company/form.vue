@@ -117,6 +117,7 @@ export default defineComponent({
     const fileBlankPhoto = (event) => {
       const file = event.target.files.item(0);
       blank_photo.value = file;
+      debugger;
       // const reader = new FileReader();
       // reader.addEventListener("load", (e) => {
       // blank_photo.value = e.target.result;
@@ -146,16 +147,13 @@ export default defineComponent({
       clearValidation();
       loading.value = true;
       try {
-        // var formData = new FormData();
-        // formData.append("blank_photo", blank_photo.value);
-        // formData.append("logo", logo.value);
-        // formData.append("image", blank_photo.value);
-        // formData.append("image", logo.value);
-
-        const test = { ...form.value, blank_photo: blank_photo.value, logo: logo.value };
-        debugger;
-        const result = await RequestManager.Company.createCompany(test);
-        // const result = await RequestManager.Company.createCompany(form.value);
+        var formData = new FormData();
+        formData.append("blank_photo", blank_photo.value);
+        formData.append("logo", logo.value);
+        for (const [key, value] of Object.entries(form.value)) {
+          formData.append(key, value);
+        }
+        const result = await RequestManager.Company.createCompany(formData);
         console.log("result", result);
         form.value = { ...new Company() };
         emit("updateTable");

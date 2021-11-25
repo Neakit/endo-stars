@@ -61,7 +61,7 @@ export const counterPartyFields = [
 
 export const companyFields = [
   {
-    key: "company",
+    key: "abbreviated_name",
     label: "Компания",
   },
   {
@@ -69,15 +69,15 @@ export const companyFields = [
     label: "ИНН",
   },
   {
-    key: "address",
+    key: "actual_address_street",
     label: "Адрес",
   },
   {
-    key: "phone",
+    key: "phone_number",
     label: "Телефон",
   },
   {
-    key: "mail",
+    key: "email",
     label: "Эл. почта",
   },
 ];
