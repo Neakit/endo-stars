@@ -19,6 +19,12 @@ Vue.use(BootstrapVueIcons);
 import { mask } from "vue-the-mask";
 Vue.directive("mask", mask);
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import FullpageModal from "vue-fullpage-modal";
+
+Vue.use(FullpageModal);
+
 Vue.config.productionTip = false;
 
 new Vue({

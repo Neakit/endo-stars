@@ -36,7 +36,8 @@ export default class CommercialOffer {
   // x-nullable: true
   company: number;
   // title: Company
-  products: Array<number>;
+  // products: Array<number>;
+  products: any;
   // uniqueItems: true
   // number]
   constructor(data: any) {

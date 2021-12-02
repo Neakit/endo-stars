@@ -1,6 +1,6 @@
 <template>
   <b-container class="pt-4">
-    <p class="es-title-h1 my-5">Техническое задание</p>
+    <p class="es-title-h1 my-5">Регистрационное удостоверение</p>
     <!-- Табы -->
     <b-row class="mb-4">
       <b-col cols="2">
@@ -61,9 +61,7 @@
 
     <b-row class="background-gray py-4">
       <b-col cols="2" offset="2">
-        <!-- <es-button :loading="sendLoading" variant="default" block>
-          Отправить
-        </es-button> -->
+        <es-button :loading="sendLoading" variant="default" block> Отправить </es-button>
       </b-col>
       <b-col cols="2">
         <es-button variant="outline-primary">Скачать</es-button>
@@ -79,6 +77,7 @@ import ESButton from "@components/es-button.vue";
 import ESInputSearch from "@components/es-input-search.vue";
 import ESSimpleTable from "@components/es-simple-table.vue";
 import ESTab from "@components/es-tab.vue";
+import PermitDocument from "@dto/PermitDocument.ts";
 
 export default defineComponent({
   components: {
@@ -88,13 +87,8 @@ export default defineComponent({
     "es-tab": ESTab,
   },
   setup() {
-    const form = reactive({
-      kpnumber: "",
-      inn: "",
-      address: "",
-      phone: "",
-      mail: "",
-    });
+    const form = ref({ ...new PermitDocument() });
+    console.log("form", form);
 
     const validation = reactive({
       kpnumber: true,

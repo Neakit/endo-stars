@@ -1,9 +1,9 @@
 <template>
   <b-container class="pt-4">
     <p class="es-title-h1 my-5">Компании</p>
-    <b-table :items="items" :thead-class="isMobile ? '' : 'd-none'" tbody-tr-class="rowClass">
+    <b-table :items="items" :thead-class="isMobile ? '' : 'd-none'" borderless tbody-tr-class="rowClass">
       <template #cell(action)="data">
-        <b-button v-if="data.item.action">{{ data.index }}</b-button>
+        <b-button v-if="data.item.action">{{ data.item.action }}</b-button>
       </template>
     </b-table>
     <hr />
