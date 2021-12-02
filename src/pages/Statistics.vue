@@ -1,67 +1,82 @@
 <template>
   <b-container class="pt-4">
     <p class="es-title-h1 my-5">Компании</p>
-    <b-table :items="items" :thead-class="isMobile ? '' : 'd-none'" tbody-tr-class="rowClass">
-      <template #cell(action)="data">
-        <b-button v-if="data.item.action">{{ data.index }}</b-button>
+    <VueQuintable :config="config" :rows="rows" v-model="selectedRows">
+      <template v-slot:cell-complete="context">
+        <div class="btn btn-sm btn-info" @click.stop="alert(context.cell.text)">{{ context.cell.text }}</div>
       </template>
-    </b-table>
-    <hr />
-    <b-button @click="transformTable">TOGGLE</b-button>
+      <template v-slot:generated-cell-complete="context">
+        <div class="btn btn-sm btn-info" @click.stop="alert(context.cell.text)">{{ context.cell.text }}</div>
+      </template>
+    </VueQuintable>
   </b-container>
 </template>
 
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
-
-const response = [
-  { age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-  { age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-  { age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-];
-
-const fields = [
-  { label: "Возраст", key: "age" },
-  { label: "Имя", key: "first_name" },
-  { label: "Фамилия", key: "last_name" },
-];
+import { defineComponent, computed, ref } from "@vue/composition-api";
+import Chance from "chance";
 
 export default defineComponent({
   setup() {
-    const isMobile = ref(true);
-    const items = ref([]);
+    const selectedRows = ref([]);
 
-    const transformTable = () => {
-      if (isMobile.value) {
-        items.value = response.reduce((acc, item) => {
-          const row = Object.entries(item).reduce((accNested, val, index) => {
-            return accNested.concat({
-              title: fields.find((f) => f.key === val[0]).label,
-              value: val[1],
-              action: index === 0 ? true : false,
-            });
-          }, []);
-          return acc.concat(row);
-        }, []);
-      } else {
-        items.value = response;
-      }
-      isMobile.value = !isMobile.value;
+    const config = {
+      columns: [
+        {
+          headline: "Name",
+          breakpoint: "md",
+          alwaysExpanded: true,
+        },
+        {
+          headline: "Age",
+          breakpoint: "md",
+          alwaysExpanded: true,
+        },
+        {
+          headline: "Birth Place",
+          breakpoint: "md",
+          alwaysExpanded: true,
+        },
+        {
+          headline: "Job",
+          breakpoint: "md",
+          alwaysExpanded: true,
+        },
+      ],
+      selectPosition: "pre",
+      select: true,
     };
 
-    transformTable();
+    const rows = computed(() => {
+      let count = 10;
+      const rows = [];
 
-    console.log(items, fields);
+      const chance = new Chance();
 
-    // li:nth-child(3) {
-    //     color: red;
-    // }
+      for (let i = 0; i < count; i++) {
+        rows.push([
+          {
+            text: chance.name({ nationality: "en" }),
+          },
+          {
+            text: chance.age(),
+          },
+          {
+            text: chance.city(),
+          },
+          {
+            text: chance.profession(),
+          },
+        ]);
+      }
+
+      return rows;
+    });
 
     return {
-      fields,
-      items,
-      isMobile,
-      transformTable,
+      config,
+      rows,
+      selectedRows,
     };
   },
 });

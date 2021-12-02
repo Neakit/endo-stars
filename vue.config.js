@@ -38,7 +38,7 @@ module.exports = {
           "HTTPS": JSON.stringify(process.env.HTTPS),
           "API": JSON.stringify(process.env.API),
         }
-      })
+      }),
     ]
   },
   devServer:{

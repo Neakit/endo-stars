@@ -25,6 +25,10 @@ import FullpageModal from "vue-fullpage-modal";
 
 Vue.use(FullpageModal);
 
+import "@quintet/vue-quintable/dist/vue-quintable.css";
+import VueTable from "@quintet/vue-quintable";
+Vue.use(VueTable);
+
 Vue.config.productionTip = false;
 
 new Vue({
