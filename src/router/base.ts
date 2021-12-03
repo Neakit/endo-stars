@@ -50,6 +50,14 @@ const baseLayoutRoutes = [
       showNavLink: true,
     },
   },
+  {
+    path: "offer-test",
+    component: () => import("@pages/OfferTest.vue"),
+    meta: {
+      title: "Статистика",
+      showNavLink: true,
+    },
+  },
 
   {
     path: "profile-register",

@@ -14,7 +14,7 @@
       </b-col>
 
       <b-col cols="5" offset="1">
-        <es-input-search />
+        <!-- <es-input-search /> -->
       </b-col>
     </b-row>
 
@@ -32,41 +32,56 @@
       </b-row>
     </b-col>
 
-    <es-table :fields="fields" :items="items" />
+    <es-offer-table />
   </b-container>
 </template>
 
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent } from "@vue/composition-api";
 import ESButton from "@components/es-button.vue";
-import ESTable from "@components/es-table.vue";
+// import ESTable from "@components/es-table.vue";
 import ESInputSearch from "@components/es-input-search.vue";
-import { fields } from "./common.ts";
+// import { fields } from "./common.ts";
+import ESOfferTable from "@components/OfferTable/index.vue";
+import RequestManager from "@services/RequestManager";
+import { useTableSearch } from "./useTableSearch.ts";
 
 export default defineComponent({
   components: {
     "es-button": ESButton,
-    "es-table": ESTable,
     "es-input-search": ESInputSearch,
+    "es-offer-table": ESOfferTable,
   },
   setup() {
-    const items = [
-      { isActive: true, age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-      { isActive: false, age: 21, first_name: "Larsen", last_name: "Shaw" },
-      { isActive: false, age: 89, first_name: "Geneva", last_name: "Wilson" },
-      { isActive: true, age: 38, first_name: "Jami", last_name: "Carney" },
-      { isActive: true, age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-      { isActive: false, age: 21, first_name: "Larsen", last_name: "Shaw" },
-      { isActive: false, age: 89, first_name: "Geneva", last_name: "Wilson" },
-      { isActive: true, age: 38, first_name: "Jami", last_name: "Carney" },
-      { isActive: true, age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-      { isActive: false, age: 21, first_name: "Larsen", last_name: "Shaw" },
-      { isActive: false, age: 89, first_name: "Geneva", last_name: "Wilson" },
-      { isActive: true, age: 38, first_name: "Jami", last_name: "Carney" },
-    ];
-    return {
-      fields,
+    const loadService = (params) => {
+      return RequestManager.CommercialOffer.getOfferList(params);
+    };
+
+    const {
+      // actions
+      uploadData,
+      infiniteHandler,
+      searchData,
+      clearTable,
+      // form
       items,
+      searchQuery,
+      tableLoading,
+    } = useTableSearch(loadService);
+
+    console.log("items", items);
+
+    uploadData();
+
+    return {
+      uploadData,
+      infiniteHandler,
+      searchData,
+      clearTable,
+      // form
+      items,
+      searchQuery,
+      tableLoading,
     };
   },
 });

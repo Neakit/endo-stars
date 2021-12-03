@@ -6,12 +6,12 @@
           <img class="login-page-logo" src="@img/logo.svg" alt="" />
         </div>
 
-        <b-form-group id="fieldset-1" label-for="input-email" :invalid-feedback="invalidFeedback.email">
+        <b-form-group id="fieldset-1" label-for="input-username" :invalid-feedback="invalidFeedback.username">
           <b-form-input
             placeholder="Логин"
-            id="input-email"
-            v-model="form.email"
-            :state="validation.email"
+            id="input-username"
+            v-model="form.username"
+            :state="validation.username"
             trim
           ></b-form-input>
         </b-form-group>
@@ -46,12 +46,13 @@ import { useAuth } from "@composition/useAuth";
 export default defineComponent({
   setup(_, { root }) {
     const form = reactive({
-      email: "admin@mail.com",
-      password: "adminadmin",
+      username: "admin@mail.com",
+      // password: "adminadmin",
+      password: "adminadmi123",
     });
 
     const validation = reactive({
-      email: true,
+      username: true,
       password: true,
     });
 
@@ -62,6 +63,13 @@ export default defineComponent({
 
     const { login } = useAuth();
 
+    const handlerError = (err) => {
+      for (const key in err) {
+        console.log(err[key], key);
+        validation[key] = false;
+      }
+    };
+
     const loginHandler = async () => {
       try {
         // button loading true
@@ -69,7 +77,10 @@ export default defineComponent({
 
         root.$router.push("/dashboard/commercial-offer/");
       } catch (e) {
-        // form error handler
+        console.log(e.response.data);
+        if (e.response.data) {
+          handlerError(e.response.data);
+        }
       } finally {
         // button loading false
       }

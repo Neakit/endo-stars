@@ -1,27 +1,18 @@
 <template>
-  <b-container class="pt-4">
-    <p class="es-title-h1 my-5">Компании</p>
-    <div class="table-scroll" ref="table-scroll">
-      <VueQuintable :config="config" :rows="rows" class="main-table">
-        <template v-slot:cell-complete="context">
-          <span v-if="context.cell.text">
-            {{ context.cell.text }}
-          </span>
+  <div class="table-scroll" ref="table-scroll">
+    <VueQuintable :config="config" :rows="rows" class="main-table">
+      <template v-slot:cell-complete="{ cell }">
+        <span v-if="cell.text">{{ cell.text }}</span>
+        <div v-else class="btn btn-sm btn-info">{{ context.cell.action }}</div>
+      </template>
 
-          <div v-else class="btn btn-sm btn-info">{{ context.cell.action }}</div>
-        </template>
-
-        <template v-slot:sticky-cell-complete="context">
-          <span v-if="context.cell.text">
-            {{ context.cell.text }}
-          </span>
-
-          <div v-else class="btn btn-sm btn-info">{{ context.cell.action }}</div>
-        </template>
-      </VueQuintable>
-      <b-overlay :show="false" no-wrap opacity="0.5"></b-overlay>
-    </div>
-  </b-container>
+      <template v-slot:sticky-cell-complete="{ cell }">
+        <span v-if="cell.text">{{ cell.text }}</span>
+        <div v-else class="btn btn-sm btn-info">{{ context.cell.action }}</div>
+      </template>
+    </VueQuintable>
+    <b-overlay :show="true" no-wrap opacity="0.5"></b-overlay>
+  </div>
 </template>
 
 <script>
@@ -102,9 +93,6 @@ export default defineComponent({
     },
   },
   methods: {
-    alert(text) {
-      alert("I clicked the slot " + text);
-    },
     onScroll(event) {
       // debugger;
       if (event.target.scrollTop + event.target.clientHeight >= event.target.scrollHeight) {
@@ -168,30 +156,4 @@ export default defineComponent({
   position: sticky;
   top: 0;
 }
-
-/* safari and ios need the tfoot itself to be position:sticky also */
-/* .table-scroll tfoot,
-.table-scroll tfoot th,
-.table-scroll tfoot td {
-  position: sticky;
-  bottom: 0;
-  background: #666;
-  color: #fff;
-  z-index: 4;
-}
-
-a:focus {
-  background: red;
-} */
-
-/* th:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 2;
-  background: #ccc;
-}
-thead th:first-child,
-tfoot th:first-child {
-  z-index: 5;
-} */
 </style>

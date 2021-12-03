@@ -1,21 +1,18 @@
 <template>
   <b-container class="pt-4">
-    <p class="es-title-h1 my-5">Компании</p>
+    <p class="es-title-h1 my-5">Offer</p>
     <div class="table-scroll" ref="table-scroll">
       <VueQuintable :config="config" :rows="rows" class="main-table">
         <template v-slot:cell-complete="context">
           <span v-if="context.cell.text">
             {{ context.cell.text }}
           </span>
-
           <div v-else class="btn btn-sm btn-info">{{ context.cell.action }}</div>
         </template>
-
         <template v-slot:sticky-cell-complete="context">
           <span v-if="context.cell.text">
             {{ context.cell.text }}
           </span>
-
           <div v-else class="btn btn-sm btn-info">{{ context.cell.action }}</div>
         </template>
       </VueQuintable>
@@ -102,9 +99,6 @@ export default defineComponent({
     },
   },
   methods: {
-    alert(text) {
-      alert("I clicked the slot " + text);
-    },
     onScroll(event) {
       // debugger;
       if (event.target.scrollTop + event.target.clientHeight >= event.target.scrollHeight) {
@@ -168,30 +162,4 @@ export default defineComponent({
   position: sticky;
   top: 0;
 }
-
-/* safari and ios need the tfoot itself to be position:sticky also */
-/* .table-scroll tfoot,
-.table-scroll tfoot th,
-.table-scroll tfoot td {
-  position: sticky;
-  bottom: 0;
-  background: #666;
-  color: #fff;
-  z-index: 4;
-}
-
-a:focus {
-  background: red;
-} */
-
-/* th:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 2;
-  background: #ccc;
-}
-thead th:first-child,
-tfoot th:first-child {
-  z-index: 5;
-} */
 </style>
