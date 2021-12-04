@@ -15,7 +15,7 @@ export default defineComponent({
   setup() {
     const { user } = useAuth();
     const avatarTitle = computed(() => {
-      return user.value.firstname.substring(0, 1).toUpperCase();
+      return user.value.first_name.substring(0, 1).toUpperCase();
     });
     return {
       avatarTitle,

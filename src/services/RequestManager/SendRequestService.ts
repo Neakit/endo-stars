@@ -1,5 +1,5 @@
 import axios from "axios";
-import LocalStorageWorker from "@services/LocalStorageManager";
+import CookiesWorker from "@services/LocalStorageManager";
 import { AUTH_TOKEN } from "@enum/index";
 
 enum REQUEST_AUTH_TYPES {
@@ -34,8 +34,8 @@ console.log("HOST_SCHEMA", HOST_SCHEMA);
 const handleError = async (error: any, originalRequest: any) => {
   if (error.response.status === 401 && !originalRequest._retry) {
     originalRequest._retry = true;
-    LocalStorageWorker.remove(AUTH_TOKEN.ACCESS_TOKEN);
-    // const authToken = LocalStorageWorker.get(AUTH_TOKEN.ACCESS_TOKEN);
+    CookiesWorker.remove(AUTH_TOKEN.ACCESS_TOKEN);
+    // const authToken = CookiesWorker.get(AUTH_TOKEN.ACCESS_TOKEN);
     // const bodyFormData = new FormData();
     // bodyFormData.append('refreshToken', authToken);
     // try {
@@ -90,10 +90,10 @@ axiosApiInstance.interceptors.request.use(
       "Content-Type": "application/json;charset=utf-8",
     };
 
-    // const authToken = LocalStorageWorker.get(AUTH_TOKEN.ACCESS_TOKEN);
+    const authToken = CookiesWorker.get(AUTH_TOKEN.ACCESS_TOKEN);
     if ((<any>config).requestAuthType === REQUEST_AUTH_TYPES.PRIVATE) {
-      // config.headers.Authorization = `Bearer ${authToken}`;
-      config.headers.Authorization = "Token b43e18975901f2e73aa9258bbb63488fe47344a7";
+      config.headers.Authorization = `Token ${authToken}`;
+      // config.headers.Authorization = "Token b43e18975901f2e73aa9258bbb63488fe47344a7";
     }
     // else if ((<any>config).requestAuthType === REQUEST_AUTH_TYPES.PUBLIC) {
     //   // TODO: do something if necessary

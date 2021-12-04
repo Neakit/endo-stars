@@ -54,10 +54,10 @@ export default defineComponent({
         title: "Регистрационное удостоверение",
         to: "/dashboard/registration-certificate",
       },
-      {
-        title: "Статистика",
-        to: "/dashboard/statistics",
-      },
+      // {
+      //   title: "Статистика",
+      //   to: "/dashboard/statistics",
+      // },
       {
         title: "Реквизиты",
         children: [

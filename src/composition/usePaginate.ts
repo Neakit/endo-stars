@@ -4,6 +4,7 @@ const errorMsg = "Invalid page.";
 
 export const usePaginate = () => {
   const page = ref(1);
+  const search = ref("");
   const tableLoading = ref(false);
   const dataLoaded = ref(false);
 
@@ -22,6 +23,7 @@ export const usePaginate = () => {
 
   const resetDataFetching = () => {
     page.value = 1;
+    search.value = "";
     tableLoading.value = false;
     dataLoaded.value = false;
   };

@@ -13,7 +13,7 @@ class StorageItem {
   }
 }
 
-class LocalStorageWorker {
+class CookiesWorker {
   localStorageSupported: boolean;
 
   constructor() {
@@ -81,4 +81,4 @@ class LocalStorageWorker {
   }
 }
 
-export default new LocalStorageWorker();
+export default new CookiesWorker();

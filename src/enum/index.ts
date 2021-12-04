@@ -1,7 +1,7 @@
 export enum Roles {
-  Admin = "ADMIN",
-  Supervisor = "SUPERVISOR",
-  Manager = "MANAGER",
+  Admin = "admin",
+  Supervisor = "director",
+  Manager = "manager",
 }
 
 export enum Layouts {

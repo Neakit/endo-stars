@@ -1,6 +1,6 @@
 <template>
-  <b-container>
-    <b-navbar class="as-navbar" type="light">
+  <b-navbar class="as-navbar" type="light">
+    <b-container>
       <router-link to="/dashboard/commercial-offer" class="mr-2">
         <img class="" src="@img/logo.svg" alt="" />
       </router-link>
@@ -54,8 +54,8 @@
       <b-navbar-nav class="ml-auto d-lg-none" @click="openModal">
         <Avatar />
       </b-navbar-nav>
-    </b-navbar>
-  </b-container>
+    </b-container>
+  </b-navbar>
 </template>
 
 <script lang="ts">

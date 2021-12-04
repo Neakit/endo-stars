@@ -24,8 +24,12 @@
             v-model="form.password"
             :state="validation.password"
             trim
-          ></b-form-input>
+          />
+          <!-- <b-form-invalid-feedback id="input-password">
+            {{ invalidFeedback.password }}
+          </b-form-invalid-feedback> -->
         </b-form-group>
+
         <b-button @click="loginHandler" variant="default" block>Войти</b-button>
 
         <p class="px-5 mt-3 text-center">
@@ -45,11 +49,28 @@ import { useAuth } from "@composition/useAuth";
 
 export default defineComponent({
   setup(_, { root }) {
-    const form = reactive({
+    const managerUser = {
+      username: "manager@example.com",
+      password: "managerpassword",
+    };
+
+    const directorUser = {
+      username: "director@example.com",
+      password: "directorpassword",
+    };
+
+    const adminUser = {
+      username: "testadmin@example.com",
+      password: "adminpassword",
+    };
+
+    const adminSuperUser = {
       username: "admin@mail.com",
-      // password: "adminadmin",
-      password: "adminadmi123",
-    });
+      password: "adminadmin",
+    };
+    console.log(directorUser, adminUser, adminSuperUser);
+
+    const form = reactive({ ...directorUser });
 
     const validation = reactive({
       username: true,
@@ -57,7 +78,7 @@ export default defineComponent({
     });
 
     const invalidFeedback = reactive({
-      login: "",
+      username: "",
       password: "",
     });
 

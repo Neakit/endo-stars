@@ -1,8 +1,7 @@
 import { ref, Ref } from "@vue/composition-api";
+import debounce from "lodash/debounce";
 
-// export function useTableSearch(loadService: any) {
 export const useTableSearch = (loadService: any) => {
-  //   console.log(loadService);
   const ERROR_MESSAGE = "Invalid page.";
   // paginator
   const page = ref(1);
@@ -15,8 +14,11 @@ export const useTableSearch = (loadService: any) => {
   const uploadData = async () => {
     try {
       tableLoading.value = true;
-      console.log(loadService);
-      const { results, next } = await loadService({ page: page.value });
+      // console.log(loadService);
+      const { results, next } = await loadService({
+        page: page.value,
+        search: searchQuery.value,
+      });
 
       items.value = [...items.value, ...results];
       if (next) {
@@ -41,11 +43,11 @@ export const useTableSearch = (loadService: any) => {
     }
   };
 
-  const searchData = () => {
+  const searchData = debounce(() => {
     items.value = [];
     page.value = 1;
     uploadData();
-  };
+  }, 500);
 
   const clearTable = () => {
     searchQuery.value = "";

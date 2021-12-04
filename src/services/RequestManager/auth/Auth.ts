@@ -17,11 +17,11 @@ export default class Auth {
     this.sendRequestService = SendRequestService;
   }
 
-  // register(credentials: Credentials) {
-  //   return this.sendRequestService("POST:PUBLIC", "api://auth/register/", { data: credentials });
-  // }
-
   login(credentials: Credentials) {
     return this.sendRequestService("POST:PUBLIC", "api://login/", { data: credentials }, prepareLoginRes);
+  }
+
+  user() {
+    return this.sendRequestService("GET:PRIVATE", "api://user/me", {});
   }
 }

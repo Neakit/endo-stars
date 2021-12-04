@@ -1,27 +1,31 @@
-// prettier-ignore
 export default class User {
-    #id
-    #email
-    #role
-    #firstname
-    #lastname
-    #phone
+    #access_group: string;
+    #email: string;
+    #first_name: string;
+    #id: null;
+    #last_name: string;
+    #patronymic: string;
+    #phone_number: string;
+    #position: string;
 
     constructor(data: any) {
-        this.#id        = data?.id        || null;
-        this.#email     = data?.email     || null;
-        this.#role      = data?.role      || null;
-        this.#firstname = data?.firstname || ""
-        this.#lastname  = data?.lastname  || "";
-        this.#phone     = data?.phone     || "";
+        this.#access_group = data?.access_group || ''
+        this.#email        = data?.email || ''
+        this.#first_name   = data?.first_name || ''
+        this.#id           = data?.id || ''
+        this.#last_name    = data?.last_name || ''
+        this.#patronymic   = data?.patronymic || ''
+        this.#phone_number = data?.phone_number || ''
+        this.#position     = data?.position || ''
     }
 
-    get id()        { return this.#id;        }
-    get email()     { return this.#email;     }
-    get role()      { return this.#role;      }
-    get firstname() { return this.#firstname; }
-    get lastname()  { return this.#lastname;  }
-    get phone()     { return this.#phone;     }
-    // custom fields
-    get fullname()  { return `${this.#firstname} ${this.#lastname}` }
+    get access_group() { return this.#access_group; }
+    get email()        { return this.#email; }
+    get first_name()   { return this.#first_name; }
+    get id()           { return this.#id; }
+    get last_name()    { return this.#last_name; }
+    get patronymic()   { return this.#patronymic; }
+    get phone_number() { return this.#phone_number; }
+    get position()     { return this.#position; }
+   
 }

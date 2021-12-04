@@ -196,7 +196,7 @@ export default defineComponent({
     const loading = ref(false);
 
     const form = ref({ ...new Company() });
-    console.log("form", form);
+    // console.log("form", form);
     const { initValidation, validation, clearValidation, handlerFormError } = useValidation(Company);
     initValidation();
 
