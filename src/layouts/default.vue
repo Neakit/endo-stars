@@ -2,6 +2,7 @@
   <div>
     <app-header :navigationItems="navigationItems" />
     <b-container>
+      <app-mobile-menu :navigationItems="navigationItems" class="d-lg-none" />
       <router-view />
     </b-container>
   </div>
@@ -9,6 +10,7 @@
 
 <script lang="ts">
 import AppHeader from "@components/AppHeader.vue";
+import AppMobileMenu from "@components/AppMobileMenu.vue";
 import { defineComponent } from "@vue/composition-api";
 // import router from "@router/index";
 // import { Layouts } from "@enum/index";
@@ -16,6 +18,7 @@ import { defineComponent } from "@vue/composition-api";
 export default defineComponent({
   components: {
     AppHeader,
+    AppMobileMenu,
   },
   setup() {
     // type NavigationItem = {

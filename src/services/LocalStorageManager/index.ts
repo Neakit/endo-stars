@@ -60,7 +60,7 @@ class LocalStorageWorker {
   get(key: string): string | null {
     if (this.localStorageSupported) {
       const item = localStorage.getItem(key) || "";
-      return item !== "undefined" ? JSON.parse(item) : null;
+      return (item !== "undefined" && item !== "" && JSON.parse(item)) || null;
     } else {
       return null;
     }
