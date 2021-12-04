@@ -87,7 +87,7 @@
 
     <es-form-row>
       <template v-slot:label>
-        <label for="input-phone_number">Телефон</label>
+        <label class="es-form-label" for="input-phone_number">Телефон</label>
       </template>
       <template v-slot:input>
         <b-form-input
@@ -105,7 +105,7 @@
 
     <es-form-row>
       <template v-slot:label>
-        <label for="input-email">Эл. почта</label>
+        <label class="es-form-label" for="input-email">Эл. почта</label>
       </template>
       <template v-slot:input>
         <b-form-input id="input-email" :state="validation.email.state" v-model="form.email"></b-form-input>
@@ -117,7 +117,7 @@
 
     <es-form-row>
       <template v-slot:label>
-        <label for="input-director_full_name">ФИО руководителя</label>
+        <label class="es-form-label" for="input-director_full_name">ФИО руководителя</label>
       </template>
       <template v-slot:input>
         <b-form-input
@@ -133,7 +133,7 @@
 
     <es-form-row>
       <template v-slot:label>
-        <label for="input-director_position">Должность руководителя</label>
+        <label class="es-form-label" for="input-director_position">Должность руководителя</label>
       </template>
       <template v-slot:input>
         <b-form-input
@@ -149,7 +149,7 @@
 
     <es-form-row>
       <template v-slot:label>
-        <label for="input-director_position">Лого</label>
+        <label class="es-form-label" for="input-director_position">Лого</label>
       </template>
       <template v-slot:input>
         <b-form-file v-model="form.logo" :state="validation.logo.state"></b-form-file>
@@ -161,7 +161,7 @@
 
     <es-form-row>
       <template v-slot:label>
-        <label for="input-director_position">Оттиск печати</label>
+        <label class="es-form-label" for="input-director_position">Оттиск печати</label>
       </template>
       <template v-slot:input>
         <b-form-file v-model="form.blank_photo" :state="validation.blank_photo.state"></b-form-file>

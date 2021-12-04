@@ -90,7 +90,7 @@
 
     <es-form-row>
       <template v-slot:label>
-        <label for="input-phone_number">Телефон</label>
+        <label class="es-form-label" for="input-phone_number">Телефон</label>
       </template>
       <template v-slot:input>
         <b-form-input
@@ -108,7 +108,7 @@
 
     <es-form-row>
       <template v-slot:label>
-        <label for="input-email">Эл. почта</label>
+        <label class="es-form-label" for="input-email">Эл. почта</label>
       </template>
       <template v-slot:input>
         <b-form-input id="input-email" :state="validation.email.state" v-model="form.email"></b-form-input>
