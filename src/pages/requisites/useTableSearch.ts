@@ -16,9 +16,14 @@ export const useTableSearch = (loadService: any) => {
     try {
       tableLoading.value = true;
       console.log(loadService);
-      const { results } = await loadService({ page: page.value });
+      const { results, next } = await loadService({ page: page.value });
+
       items.value = [...items.value, ...results];
-      page.value++;
+      if (next) {
+        page.value++;
+      } else {
+        dataLoaded.value = true;
+      }
     } catch (e: any) {
       console.log({ e });
       if (e?.response?.data?.detail === ERROR_MESSAGE) {

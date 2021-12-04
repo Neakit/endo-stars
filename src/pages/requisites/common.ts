@@ -61,7 +61,7 @@ export const counterPartyFields = [
 
 export const companyFields = [
   {
-    key: "abbreviated_name",
+    key: "name",
     label: "Компания",
   },
   {
@@ -69,7 +69,7 @@ export const companyFields = [
     label: "ИНН",
   },
   {
-    key: "actual_address_street",
+    key: "full_address",
     label: "Адрес",
   },
   {
@@ -81,3 +81,34 @@ export const companyFields = [
     label: "Эл. почта",
   },
 ];
+
+export const companyConfig = {
+  columns: [
+    {
+      alwaysExpanded: true,
+      headline: "Компания",
+      breakpoint: "md",
+    },
+    {
+      headline: "ИНН",
+      alwaysExpanded: true,
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
+      headline: "Адрес",
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
+      headline: "Телефон",
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
+      headline: "Эл. почта",
+      breakpoint: "md",
+    },
+  ],
+  select: false,
+};

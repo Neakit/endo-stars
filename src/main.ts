@@ -16,8 +16,11 @@ Vue.component("vue-bootstrap-typeahead", VueBootstrapTypeahead);
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 
-import { mask } from "vue-the-mask";
-Vue.directive("mask", mask);
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { VueMaskDirective, VueMaskFilter } from "v-mask";
+Vue.directive("mask", VueMaskDirective);
+Vue.filter("VMask", VueMaskFilter);
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

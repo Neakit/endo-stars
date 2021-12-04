@@ -14,6 +14,8 @@ enum USER {
   USER_EMAIL = "USER_EMAIL",
 }
 
+console.log("AUTH_TOKEN.ACCESS_TOKEN", LocalStorageWorker.get(AUTH_TOKEN.ACCESS_TOKEN));
+
 const state = reactive({
   token: LocalStorageWorker.get(AUTH_TOKEN.ACCESS_TOKEN),
   email: LocalStorageWorker.get(USER.USER_EMAIL),

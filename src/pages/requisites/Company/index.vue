@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <p class="es-title-h1 my-5">Реквизиты компаний</p>
+  <div class="pb-5">
+    <AppTitle>Реквизиты компаний</AppTitle>
     <CompanyForm @updateTable="updateTable" />
     <CompanyTable ref="contractorTable" />
   </div>
@@ -10,9 +10,11 @@
 import { defineComponent, ref } from "@vue/composition-api";
 import CompanyForm from "./form";
 import CompanyTable from "./table";
+import AppTitle from "@components/AppTitle";
 
 export default defineComponent({
   components: {
+    AppTitle,
     CompanyForm,
     CompanyTable,
   },

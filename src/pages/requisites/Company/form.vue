@@ -2,14 +2,10 @@
   <b-container>
     <es-form-row>
       <template v-slot:label>
-        <label class="es-form-label" for="input-abbreviated_name">Компания</label>
+        <label class="es-form-label" for="input-name">Компания</label>
       </template>
       <template v-slot:input>
-        <b-form-input
-          id="input-abbreviated_name"
-          v-model="form.abbreviated_name"
-          :state="validation.abbreviated_name.value"
-        ></b-form-input>
+        <b-form-input id="input-name" v-model="form.name" :state="validation.name.state"></b-form-input>
       </template>
     </es-form-row>
 
@@ -18,20 +14,74 @@
         <label class="es-form-label" for="input-inn">ИНН</label>
       </template>
       <template v-slot:input>
-        <b-form-input id="input-inn" v-model="form.inn" :state="validation.inn.value"></b-form-input>
+        <b-form-input id="input-inn" v-model="form.inn" :state="validation.inn.state"></b-form-input>
+        <b-form-invalid-feedback id="input-inn">
+          {{ validation.inn.feedback }}
+        </b-form-invalid-feedback>
       </template>
     </es-form-row>
 
     <es-form-row>
       <template v-slot:label>
-        <label class="es-form-label" for="input-actual_address_street">Адрес</label>
+        <label class="es-form-label" for="input-address_street">Адрес</label>
       </template>
       <template v-slot:input>
-        <b-form-textarea
-          id="input-actual_address_street"
-          v-model="form.actual_address_street"
-          :state="validation.actual_address_street.value"
-        ></b-form-textarea>
+        <b-form-input
+          id="input-address_street"
+          v-model="form.address_street"
+          :state="validation.address_street.state"
+        ></b-form-input>
+        <b-form-invalid-feedback id="input-address_street">
+          {{ validation.address_street.feedback }}
+        </b-form-invalid-feedback>
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-address_city">Город</label>
+      </template>
+      <template v-slot:input>
+        <b-form-input
+          id="input-address_city"
+          v-model="form.address_city"
+          :state="validation.address_city.state"
+        ></b-form-input>
+        <b-form-invalid-feedback id="input-address_city">
+          {{ validation.address_city.feedback }}
+        </b-form-invalid-feedback>
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-address_country">Страна</label>
+      </template>
+      <template v-slot:input>
+        <b-form-input
+          id="input-address_country"
+          v-model="form.address_country"
+          :state="validation.address_country.state"
+        ></b-form-input>
+        <b-form-invalid-feedback id="input-address_country">
+          {{ validation.address_country.feedback }}
+        </b-form-invalid-feedback>
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-address_index">Индекс</label>
+      </template>
+      <template v-slot:input>
+        <b-form-input
+          id="input-address_index"
+          v-model="form.address_index"
+          :state="validation.address_index.state"
+        ></b-form-input>
+        <b-form-invalid-feedback id="input-address_index">
+          {{ validation.address_index.feedback }}
+        </b-form-invalid-feedback>
       </template>
     </es-form-row>
 
@@ -40,13 +90,16 @@
         <label for="input-phone_number">Телефон</label>
       </template>
       <template v-slot:input>
-        <!-- placeholder="+7 (___) __-__" -->
-        <!-- v-mask="'+7 (###) ###-##-##'" -->
         <b-form-input
+          placeholder="+7 (___) __-__"
+          v-mask="'+7 (###) ###-##-##'"
           id="input-phone_number"
-          :state="validation.phone_number.value"
+          :state="validation.phone_number.state"
           v-model="form.phone_number"
         ></b-form-input>
+        <b-form-invalid-feedback id="input-phone_number">
+          {{ validation.phone_number.feedback }}
+        </b-form-invalid-feedback>
       </template>
     </es-form-row>
 
@@ -55,15 +108,71 @@
         <label for="input-email">Эл. почта</label>
       </template>
       <template v-slot:input>
-        <b-form-input id="input-email" :state="validation.email.value" v-model="form.email"></b-form-input>
+        <b-form-input id="input-email" :state="validation.email.state" v-model="form.email"></b-form-input>
+        <b-form-invalid-feedback id="input-email">
+          {{ validation.email.feedback }}
+        </b-form-invalid-feedback>
       </template>
     </es-form-row>
 
-    <input type="file" @change="fileBlankPhoto" />
-    <input type="file" @change="fileLogo" />
+    <es-form-row>
+      <template v-slot:label>
+        <label for="input-director_full_name">ФИО руководителя</label>
+      </template>
+      <template v-slot:input>
+        <b-form-input
+          id="input-director_full_name"
+          :state="validation.director_full_name.state"
+          v-model="form.director_full_name"
+        ></b-form-input>
+        <b-form-invalid-feedback id="input-director_full_name">
+          {{ validation.director_full_name.feedback }}
+        </b-form-invalid-feedback>
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label for="input-director_position">Должность руководителя</label>
+      </template>
+      <template v-slot:input>
+        <b-form-input
+          id="input-director_position"
+          :state="validation.director_position.state"
+          v-model="form.director_position"
+        ></b-form-input>
+        <b-form-invalid-feedback id="input-director_position">
+          {{ validation.director_position.feedback }}
+        </b-form-invalid-feedback>
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label for="input-director_position">Лого</label>
+      </template>
+      <template v-slot:input>
+        <b-form-file v-model="form.logo" :state="validation.logo.state"></b-form-file>
+        <b-form-invalid-feedback id="input-logo">
+          {{ validation.logo.feedback }}
+        </b-form-invalid-feedback>
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label for="input-director_position">Оттиск печати</label>
+      </template>
+      <template v-slot:input>
+        <b-form-file v-model="form.blank_photo" :state="validation.blank_photo.state"></b-form-file>
+        <b-form-invalid-feedback id="input-blank_photo">
+          {{ validation.blank_photo.feedback }}
+        </b-form-invalid-feedback>
+      </template>
+    </es-form-row>
 
     <b-row class="background-gray py-4">
-      <b-col cols="2" offset="2">
+      <b-col cols="6" md="3" lg="2" offset-md="2">
         <es-button :loading="loading" variant="default" @click="addCompanyRequisitesHandler" block>Сохранить</es-button>
       </b-col>
     </b-row>
@@ -76,6 +185,7 @@ import ESButton from "@components/es-button.vue";
 import ESFormRow from "@components/es-form-row.vue";
 import RequestManager from "@services/RequestManager";
 import Company from "@dto/Company";
+import { useValidation } from "@composition/useValidation.ts";
 
 export default defineComponent({
   components: {
@@ -83,78 +193,28 @@ export default defineComponent({
     "es-form-row": ESFormRow,
   },
   setup(_, { emit }) {
-    const form = ref({ ...new Company() });
-
-    let validation = { ...new Company() };
-    console.log("form", validation);
-
-    const initValidation = () => {
-      for (const [key] of Object.entries(validation)) {
-        validation[key] = ref(true);
-      }
-    };
-
-    const clearValidation = () => {
-      for (const [key] of Object.entries(validation)) {
-        validation[key].value = true;
-      }
-    };
-
-    initValidation();
-
-    const handlerFormError = (e) => {
-      const errorFields = e?.response?.data || [];
-      for (const [key, value] of Object.entries(errorFields)) {
-        validation[key].value = false;
-      }
-    };
-
     const loading = ref(false);
 
-    const blank_photo = ref(null);
-    const logo = ref(null);
-
-    const fileBlankPhoto = (event) => {
-      const file = event.target.files.item(0);
-      blank_photo.value = file;
-      debugger;
-      // const reader = new FileReader();
-      // reader.addEventListener("load", (e) => {
-      // blank_photo.value = e.target.result;
-      // });
-      // reader.readAsDataURL(file);
-    };
-    const fileLogo = (event) => {
-      const file = event.target.files.item(0);
-      logo.value = file;
-
-      // const reader = new FileReader();
-      // reader.addEventListener("load", (e) => {
-      // logo.value = e.target.result;
-      // });
-      // reader.readAsDataURL(file);
-    };
-    // const fileLogo = (event) => {
-    //   const file = event.target.files.item(0);
-    //   const reader = new FileReader();
-    //   reader.addEventListener("load", (e) => {
-    //     logo.value = e.target.result;
-    //   });
-    //   reader.readAsDataURL(file);
-    // };
+    const form = ref({ ...new Company() });
+    console.log("form", form);
+    const { initValidation, validation, clearValidation, handlerFormError } = useValidation(Company);
+    initValidation();
 
     const addCompanyRequisitesHandler = async () => {
       clearValidation();
       loading.value = true;
       try {
         var formData = new FormData();
-        formData.append("blank_photo", blank_photo.value);
-        formData.append("logo", logo.value);
         for (const [key, value] of Object.entries(form.value)) {
-          formData.append(key, value);
+          if (key === "phone_number") {
+            let _value = value.replace(/\D/g, "");
+            _value = parseInt(_value);
+            formData.append(key, _value);
+          } else {
+            formData.append(key, value);
+          }
         }
         const result = await RequestManager.Company.createCompany(formData);
-        console.log("result", result);
         form.value = { ...new Company() };
         emit("updateTable");
       } catch (e) {
@@ -172,9 +232,6 @@ export default defineComponent({
       form,
       validation,
       loading,
-      // data
-      fileBlankPhoto,
-      fileLogo,
     };
   },
 });

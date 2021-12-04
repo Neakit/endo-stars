@@ -1,9 +1,16 @@
-// import User from "@dto/User";
-// import { Contractor } from "@type/index";
+const _prepareGetCompanyRes = (res: any) => {
+  res.results = res.results.map((c: any) => {
+    let full_address = [c.address_street, c.address_index, c.address_city, c.address_country];
+    full_address = full_address.filter((i) => i);
 
-// const prepareLoginRes = (res: any) => {
-//   return res;
-// };
+    c.full_address = full_address.reduce((acc, i, index, arr) => {
+      return acc + `${i}` + (index === arr.length - 1 ? "" : ", ");
+    }, "");
+
+    return [{ text: c.name }, { text: c.inn }, { text: c.full_address }, { text: c.phone_number }, { text: c.email }];
+  });
+  return res;
+};
 
 export default class Company {
   private sendRequestService: any;
@@ -13,7 +20,7 @@ export default class Company {
   }
 
   getCompanyList(params = {}) {
-    return this.sendRequestService("GET:PRIVATE", "api://company", { params: params });
+    return this.sendRequestService("GET:PRIVATE", "api://company", { params: params }, _prepareGetCompanyRes);
   }
 
   createCompany(data = {}) {
