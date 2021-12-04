@@ -25,7 +25,6 @@ export default defineComponent({
     },
   },
   setup(props, { root }) {
-    console.log("ewew0", props);
     const closeSubMenu = () => {
       root.$FModal.hide();
     };
