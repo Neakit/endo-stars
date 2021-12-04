@@ -104,6 +104,10 @@ export default defineComponent({
   .generated-table {
     .generated-row-cell {
       background: #ffffff;
+      // .cell-inner {
+      //   overflow: hidden;
+      //   white-space: pre;
+      // }
     }
     th,
     td {
@@ -111,6 +115,7 @@ export default defineComponent({
       font-family: "Roboto", sans-serif;
       font-style: normal;
       font-size: 16px;
+      padding: 2px;
     }
 
     th {

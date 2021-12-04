@@ -24,64 +24,6 @@ export const lpuFields = [
   },
 ];
 
-export const counterPartyFields = [
-  {
-    key: "abbreviated_name",
-    label: "Контрагент",
-    width: "14%",
-  },
-  {
-    key: "inn",
-    label: "ИНН",
-    width: "10%",
-  },
-  {
-    key: "actual_address_street",
-    label: "Адрес",
-    width: "20%",
-  },
-  {
-    key: "phone_number",
-    label: "Телефон",
-  },
-  {
-    key: "email",
-    label: "Эл. почта",
-  },
-  {
-    key: "director_full_name",
-    label: "Контактное лицо",
-  },
-  {
-    key: "discount",
-    label: "Скидка",
-    width: "7%",
-  },
-];
-
-export const companyFields = [
-  {
-    key: "name",
-    label: "Компания",
-  },
-  {
-    key: "inn",
-    label: "ИНН",
-  },
-  {
-    key: "full_address",
-    label: "Адрес",
-  },
-  {
-    key: "phone_number",
-    label: "Телефон",
-  },
-  {
-    key: "email",
-    label: "Эл. почта",
-  },
-];
-
 export const companyConfig = {
   columns: [
     {
@@ -107,6 +49,47 @@ export const companyConfig = {
     {
       alwaysExpanded: true,
       headline: "Эл. почта",
+      breakpoint: "md",
+    },
+  ],
+  select: false,
+};
+
+export const counterPartyConfig = {
+  columns: [
+    {
+      alwaysExpanded: true,
+      headline: "Контрагент",
+      breakpoint: "md",
+    },
+    {
+      headline: "ИНН",
+      alwaysExpanded: true,
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
+      headline: "Адрес",
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
+      headline: "Телефон",
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
+      headline: "Эл. почта",
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
+      headline: "Контактное лицо",
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
+      headline: "Скидка",
       breakpoint: "md",
     },
   ],

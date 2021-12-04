@@ -25,10 +25,12 @@ export default defineComponent({
     const updateTable = () => contractorTable.value.clearTable();
 
     const showForm = computed(() => {
-      return userRole.value === Roles.Admin || userRole.value === Roles.Supervisor;
+      return true;
+      // return userRole.value === Roles.Admin || userRole.value === Roles.Supervisor;
     });
     const showTable = computed(() => {
-      return userRole.value === Roles.Admin || userRole.value === Roles.Manager;
+      return true;
+      // return userRole.value === Roles.Admin || userRole.value === Roles.Manager;
     });
 
     return {
