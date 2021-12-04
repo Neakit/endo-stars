@@ -1,3 +1,9 @@
+const format = (value: number, pattern: string) => {
+  let i = 0;
+  const v = value.toString();
+  return pattern.replace(/#/g, (_) => v[i++]);
+};
+
 const _prepareGetCompanyRes = (res: any) => {
   res.results = res.results.map((c: any) => {
     let full_address = [c.address_street, c.address_index, c.address_city, c.address_country];
@@ -7,7 +13,13 @@ const _prepareGetCompanyRes = (res: any) => {
       return acc + `${i}` + (index === arr.length - 1 ? "" : ", ");
     }, "");
 
-    return [{ text: c.name }, { text: c.inn }, { text: c.full_address }, { text: c.phone_number }, { text: c.email }];
+    return [
+      { text: c.name },
+      { text: c.inn },
+      { text: c.full_address },
+      { text: format(c.phone_number, "+7 (###) ###-##-##") },
+      { text: c.email },
+    ];
   });
   return res;
 };

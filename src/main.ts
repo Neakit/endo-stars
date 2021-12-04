@@ -27,9 +27,10 @@ Vue.filter("VMask", VueMaskFilter);
 import FullpageModal from "vue-fullpage-modal";
 
 Vue.use(FullpageModal);
-
-import "@quintet/vue-quintable/dist/vue-quintable.css";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import VueTable from "@quintet/vue-quintable";
+import "@quintet/vue-quintable/dist/vue-quintable.css";
 Vue.use(VueTable);
 
 Vue.config.productionTip = false;
