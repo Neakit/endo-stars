@@ -77,8 +77,8 @@ const baseLayoutRoutes = [
     },
   },
   {
-    path: "requisites/lpu",
-    component: () => import("@pages/requisites/LPU/index.vue"),
+    path: "requisites/end-customer",
+    component: () => import("@pages/requisites/EndCustomer/index.vue"),
     meta: {
       subtitle: "Конечный заказчик",
       showNavLink: false,

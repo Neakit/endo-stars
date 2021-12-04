@@ -7,8 +7,7 @@ import Requisites from "./dashboard/Requisites";
 import Company from "./Company";
 import CommercialOffer from "./CommercialOffer";
 import Counterparty from "./Counterparty";
-import LPU from "./LPU";
-
+import EndCustomer from "./EndCustomer";
 class RequestManager {
   Auth: Auth;
   User: User;
@@ -16,7 +15,8 @@ class RequestManager {
   Company: Company;
   CommercialOffer: CommercialOffer;
   Counterparty: Counterparty;
-  LPU: LPU;
+  EndCustomer: EndCustomer;
+
   constructor() {
     this.Auth = new Auth(SendRequestService);
     this.User = new User(SendRequestService);
@@ -24,7 +24,7 @@ class RequestManager {
     this.Company = new Company(SendRequestService);
     this.CommercialOffer = new CommercialOffer(SendRequestService);
     this.Counterparty = new Counterparty(SendRequestService);
-    this.LPU = new LPU(SendRequestService);
+    this.EndCustomer = new EndCustomer(SendRequestService);
   }
 }
 

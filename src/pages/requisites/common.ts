@@ -1,29 +1,3 @@
-export const lpuFields = [
-  {
-    key: "abbreviated_name",
-    label: "Конечный заказчик",
-    sortable: false,
-  },
-  {
-    key: "inn",
-    label: "ИНН",
-    sortable: false,
-  },
-  {
-    key: "region",
-    label: "Регион",
-  },
-  {
-    key: "actual_address_city",
-    label: "Город",
-  },
-  {
-    key: "director_full_name",
-    label: "ФИО заведующего эндоскопии",
-    sortable: false,
-  },
-];
-
 export const companyConfig = {
   columns: [
     {
@@ -90,6 +64,37 @@ export const counterPartyConfig = {
     {
       alwaysExpanded: true,
       headline: "Скидка",
+      breakpoint: "md",
+    },
+  ],
+  select: false,
+};
+
+export const endCustomerConfig = {
+  columns: [
+    {
+      alwaysExpanded: true,
+      headline: "Конечный заказчик",
+      breakpoint: "md",
+    },
+    {
+      headline: "ИНН",
+      alwaysExpanded: true,
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
+      headline: "Регион",
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
+      headline: "Город",
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
+      headline: "ФИО заведующего эндоскопии",
       breakpoint: "md",
     },
   ],

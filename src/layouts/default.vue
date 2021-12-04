@@ -67,7 +67,7 @@ export default defineComponent({
           },
           {
             title: "Конечный заказчик",
-            to: "/dashboard/requisites/lpu",
+            to: "/dashboard/requisites/end-customer",
           },
           {
             title: "Контрагент",
