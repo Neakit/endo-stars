@@ -17,8 +17,14 @@ const _prepareCounterpartyRes = (res: any) => {
       { text: c.name },
       { text: c.inn },
       { text: c.full_address },
-      { text: format(c.phone_number, "+7 (###) ###-##-##") },
-      { text: c.email },
+      {
+        // text:  format(c.phone_number, "+7 (###) ###-##-##")
+        html: `<span style="white-space: pre">${format(c.phone_number, "+7 (###) ###-##-##")}</span>`,
+      },
+      {
+        // text: c.email
+        html: `<span style="white-space: pre">${c.email}</span>`,
+      },
       { text: c.contact_person },
       { text: c.discount + " %" },
     ];
