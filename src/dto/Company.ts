@@ -16,18 +16,18 @@ export default class Company {
 
     constructor(data: any) {
         this.id                 = data?.id || null;
-        this.name               = data?.name || 'Компания test';
-        this.inn                = data?.inn || '12345'; // * 
+        this.name               = data?.name || '';
+        this.inn                = data?.inn || ''; // * 
         this.address_street     = data?.address_street || '';
         this.address_city       = data?.address_city || '';
         this.address_country    = data?.address_country || '';
-        this.address_index      = data?.address_index ||	'12365';
-        this.phone_number       = data?.phone_number || '9185669889';
+        this.address_index      = data?.address_index || '';
+        this.phone_number       = data?.phone_number || '';
         this.email              = data?.email || '';
         this.blank_photo        = data?.blank_photo || null;
         this.logo               = data?.logo || null;
-        this.director_full_name = data?.director_full_name || 'Иванов Иван Ивановчи'; // *
-        this.director_position  = data?.director_position || 'Зам отдела'; // *
+        this.director_full_name = data?.director_full_name || ''; // *
+        this.director_position  = data?.director_position || ''; // *
     }
 
     get full_address () { return 'full'; }
