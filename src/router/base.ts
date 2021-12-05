@@ -10,6 +10,7 @@ const baseLayoutRoutes = [
       showNavLink: false,
     },
   },
+
   {
     path: "profile",
     component: () => import("@pages/Dashboard.vue"),
@@ -24,6 +25,23 @@ const baseLayoutRoutes = [
     meta: {
       title: "Коммерческое предложение",
       showNavLink: true,
+    },
+  },
+  {
+    path: "commercial-offer",
+    component: () => import("@pages/offer/index.vue"),
+    meta: {
+      title: "Коммерческое предложение",
+      showNavLink: true,
+    },
+  },
+
+  {
+    path: "commercial-offer/create",
+    component: () => import("@pages/offer/create.vue"),
+    meta: {
+      title: "Создать КП",
+      showNavLink: false,
     },
   },
   {

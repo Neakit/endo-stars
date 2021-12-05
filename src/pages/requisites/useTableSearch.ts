@@ -15,10 +15,11 @@ export const useTableSearch = (loadService: any) => {
     try {
       tableLoading.value = true;
       // console.log(loadService);
-      const { results, next } = await loadService({
+      const { tableRes } = await loadService({
         page: page.value,
         search: searchQuery.value,
       });
+      const { results, next } = tableRes;
 
       items.value = [...items.value, ...results];
       if (next) {

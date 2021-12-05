@@ -1,0 +1,498 @@
+<template>
+  <div>
+    <AppTitle>Коммерческое предложение №1</AppTitle>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-counterparty">Контрагент</label>
+      </template>
+      <template v-slot:input>
+        <vue-bootstrap-typeahead
+          v-model="counterPartySearch"
+          :serializer="(item) => item.name"
+          @input="getCounterPartyList"
+          :data="counterPartyList"
+          @hit="selectCounterParty($event)"
+        />
+        <b-form-invalid-feedback id="input-counterparty" :state="true">
+          поле обязательно к заполнению
+        </b-form-invalid-feedback>
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-inn">ИНН</label>
+      </template>
+      <template v-slot:input>
+        <b-form-input id="input-inn" :value="selectedCounterParty.inn" readonly />
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-inn">Адрес</label>
+      </template>
+      <template v-slot:input>
+        <!-- TODO -->
+        <b-form-textarea rows="3" no-resize readonly :value="selectedCounterParty.full_address"></b-form-textarea>
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-phone_number">Телефон</label>
+      </template>
+      <template v-slot:input>
+        <b-form-input id="input-phone_number" :value="selectedCounterParty.phone_number" readonly />
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-email">Эл. почта</label>
+      </template>
+      <template v-slot:input>
+        <b-form-input id="input-email" :value="selectedCounterParty.email" readonly />
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-contact_person">Контактное лицо</label>
+      </template>
+      <template v-slot:input>
+        <b-form-input id="input-contact_person" :value="selectedCounterParty.contact_person" readonly />
+      </template>
+    </es-form-row>
+
+    <!-- <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-contact_person">Срок действия</label>
+      </template>
+      <template v-slot:input>
+        <b-form-input id="input-contact_person" :value="selectedCounterParty.contact_person" readonly />
+      </template>
+    </es-form-row> -->
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-counterparty">Конечный заказчик</label>
+      </template>
+      <template v-slot:input>
+        <vue-bootstrap-typeahead
+          v-model="endCustomerSearch"
+          :serializer="(item) => item.name"
+          @input="getEndCustomerList"
+          :data="endCustomerList"
+          @hit="selectEndCustomer($event)"
+        />
+        <b-form-invalid-feedback id="input-counterparty" :state="true">
+          поле обязательно к заполнению
+        </b-form-invalid-feedback>
+      </template>
+    </es-form-row>
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-region">Регион</label>
+      </template>
+      <template v-slot:input>
+        <b-form-input id="input-region" :value="selectedEndCustomer.region" readonly />
+      </template>
+    </es-form-row>
+
+    <!-- Table -->
+    <b-row>
+      <b-col>
+        <p class="es-table-title-slot mb-2">Продукты</p>
+      </b-col>
+    </b-row>
+
+    <b-row class="mb-3">
+      <b-col cols="4">
+        <vue-bootstrap-typeahead
+          v-model="search"
+          @input="getProducts"
+          :data="products"
+          :serializer="(item) => item.article"
+          @hit="selectProduct($event)"
+          placeholder="Enter a product"
+        />
+      </b-col>
+      <b-col cols="2">
+        <b-button @click="addProductToTable">Добавить</b-button>
+      </b-col>
+    </b-row>
+
+    <es-input-table :config="productTableConfig" :items="items" @onComponentEvent="onComponentEvent" />
+
+    <es-form-row>
+      <template v-slot:label>
+        <label class="es-form-label" for="input-counterparty">Компания</label>
+      </template>
+      <template v-slot:input>
+        <vue-bootstrap-typeahead
+          v-model="companySearch"
+          :serializer="(item) => item.name"
+          @input="getCompanyList"
+          :data="companyList"
+          @hit="selectCompany($event)"
+        />
+        <b-form-invalid-feedback id="input-counterparty" :state="true">
+          поле обязательно к заполнению
+        </b-form-invalid-feedback>
+      </template>
+    </es-form-row>
+
+    <b-row class="background-gray py-4">
+      <b-col cols="6" md="3" lg="2" offset-md="2">
+        <es-button :loading="false" variant="default" @click="createOffer" block>Сохранить</es-button>
+      </b-col>
+    </b-row>
+
+    <div style="height: 50vh"></div>
+  </div>
+</template>
+
+<script>
+import { defineComponent, ref } from "@vue/composition-api";
+import ESButton from "@components/es-button.vue";
+// import ESTable from "@components/es-table.vue";
+import ESInputSearch from "@components/es-input-search.vue";
+// import { fields } from "./common.ts";
+import ESOfferTable from "@components/OfferTable/index.vue";
+import AppTitle from "@components/AppTitle";
+import EsInputTable from "@components/es-input-table.vue";
+import { productTableConfig } from "./common.ts";
+import productSelect from "./productSelect.vue";
+import productRowRemove from "./productRowRemove.vue";
+import ESFormRow from "@components/es-form-row.vue";
+
+import Vue from "vue";
+import RequestManager from "@services/RequestManager";
+Vue.component("productSelect", productSelect.default || productSelect);
+Vue.component("productRowRemove", productRowRemove.default || productRowRemove);
+
+// DTO
+import { useValidation } from "@composition/useValidation.ts";
+import Offer from "@dto/Offer";
+import Counterparty from "@dto/Counterparty";
+import EndCustomer from "@dto/EndCustomer";
+import Company from "@dto/Company";
+import Product from "@dto/Product";
+
+export default defineComponent({
+  components: {
+    "es-button": ESButton,
+    "es-input-search": ESInputSearch,
+    "es-offer-table": ESOfferTable,
+    "es-form-row": ESFormRow,
+    AppTitle,
+    EsInputTable,
+  },
+  setup() {
+    // CRUD type TODO
+    const crudType = "CREATE";
+    // const crudType = 'COPY';
+
+    // Form
+    const form = ref({ ...new Offer() });
+    console.log("form", form);
+    const { initValidation, validation, clearValidation, handlerFormError } = useValidation(Offer);
+    initValidation();
+
+    // Counterparty
+    const counterPartySearch = ref("");
+    const counterPartyList = ref([]);
+    const selectedCounterParty = ref({ ...new Counterparty() });
+
+    const selectCounterParty = (e) => {
+      console.log("selectCounterParty", e);
+      selectedCounterParty.value = e;
+    };
+
+    const getCounterPartyById = async () => {
+      await RequestManager.Counterparty.getCounterpartyById();
+    };
+
+    const getCounterPartyList = async (e) => {
+      const result = await RequestManager.Counterparty.getCounterpartyList({ search: counterPartySearch.value });
+      counterPartyList.value = result.offerPageRes.results;
+    };
+
+    // END Counterparty
+
+    // END CUSTOMER
+
+    const endCustomerSearch = ref("");
+    const endCustomerList = ref([]);
+    const selectedEndCustomer = ref({ ...new EndCustomer() });
+
+    const selectEndCustomer = (e) => {
+      console.log("selectedEndCustomer", e);
+      selectedEndCustomer.value = e;
+    };
+
+    const getEndCustomerById = async () => {
+      await RequestManager.EndCustomer.getEndCustomerById();
+    };
+
+    const getEndCustomerList = async (e) => {
+      const result = await RequestManager.EndCustomer.getEndCustomerList({ search: endCustomerSearch.value });
+      // debugger;
+      endCustomerList.value = result.orig.results;
+    };
+
+    // END END CUSTOMER
+
+    // COMPANY
+
+    const companySearch = ref("");
+    const companyList = ref([]);
+    const selectedCompany = ref({ ...new Company() });
+
+    const selectCompany = (e) => {
+      console.log("selectedCompany", e);
+      selectedCompany.value = e;
+    };
+
+    const getCompanyById = async () => {
+      await RequestManager.Company.getCompanyById();
+    };
+
+    const getCompanyList = async (e) => {
+      const result = await RequestManager.Company.getCompanyList({ search: companySearch.value });
+      // debugger;
+      companyList.value = result.orig.results;
+    };
+
+    // COMPANY END
+
+    const CELL_COMPONENTS = {
+      PRICE: "price",
+      COUNT: "count",
+      DISCOUNT: "discount",
+      CLEAR: "clear",
+    };
+
+    const items = ref([]);
+    const search = ref("");
+    const products = ref([]);
+    const product = ref(null);
+
+    // Продукты TABLE
+    const selectProduct = (e) => {
+      console.log("product", e);
+
+      const preparedProduct = {
+        article: e.article,
+        name: e.name,
+        price: e.price,
+        count: 1,
+        discount: 0,
+        total: 0,
+      };
+      product.value = preparedProduct;
+    };
+
+    const getProducts = async () => {
+      const result = await RequestManager.Product.getProductList({ search: search.value });
+      console.log("products", result.results);
+      products.value = result.results;
+    };
+
+    const createEmptyRow = (data) => {
+      return [
+        { text: data.article || "_" },
+        { text: data.name || "_" },
+        {
+          component: {
+            name: "productSelect",
+            props: {
+              index: items.value.length,
+              reference: CELL_COMPONENTS.PRICE,
+              value: data.price || 0,
+            },
+          },
+        },
+        {
+          component: {
+            name: "productSelect",
+            props: {
+              index: items.value.length,
+              reference: CELL_COMPONENTS.COUNT,
+              value: data.count || 0,
+            },
+          },
+        },
+        {
+          component: {
+            name: "productSelect",
+            props: {
+              index: items.value.length,
+              reference: CELL_COMPONENTS.DISCOUNT,
+              value: data.discount || 0,
+            },
+          },
+        },
+        {
+          text: data.total || "0",
+        },
+        {
+          component: {
+            name: "productRowRemove",
+            props: {
+              index: items.value.length,
+              reference: CELL_COMPONENTS.CLEAR,
+            },
+          },
+        },
+      ];
+    };
+
+    const addProductToTable = () => {
+      if (!product.value) return;
+
+      items.value.push(createEmptyRow(product.value));
+    };
+
+    const removeRowHandler = (index) => {
+      const test = items.value
+        .filter((i, indexArr) => {
+          return indexArr !== index;
+        })
+        .map((row, rowIndex) => {
+          row.forEach((cell) => {
+            if (cell.component) {
+              // debugger;
+              cell.component.props.index = rowIndex;
+            }
+          });
+          return row;
+        });
+      items.value = test;
+      // console.log(test);
+    };
+
+    const calcTotal = (price, count, discount) => {
+      let _discount = 1 - (parseFloat(discount) !== 0 ? parseFloat(discount) / 100 : 1);
+      _discount = _discount !== 0 ? _discount : 1; // +50 = 0.5 || -50 = 1.5
+      const total = parseFloat(price) * parseFloat(count) * _discount;
+      // console.log("total", total, _discount);
+      return total;
+    };
+
+    const onComponentEvent = (e) => {
+      // console.log("onComponentEvent", e);
+      // console.log(items.value[e.index]);
+
+      if (!items.value.length) return;
+      // находим индекс строки ячейки
+      const rowIndex = items.value[e.index].findIndex((cell) => {
+        return cell.component && cell.component.props.reference === e.reference;
+      });
+
+      // actions
+      if (e.reference !== CELL_COMPONENTS.CLEAR) {
+        items.value[e.index][rowIndex].component.props.value = e.value;
+        // пересчитываем стоимость TODO: переделать
+        let price = items.value[e.index][2].component.props.value;
+        let count = items.value[e.index][3].component.props.value;
+        let discount = items.value[e.index][4].component.props.value;
+        items.value[e.index][5].text = calcTotal(price, count, discount);
+      } else if (e.reference === CELL_COMPONENTS.CLEAR) {
+        removeRowHandler(e.index);
+      }
+    };
+
+    // END PRODUCTS
+
+    // FORM CREATE SENDING
+
+    const getProductObject = (product) => {
+      console.log(product);
+      // const article = product[0].text; // 0 - article
+      // const name = product[1].text; // 1 - name
+      const price = product[2].component.props.value; // 2 - price +
+      const count = product[3].component.props.value; // 3 - count +
+      const discount = product[4].component.props.value; // 4 - discount +
+      const cost = product[5].text; // 5 - cost +
+      return new Product({
+        price,
+        count: parseFloat(count),
+        discount: parseFloat(discount),
+        cost: parseFloat(cost),
+      });
+    };
+
+    const createOffer = async () => {
+      const offer = new Offer({
+        counterparty: selectedCounterParty.value.id,
+        company: selectedCompany.value.id,
+        offer_products: items.value.map((i) => getProductObject(i)),
+      });
+
+      console.log("offer", offer);
+      debugger;
+
+      const result = await RequestManager.CommercialOffer.createOffer(offer);
+      console.log("create offer", result);
+      debugger;
+    };
+
+    // FORM CREATE SENDING END
+
+    return {
+      // products
+      selectProduct,
+      search,
+      getProducts,
+      products,
+      addProductToTable,
+      //
+      productTableConfig,
+      items,
+      // addRowHandler,
+      onComponentEvent,
+      // Form
+      form,
+      validation,
+      // counterparty
+      counterPartySearch,
+      counterPartyList,
+      selectCounterParty,
+      getCounterPartyById,
+      getCounterPartyList,
+      selectedCounterParty,
+      // customer
+      endCustomerSearch,
+      endCustomerList,
+      selectedEndCustomer,
+      selectEndCustomer,
+      getEndCustomerById,
+      getEndCustomerList,
+      // Company
+      companySearch,
+      companyList,
+      selectedCompany,
+      selectCompany,
+      getCompanyById,
+      getCompanyList,
+      // form create
+      createOffer,
+    };
+  },
+});
+</script>
+
+<style scoped>
+.es-table-title-slot {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 26px;
+  color: #0f0f0f;
+}
+</style>

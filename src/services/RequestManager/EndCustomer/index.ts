@@ -1,5 +1,6 @@
 const _prepareEndCustomerRes = (res: any) => {
-  res.results = res.results.map((c: any) => {
+  const tableRes = { ...res };
+  tableRes.results = res.results.map((c: any) => {
     return [
       { text: c.name },
       { text: c.inn },
@@ -8,7 +9,10 @@ const _prepareEndCustomerRes = (res: any) => {
       { text: c.head_of_endoscopy_full_name },
     ];
   });
-  return res;
+  return {
+    orig: res,
+    tableRes: tableRes,
+  };
 };
 
 export default class EndCustomer {

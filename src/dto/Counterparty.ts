@@ -23,7 +23,7 @@ export default class Counterparty {
     this.phone_number    = data?.phone_number    || '';
     this.email           = data?.email           || '';
     this.contact_person  = data?.contact_person  || '';
-    this.discount        = data?.discount        || null;
+    this.discount        = data?.discount        || '';
   }
 
 }

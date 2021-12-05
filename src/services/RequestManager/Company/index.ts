@@ -1,3 +1,5 @@
+import CompanyClass from "@dto/Company";
+
 const format = (value: number, pattern: string) => {
   let i = 0;
   const v = value.toString();
@@ -5,7 +7,8 @@ const format = (value: number, pattern: string) => {
 };
 
 const _prepareGetCompanyRes = (res: any) => {
-  res.results = res.results.map((c: any) => {
+  const tableRes = { ...res };
+  tableRes.results = res.results.map((c: any) => {
     let full_address = [c.address_street, c.address_index, c.address_city, c.address_country];
     full_address = full_address.filter((i) => i);
 
@@ -17,11 +20,17 @@ const _prepareGetCompanyRes = (res: any) => {
       { text: c.name },
       { text: c.inn },
       { text: c.full_address },
-      { text: format(c.phone_number, "+7 (###) ###-##-##") },
-      { text: c.email },
+      // TODO: сделать ссылкой на тел
+      // "поле неверно заполнено"
+      { html: `<span style="white-space: pre">${format(c.phone_number, "+7 (###) ###-##-##")}</span>` },
+      { html: `<span style="white-space: pre">${c.email}</span>` },
     ];
   });
-  return res;
+  res.results = res.results.map((c: any) => new CompanyClass(c));
+  return {
+    tableRes: tableRes,
+    orig: res,
+  };
 };
 
 export default class Company {
