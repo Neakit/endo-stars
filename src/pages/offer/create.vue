@@ -1,13 +1,17 @@
 <template>
   <div>
-    <AppTitle>Коммерческое предложение №1</AppTitle>
+    <b-row>
+      <b-col>
+        <p class="es-title-h1 es-app-title my-md-5 mb-4 mt-4">Коммерческое предложение</p>
+      </b-col>
+    </b-row>
 
     <es-form-row>
       <template v-slot:label>
         <label class="es-form-label" for="input-counterparty">Контрагент</label>
       </template>
       <template v-slot:input>
-        <vue-bootstrap-typeahead
+        <es-autoselect
           v-model="counterPartySearch"
           :serializer="(item) => item.name"
           @input="getCounterPartyList"
@@ -34,7 +38,6 @@
         <label class="es-form-label" for="input-inn">Адрес</label>
       </template>
       <template v-slot:input>
-        <!-- TODO -->
         <b-form-textarea rows="3" no-resize readonly :value="selectedCounterParty.full_address"></b-form-textarea>
       </template>
     </es-form-row>
@@ -105,23 +108,23 @@
     <!-- Table -->
     <b-row>
       <b-col>
-        <p class="es-table-title-slot mb-2">Продукты</p>
+        <p class="es-table-title-slot mb-4 mt-4">Продукция</p>
       </b-col>
     </b-row>
 
     <b-row class="mb-3">
-      <b-col cols="4">
-        <vue-bootstrap-typeahead
-          v-model="search"
+      <b-col cols="12" md="4" class="py-1">
+        <es-autoselect
+          v-model="productSearch"
           @input="getProducts"
           :data="products"
           :serializer="(item) => item.article"
           @hit="selectProduct($event)"
-          placeholder="Enter a product"
+          placeholder="Артикул или наименование"
         />
       </b-col>
-      <b-col cols="2">
-        <b-button @click="addProductToTable">Добавить</b-button>
+      <b-col cols="12" md="2" class="py-1">
+        <es-button :loading="false" variant="outline-dark" @click="addProductToTable" block>Добавить</es-button>
       </b-col>
     </b-row>
 
@@ -132,7 +135,7 @@
         <label class="es-form-label" for="input-counterparty">Компания</label>
       </template>
       <template v-slot:input>
-        <vue-bootstrap-typeahead
+        <es-autoselect
           v-model="companySearch"
           :serializer="(item) => item.name"
           @input="getCompanyList"
@@ -145,13 +148,14 @@
       </template>
     </es-form-row>
 
-    <b-row class="background-gray py-4">
+    <b-row class="background-gray py-4 mb-5">
       <b-col cols="6" md="3" lg="2" offset-md="2">
-        <es-button :loading="false" variant="default" @click="createOffer" block>Сохранить</es-button>
+        <es-button :loading="false" variant="default" @click="createOffer" block>Отправить</es-button>
+      </b-col>
+      <b-col cols="6" md="3" lg="2">
+        <es-button :loading="false" variant="outline-dark" @click="createOffer" block>Сохранить</es-button>
       </b-col>
     </b-row>
-
-    <div style="height: 50vh"></div>
   </div>
 </template>
 
@@ -165,13 +169,13 @@ import ESOfferTable from "@components/OfferTable/index.vue";
 import AppTitle from "@components/AppTitle";
 import EsInputTable from "@components/es-input-table.vue";
 import { productTableConfig } from "./common.ts";
-import productSelect from "./productSelect.vue";
+import cellInput from "./cellInput.vue";
 import productRowRemove from "./productRowRemove.vue";
 import ESFormRow from "@components/es-form-row.vue";
 
 import Vue from "vue";
 import RequestManager from "@services/RequestManager";
-Vue.component("productSelect", productSelect.default || productSelect);
+Vue.component("cellInput", cellInput.default || cellInput);
 Vue.component("productRowRemove", productRowRemove.default || productRowRemove);
 
 // DTO
@@ -181,6 +185,7 @@ import Counterparty from "@dto/Counterparty";
 import EndCustomer from "@dto/EndCustomer";
 import Company from "@dto/Company";
 import Product from "@dto/Product";
+import ESAutoselect from "@components/ESAutoselect";
 
 export default defineComponent({
   components: {
@@ -190,6 +195,7 @@ export default defineComponent({
     "es-form-row": ESFormRow,
     AppTitle,
     EsInputTable,
+    "es-autoselect": ESAutoselect,
   },
   setup() {
     // CRUD type TODO
@@ -277,7 +283,7 @@ export default defineComponent({
     };
 
     const items = ref([]);
-    const search = ref("");
+    const productSearch = ref("");
     const products = ref([]);
     const product = ref(null);
 
@@ -286,6 +292,7 @@ export default defineComponent({
       console.log("product", e);
 
       const preparedProduct = {
+        id: e.id,
         article: e.article,
         name: e.name,
         price: e.price,
@@ -297,18 +304,19 @@ export default defineComponent({
     };
 
     const getProducts = async () => {
-      const result = await RequestManager.Product.getProductList({ search: search.value });
-      console.log("products", result.results);
+      const result = await RequestManager.Product.getProductList({ search: productSearch.value });
+      // console.log("products", result.results);
       products.value = result.results;
     };
 
     const createEmptyRow = (data) => {
       return [
+        { text: data.id || null },
         { text: data.article || "_" },
         { text: data.name || "_" },
         {
           component: {
-            name: "productSelect",
+            name: "cellInput",
             props: {
               index: items.value.length,
               reference: CELL_COMPONENTS.PRICE,
@@ -318,7 +326,7 @@ export default defineComponent({
         },
         {
           component: {
-            name: "productSelect",
+            name: "cellInput",
             props: {
               index: items.value.length,
               reference: CELL_COMPONENTS.COUNT,
@@ -328,7 +336,7 @@ export default defineComponent({
         },
         {
           component: {
-            name: "productSelect",
+            name: "cellInput",
             props: {
               index: items.value.length,
               reference: CELL_COMPONENTS.DISCOUNT,
@@ -353,8 +361,8 @@ export default defineComponent({
 
     const addProductToTable = () => {
       if (!product.value) return;
-
       items.value.push(createEmptyRow(product.value));
+      productSearch.value = "";
     };
 
     const removeRowHandler = (index) => {
@@ -397,10 +405,10 @@ export default defineComponent({
       if (e.reference !== CELL_COMPONENTS.CLEAR) {
         items.value[e.index][rowIndex].component.props.value = e.value;
         // пересчитываем стоимость TODO: переделать
-        let price = items.value[e.index][2].component.props.value;
-        let count = items.value[e.index][3].component.props.value;
-        let discount = items.value[e.index][4].component.props.value;
-        items.value[e.index][5].text = calcTotal(price, count, discount);
+        let price = items.value[e.index][3].component.props.value;
+        let count = items.value[e.index][4].component.props.value;
+        let discount = items.value[e.index][5].component.props.value;
+        items.value[e.index][6].text = calcTotal(price, count, discount);
       } else if (e.reference === CELL_COMPONENTS.CLEAR) {
         removeRowHandler(e.index);
       }
@@ -411,18 +419,20 @@ export default defineComponent({
     // FORM CREATE SENDING
 
     const getProductObject = (product) => {
-      console.log(product);
+      // console.log("asdasdas", product);
       // const article = product[0].text; // 0 - article
       // const name = product[1].text; // 1 - name
-      const price = product[2].component.props.value; // 2 - price +
-      const count = product[3].component.props.value; // 3 - count +
-      const discount = product[4].component.props.value; // 4 - discount +
-      const cost = product[5].text; // 5 - cost +
+      const id = product[0].text; // 0 - id +
+      const price = product[3].component.props.value; // 2 - price +
+      const count = product[4].component.props.value; // 3 - count +
+      const discount = product[5].component.props.value; // 4 - discount +
+      const cost = product[6].text; // 5 - cost +
       return new Product({
-        price,
+        id: id,
+        price: price.toString(),
         count: parseFloat(count),
         discount: parseFloat(discount),
-        cost: parseFloat(cost),
+        cost: cost.toString(),
       });
     };
 
@@ -431,10 +441,8 @@ export default defineComponent({
         counterparty: selectedCounterParty.value.id,
         company: selectedCompany.value.id,
         offer_products: items.value.map((i) => getProductObject(i)),
+        tech_docs_format: "pdf",
       });
-
-      console.log("offer", offer);
-      debugger;
 
       const result = await RequestManager.CommercialOffer.createOffer(offer);
       console.log("create offer", result);
@@ -446,7 +454,7 @@ export default defineComponent({
     return {
       // products
       selectProduct,
-      search,
+      productSearch,
       getProducts,
       products,
       addProductToTable,

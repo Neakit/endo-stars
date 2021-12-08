@@ -1,6 +1,6 @@
 <template>
   <div class="table-scroll" ref="table-scroll">
-    <VueQuintable :config="config" :rows="items" class="main-table" @component:event="onComponentEvent" />
+    <VueQuintable :config="config" :rows="items" class="main-table" @component:event="onComponentEvent"> </VueQuintable>
     <b-overlay :show="isBusy" no-wrap opacity="0.5"></b-overlay>
   </div>
 </template>

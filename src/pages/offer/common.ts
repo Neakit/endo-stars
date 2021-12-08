@@ -33,6 +33,11 @@ export const productTableConfig = {
   columns: [
     {
       alwaysExpanded: true,
+      headline: "id",
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
       headline: "Артикул",
       breakpoint: "md",
     },
@@ -63,7 +68,7 @@ export const productTableConfig = {
     },
     {
       alwaysExpanded: true,
-      headline: "",
+      headline: " ",
       breakpoint: "md",
     },
   ],

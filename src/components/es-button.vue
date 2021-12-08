@@ -38,6 +38,19 @@ export default defineComponent({
 //   color: #acacac;
 //   border-color: #acacac;
 // }
+
+.btn-outline-dark:hover {
+  color: #000;
+  background-color: transparent;
+  // border-color: #;
+}
+.btn-outline-dark:not(:disabled):not(.disabled):active,
+.btn-outline-dark:not(:disabled):not(.disabled).active,
+.show > .btn-outline-dark.dropdown-toggle {
+  // color: #fff;
+  color: #000;
+  background-color: transparent;
+}
 .btn-default:hover {
   background: #ffd300;
 }

@@ -80,3 +80,24 @@ new Vue({
   },
 }).$mount('#app')
 ```
+
+fetch("https://51.250.6.131/api/v1/offer", {
+"headers": {
+"accept": "_/_",
+"accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+"authorization": "Token 50a5c57735b3b0707a61622b9cd72dc475beea41",
+"content-type": "application/json;charset=UTF-8",
+"sec-ch-ua": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"96\", \"Google Chrome\";v=\"96\"",
+"sec-ch-ua-mobile": "?0",
+"sec-ch-ua-platform": "\"Windows\"",
+"sec-fetch-dest": "empty",
+"sec-fetch-mode": "cors",
+"sec-fetch-site": "cross-site"
+},
+"referrer": "http://localhost:8080/",
+"referrerPolicy": "strict-origin-when-cross-origin",
+"body": "{\"id\":\"\",\"created_at\":\"\",\"counterparty\":5,\"exploration_date\":\"\",\"end_customer\":\"\",\"company\":2,\"offer_products\":[{\"id\":1,\"price\":\"100\",\"discount\":0,\"count\":1,\"cost\":\"100\",\"offer\":null,\"product\":null}],\"total_cost\":\"\",\"supply_terms\":\"\",\"was_send\":\"\",\"send_datetime\":\"\",\"tech_docs_format\":\"pdf\"}",
+"method": "POST",
+"mode": "cors",
+"credentials": "include"
+});

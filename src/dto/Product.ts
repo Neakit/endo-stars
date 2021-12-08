@@ -1,27 +1,21 @@
 export default class OfferProduct {
-    #id: null;
-    #price: string;
-    #discount: string;
-    #count: string;
-    #cost: string;
-    #offer: string;
-    #product: string;
+    id: null;
+    price: string;
+    discount: number;
+    count: number;
+    cost: string;
+    offer: string;
+    product: string;
 
     constructor(data: any) {
-        this.#id       = data?.id || ''
-        this.#price    = data?.price || ''
-        this.#discount = data?.discount || ''
-        this.#count    = data?.count || ''
-        this.#cost     = data?.cost || ''
-        this.#offer    = data?.offer || ''
-        this.#product  = data?.product || ''
+        this.id       = data?.id || null
+        this.price    = data?.price || ''
+        this.discount = data?.discount || 0
+        this.count    = data?.count || 0
+        this.cost     = data?.cost || ''
+        this.offer    = data?.offer || null
+        this.product  = data?.product || null
     }
 
-    get id()       { return this.#id; }
-    get price()    { return this.#price; }
-    get discount() { return this.#discount; }
-    get count()    { return this.#count; }
-    get cost()     { return this.#cost; }
-    get offer()    { return this.#offer; }
-    get product()  { return this.#product; }
+   
 }

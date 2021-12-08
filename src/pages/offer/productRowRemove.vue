@@ -1,5 +1,5 @@
 <template>
-  <span @click="clickHandler">x</span>
+  <b-icon @click="clickHandler" icon="x" variant="dark" font-scale="1.5"></b-icon>
 </template>
 
 <script>
@@ -15,5 +15,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
