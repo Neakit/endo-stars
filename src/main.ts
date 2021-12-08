@@ -32,6 +32,11 @@ Vue.use(FullpageModal);
 import VueTable from "@quintet/vue-quintable";
 import "@quintet/vue-quintable/dist/vue-quintable.css";
 Vue.use(VueTable);
+import "@mdi/font/css/materialdesignicons.css";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import PrettyCheckbox from "pretty-checkbox-vue";
+Vue.use(PrettyCheckbox);
 
 Vue.config.productionTip = false;
 

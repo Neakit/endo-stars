@@ -1,13 +1,4 @@
-// import User from "@dto/User";
-// import { Contractor } from "@type/index";
-
-// const prepareLoginRes = (res: any) => {
-//   return res;
-// };
-
-type Paginate = {
-  page: number;
-};
+import { prepareOfferListResponse } from "./_prepareResponse";
 
 export default class CommercialOffer {
   private sendRequestService: any;
@@ -16,8 +7,8 @@ export default class CommercialOffer {
     this.sendRequestService = SendRequestService;
   }
 
-  getOfferList(params: Paginate) {
-    return this.sendRequestService("GET:PRIVATE", "api://offer", { params: params });
+  getOfferList(params = {}) {
+    return this.sendRequestService("GET:PRIVATE", "api://offer", { params: params }, prepareOfferListResponse);
   }
 
   createOffer(data = {}) {

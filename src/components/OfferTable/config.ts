@@ -2,6 +2,11 @@ export const config = {
   columns: [
     {
       alwaysExpanded: true,
+      headline: " ",
+      breakpoint: "md",
+    },
+    {
+      alwaysExpanded: true,
       headline: "Номер",
       breakpoint: "md",
     },
@@ -37,6 +42,4 @@ export const config = {
       breakpoint: "md",
     },
   ],
-  selectPosition: "pre",
-  select: true,
 };

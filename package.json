@@ -27,6 +27,7 @@
     "vue-the-mask": "^0.11.1"
   },
   "devDependencies": {
+    "@mdi/font": "^6.5.95",
     "@types/lodash": "^4.14.177",
     "@types/vue-the-mask": "^0.11.1",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
@@ -40,6 +41,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "json-server-auth": "^2.1.0",
+    "pretty-checkbox-vue": "^1.1.9",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "typescript": "~4.1.5",
