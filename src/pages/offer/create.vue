@@ -17,6 +17,7 @@
           @input="getCounterPartyList"
           :data="counterPartyList"
           @hit="selectCounterParty($event)"
+          :predefinedInputValue="selectedCounterParty.name"
         />
         <b-form-invalid-feedback id="input-counterparty" :state="true">
           поле обязательно к заполнению
@@ -83,12 +84,13 @@
         <label class="es-form-label" for="input-counterparty">Конечный заказчик</label>
       </template>
       <template v-slot:input>
-        <vue-bootstrap-typeahead
+        <es-autoselect
           v-model="endCustomerSearch"
           :serializer="(item) => item.name"
           @input="getEndCustomerList"
           :data="endCustomerList"
           @hit="selectEndCustomer($event)"
+          :predefinedInputValue="selectedEndCustomer.name"
         />
         <b-form-invalid-feedback id="input-counterparty" :state="true">
           поле обязательно к заполнению
@@ -197,63 +199,49 @@ export default defineComponent({
     EsInputTable,
     "es-autoselect": ESAutoselect,
   },
-  setup() {
-    // CRUD type TODO
-    const crudType = "CREATE";
-    // const crudType = 'COPY';
+  setup(_, context) {
+    const params = context.root.$route.params;
 
     // Form
     const form = ref({ ...new Offer() });
-    console.log("form", form);
     const { initValidation, validation, clearValidation, handlerFormError } = useValidation(Offer);
     initValidation();
 
-    // Counterparty
+    // Counterparty +
     const counterPartySearch = ref("");
     const counterPartyList = ref([]);
     const selectedCounterParty = ref({ ...new Counterparty() });
 
-    const selectCounterParty = (e) => {
-      console.log("selectCounterParty", e);
-      selectedCounterParty.value = e;
-    };
-
-    const getCounterPartyById = async () => {
-      await RequestManager.Counterparty.getCounterpartyById();
-    };
+    const selectCounterParty = (e) => (selectedCounterParty.value = e);
 
     const getCounterPartyList = async (e) => {
       const result = await RequestManager.Counterparty.getCounterpartyList({ search: counterPartySearch.value });
       counterPartyList.value = result.offerPageRes.results;
     };
 
-    // END Counterparty
+    if (params?.offer?.counterparty) {
+      selectCounterParty(params.offer.counterparty);
+    }
 
-    // END CUSTOMER
-
+    // EndCustomer
     const endCustomerSearch = ref("");
     const endCustomerList = ref([]);
     const selectedEndCustomer = ref({ ...new EndCustomer() });
 
     const selectEndCustomer = (e) => {
-      console.log("selectedEndCustomer", e);
+      console.log("sds", e);
       selectedEndCustomer.value = e;
-    };
-
-    const getEndCustomerById = async () => {
-      await RequestManager.EndCustomer.getEndCustomerById();
     };
 
     const getEndCustomerList = async (e) => {
       const result = await RequestManager.EndCustomer.getEndCustomerList({ search: endCustomerSearch.value });
-      // debugger;
       endCustomerList.value = result.orig.results;
     };
-
-    // END END CUSTOMER
+    if (params?.offer?.end_customer) {
+      selectEndCustomer(params?.offer?.end_customer);
+    }
 
     // COMPANY
-
     const companySearch = ref("");
     const companyList = ref([]);
     const selectedCompany = ref({ ...new Company() });
@@ -273,8 +261,7 @@ export default defineComponent({
       companyList.value = result.orig.results;
     };
 
-    // COMPANY END
-
+    // Table cells
     const CELL_COMPONENTS = {
       PRICE: "price",
       COUNT: "count",
@@ -300,6 +287,7 @@ export default defineComponent({
         discount: 0,
         total: 0,
       };
+      console.log("preparedProduct", preparedProduct);
       product.value = preparedProduct;
     };
 
@@ -310,6 +298,7 @@ export default defineComponent({
     };
 
     const createEmptyRow = (data) => {
+      console.log("row empty", data);
       return [
         { text: data.id || null },
         { text: data.article || "_" },
@@ -391,10 +380,20 @@ export default defineComponent({
       return total;
     };
 
-    const onComponentEvent = (e) => {
-      // console.log("onComponentEvent", e);
-      // console.log(items.value[e.index]);
+    const getAllOfferProducts = async (products) => {
+      for (const key in products) {
+        const result = await RequestManager.Product.getProductById(products[key].id);
+        console.log("result", result);
+        // items.value.push(createEmptyRow(product));
+      }
+    };
 
+    if (params?.offer?.offer_products) {
+      console.log("params?.offer?.offer_products", params?.offer?.offer_products);
+      getAllOfferProducts(params.offer.offer_products);
+    }
+
+    const onComponentEvent = (e) => {
       if (!items.value.length) return;
       // находим индекс строки ячейки
       const rowIndex = items.value[e.index].findIndex((cell) => {
@@ -414,12 +413,9 @@ export default defineComponent({
       }
     };
 
-    // END PRODUCTS
-
     // FORM CREATE SENDING
-
     const getProductObject = (product) => {
-      // console.log("asdasdas", product);
+      console.log("asdasdas", product);
       // const article = product[0].text; // 0 - article
       // const name = product[1].text; // 1 - name
       const id = product[0].text; // 0 - id +
@@ -429,6 +425,7 @@ export default defineComponent({
       const cost = product[6].text; // 5 - cost +
       return new Product({
         id: id,
+        // product: id.toString(),
         price: price.toString(),
         count: parseFloat(count),
         discount: parseFloat(discount),
@@ -437,12 +434,14 @@ export default defineComponent({
     };
 
     const createOffer = async () => {
-      const offer = new Offer({
+      // const offer = new Offer({
+      const offer = {
         counterparty: selectedCounterParty.value.id,
         company: selectedCompany.value.id,
+        end_customer: selectedEndCustomer.value.id,
         offer_products: items.value.map((i) => getProductObject(i)),
         tech_docs_format: "pdf",
-      });
+      };
 
       const result = await RequestManager.CommercialOffer.createOffer(offer);
       console.log("create offer", result);
@@ -470,7 +469,6 @@ export default defineComponent({
       counterPartySearch,
       counterPartyList,
       selectCounterParty,
-      getCounterPartyById,
       getCounterPartyList,
       selectedCounterParty,
       // customer
@@ -478,7 +476,6 @@ export default defineComponent({
       endCustomerList,
       selectedEndCustomer,
       selectEndCustomer,
-      getEndCustomerById,
       getEndCustomerList,
       // Company
       companySearch,

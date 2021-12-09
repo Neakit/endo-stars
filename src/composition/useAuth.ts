@@ -4,6 +4,7 @@ import CookiesWorker from "@services/LocalStorageManager";
 import RequestManager from "@services/RequestManager";
 import isNull from "lodash/isNull";
 import User from "@dto/User";
+import { Roles } from "@enum/index";
 
 type LoginForm = {
   email: string;

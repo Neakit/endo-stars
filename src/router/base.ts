@@ -38,6 +38,7 @@ const baseLayoutRoutes = [
 
   {
     path: "commercial-offer/create",
+    name: "offer-create",
     component: () => import("@pages/offer/create.vue"),
     meta: {
       title: "Создать КП",

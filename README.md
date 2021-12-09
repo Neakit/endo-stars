@@ -101,3 +101,10 @@ fetch("https://51.250.6.131/api/v1/offer", {
 "mode": "cors",
 "credentials": "include"
 });
+
+TODO
+
+1. Фильтры
+2. Адаптив
+3. Проброс id
+4. Скачивание

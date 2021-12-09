@@ -1,30 +1,34 @@
-import { ref, Ref } from "@vue/composition-api";
+import { reactive, ref, Ref } from "@vue/composition-api";
+import debounce from "lodash/debounce";
 
-// export function useTableSearch(loadService: any) {
 export const useTableSearch = (loadService: any) => {
-  //   console.log(loadService);
-  const ERROR_MESSAGE = "Invalid page.";
-  // paginator
-  const page = ref(1);
+  const params = reactive({
+    counterparty: null,
+    end_customer: null,
+    end_customer__region: null,
+    search: "",
+    ordering: "",
+    page: 1,
+  });
+  // flags
   const tableLoading = ref(false);
   const dataLoaded = ref(false);
   // form data
-  const searchQuery = ref("");
   const items: Ref<any> = ref([]);
 
   const uploadData = async () => {
     try {
       tableLoading.value = true;
-      console.log(loadService);
-      const { results } = await loadService({ page: page.value });
-      items.value = [...items.value, ...results];
-      page.value++;
-    } catch (e: any) {
-      console.log({ e });
-      if (e?.response?.data?.detail === ERROR_MESSAGE) {
+      const { tableRes } = await loadService({ params });
+
+      items.value = [...items.value, ...tableRes.results];
+      if (tableRes.next) {
+        params.page++;
+      } else {
         dataLoaded.value = true;
       }
-      console.error("[LPU TABLE ERROR] :", { e });
+    } catch (e: any) {
+      console.error("[OFFER TABLE ERROR] :", { e });
     } finally {
       tableLoading.value = false;
     }
@@ -36,16 +40,20 @@ export const useTableSearch = (loadService: any) => {
     }
   };
 
-  const searchData = () => {
+  const searchData = debounce(() => {
     items.value = [];
-    page.value = 1;
+    params.page = 1;
     uploadData();
-  };
+  }, 500);
 
   const clearTable = () => {
-    searchQuery.value = "";
+    params.counterparty = null;
+    params.end_customer = null;
+    params.end_customer__region = null;
+    params.search = "";
+    params.ordering = "";
+    params.page = 1;
     items.value = [];
-    page.value = 1;
     uploadData();
   };
 
@@ -57,7 +65,7 @@ export const useTableSearch = (loadService: any) => {
     clearTable,
     // form
     items,
-    searchQuery,
     tableLoading,
+    params,
   };
 };

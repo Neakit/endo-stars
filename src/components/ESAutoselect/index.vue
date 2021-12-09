@@ -94,6 +94,11 @@ export default {
     placeholder: String,
     prepend: String,
     append: String,
+    predefinedInputValue: {
+      type: String,
+      required: false,
+      default: "",
+    },
   },
 
   computed: {
@@ -132,6 +137,7 @@ export default {
     },
 
     handleHit(evt) {
+      console.log("evt", evt);
       if (typeof this.value !== "undefined") {
         this.$emit("input", evt.text);
       }
@@ -162,7 +168,7 @@ export default {
   data() {
     return {
       isFocused: false,
-      inputValue: "",
+      inputValue: this.predefinedInputValue ? this.predefinedInputValue.slice().trim() : "",
     };
   },
 

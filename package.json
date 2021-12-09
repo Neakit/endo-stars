@@ -15,6 +15,7 @@
     "bootstrap-vue": "^2.21.2",
     "chance": "^1.1.8",
     "core-js": "^3.6.5",
+    "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
     "lodash": "^4.17.21",
     "resize-observer-polyfill": "^1.5.1",

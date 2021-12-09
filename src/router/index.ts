@@ -25,7 +25,8 @@ const guardMyroute = async (to: any, from: any, next: any) => {
   const authorize = hasAuthMetaProp(to);
 
   if (authorize.length) {
-    const { authSuccess, userRole, refreshUser } = useAuth();
+    // const { authSuccess, userRole, refreshUser } = useAuth();
+    const { authSuccess, userRole } = useAuth();
 
     const checkRole = () => {
       if (authSuccess.value && authorize.includes(userRole.value)) {
@@ -42,7 +43,7 @@ const guardMyroute = async (to: any, from: any, next: any) => {
     if (!authSuccess.value) {
       // debugger;
       try {
-        await refreshUser();
+        // await refreshUser();
         // debugger;
         checkRole();
       } catch (e) {

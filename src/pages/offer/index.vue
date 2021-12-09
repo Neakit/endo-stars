@@ -7,7 +7,7 @@
         <es-button variant="default" block>Создать КП</es-button>
       </b-col>
       <b-col cols="2">
-        <es-button variant="outline-dark" block>Копировать</es-button>
+        <es-button variant="outline-dark" block @click="copyOffer">Копировать</es-button>
       </b-col>
 
       <b-col cols="7" offset="1">
@@ -30,6 +30,17 @@
           @hit="selectCounterParty($event)"
         />
       </b-col>
+
+      <b-col cols="3">
+        <es-autoselect
+          placeholder="Регион"
+          v-model="selectedRegion"
+          :serializer="(item) => item.city"
+          :data="regionsList"
+          @hit="selectRegion($event)"
+        />
+      </b-col>
+
       <b-col cols="3">
         <b-form-select :options="endCustomerList" v-model="selectedEndCustomer" @input="selectEndCustomer">
           <template #first>
@@ -37,15 +48,17 @@
           </template>
         </b-form-select>
       </b-col>
+
       <!-- <b-col cols="3">
-        <b-form-select> </b-form-select>
-      </b-col>
-      <b-col cols="3">
-        <b-form-select> </b-form-select>
+        <b-form-select :options="endCustomerList" v-model="selectedEndCustomer" @input="selectEndCustomer">
+          <template #first>
+            <b-form-select-option :value="null" disabled>Менеджер</b-form-select-option>
+          </template>
+        </b-form-select>
       </b-col> -->
     </b-row>
 
-    <es-offer-table :items="items" @rowSelect="rowSelect" :loading="tableLoading" />
+    <es-offer-table :items="items" @rowSelect="rowSelect" :loading="tableLoading" @infinite="infiniteHandler" />
   </b-container>
 </template>
 
@@ -56,8 +69,10 @@ import ESInputSearch from "@components/es-input-search.vue";
 import ESAutoselect from "@components/ESAutoselect";
 import ESOfferTable from "@components/OfferTable/index.vue";
 import RequestManager from "@services/RequestManager";
-import debounce from "lodash/debounce";
 import Counterparty from "@dto/Counterparty";
+import regions from "../../assets/regions.json";
+// import { useAuth } from "@composition/useAuth";
+import { useTableSearch } from "./useTableSearch";
 
 export default defineComponent({
   components: {
@@ -66,45 +81,31 @@ export default defineComponent({
     "es-offer-table": ESOfferTable,
     "es-autoselect": ESAutoselect,
   },
-  setup() {
-    const tableLoading = ref(false);
-    const items = ref([]);
+  setup(_, { root }) {
+    // const { user } = useAuth();
+    // console.log("user", user.userRole);
 
-    const params = reactive({
-      counterparty: null,
-      end_customer: null,
-      search: "",
-      ordering: "",
-      page: 1,
-    });
-
-    const getOfferList = async () => {
-      try {
-        tableLoading.value = true;
-        const { tableRes } = await RequestManager.CommercialOffer.getOfferList(params);
-        items.value = tableRes.results;
-      } catch (e) {
-        console.error({ e });
-      } finally {
-        tableLoading.value = false;
-      }
+    const loadService = (params) => {
+      return RequestManager.CommercialOffer.getOfferList(params);
     };
 
-    getOfferList();
+    const {
+      // actions
+      uploadData,
+      infiniteHandler,
+      searchData,
+      // form
+      items,
+      tableLoading,
+      params,
+    } = useTableSearch(loadService);
 
-    // SEARCH
+    uploadData();
 
-    const searchData = debounce(() => {
-      items.value = [];
-      params.page = 1;
-      getOfferList();
-    }, 500);
-
-    // SELECT HANDLER
+    // SELECT ROW HANDLER
     const selectedOffer = ref(null);
-
     const rowSelect = (rowItem) => {
-      console.log("eeee", rowItem);
+      console.log("select row", rowItem);
       selectedOffer.value = rowItem;
     };
 
@@ -123,28 +124,40 @@ export default defineComponent({
       const result = await RequestManager.Counterparty.getCounterpartyList({ search: counterPartySearch.value });
       counterPartyList.value = result.offerPageRes.results;
     };
-    // END COUNTERPARTY
 
     // ENDCUSTOMER
     const endCustomerList = ref([]);
     const selectedEndCustomer = ref(null);
-
     const selectEndCustomer = (e) => {
       params.end_customer = e.id;
       selectedEndCustomer.value = e;
       searchData();
     };
-
     const getEndCustomerList = async () => {
       const { orig } = await RequestManager.EndCustomer.getEndCustomerList();
       orig.results.forEach((customer) => {
         endCustomerList.value.push({ value: customer, text: customer.name });
       });
     };
-
     getEndCustomerList();
 
-    // END ENDCUSTOMER
+    // REGIONS
+    const selectedRegion = ref("");
+    const regionsList = regions.map((r) => {
+      return { region: r.region, city: r.city };
+    });
+    const selectRegion = (e) => {
+      console.log("select region", e);
+      params.end_customer__region = selectedRegion.value;
+      searchData();
+    };
+
+    // ACTIONS
+    const copyOffer = () => {
+      console.log("selectedOffer", selectedOffer);
+      const params = { offer: selectedOffer.value, crudType: "CREATE" };
+      root.$router.push({ name: "offer-create", params });
+    };
 
     return {
       params,
@@ -152,7 +165,9 @@ export default defineComponent({
       searchData,
       rowSelect,
       items,
-
+      infiniteHandler,
+      // actions
+      copyOffer,
       // COUNTERPARTY
       counterPartySearch,
       counterPartyList,
@@ -164,6 +179,10 @@ export default defineComponent({
       selectedEndCustomer,
       selectEndCustomer,
       getEndCustomerList,
+      // REGIONS
+      selectedRegion,
+      regionsList,
+      selectRegion,
     };
   },
 });

@@ -1,8 +1,11 @@
-export const prepareOfferListResponse = (res: any) => {
-  const tableRes = { ...res };
+import Offer from "@dto/Offer";
 
+export const prepareOfferListResponse = (res: any) => {
+  res.results = res.results.map((offer: Offer) => new Offer(offer));
+
+  const tableRes = { ...res };
   tableRes.results = res.results.map((offer: any) => {
-    return [
+    const tableCells = [
       {
         key: "select",
         item: offer,
@@ -14,11 +17,11 @@ export const prepareOfferListResponse = (res: any) => {
       },
       {
         key: "created_at",
-        text: offer.created_at,
+        text: offer.created_at.format("DD MMMM YYYY"),
       },
       {
         key: "cost",
-        text: "545 757 843,00 ₽",
+        text: `${offer.total_cost} ₽`,
       },
       {
         key: "counterparty",
@@ -26,20 +29,20 @@ export const prepareOfferListResponse = (res: any) => {
       },
       {
         key: "discount",
-        text: "30%",
+        text: `${offer.counterparty.discount} %`,
       },
       {
         key: "region",
-        text: "г. Иваново",
+        text: offer.end_customer.region,
       },
       {
         key: "actions",
-        actions: "",
       },
     ];
+    return tableCells;
   });
 
-  // res.results = res.results.map((c: any) => new CompanyClass(c));
+  console.log("tableRes", tableRes);
 
   return {
     tableRes: tableRes,
