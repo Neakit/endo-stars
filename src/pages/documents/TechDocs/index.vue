@@ -28,6 +28,11 @@
           <es-button @click="addProductRowTable" :loading="false" variant="outline-dark" block>Добавить</es-button>
         </b-col>
       </b-row>
+      <b-row>
+        <b-col cols="12" class="mb-4">
+          <ArticleTable :items="tableItems" @removeRow="removeRowHandler" />
+        </b-col>
+      </b-row>
     </template>
 
     <template v-if="activeTab === 0">
@@ -99,6 +104,7 @@ import ESAutoselect from "@components/ESAutoselect";
 import RequestManager from "@services/RequestManager";
 import debounce from "lodash/debounce";
 import { prepareProductForTable } from "@services/RequestManager/Product/_prepareFunctions.ts";
+import ArticleTable from "../ArticleTable.vue";
 
 export default defineComponent({
   components: {
@@ -107,6 +113,7 @@ export default defineComponent({
     "es-simple-table": ESSimpleTable,
     "es-tab": ESTab,
     "es-autoselect": ESAutoselect,
+    ArticleTable,
   },
   setup() {
     const form = reactive({
@@ -161,13 +168,25 @@ export default defineComponent({
     };
 
     const addProductRowTable = () => {
-      const _tableRow = prepareProductForTable(selectedProduct.value);
+      const index = tableItems.value.length;
+      const _tableRow = prepareProductForTable(selectedProduct.value, index);
       tableItems.value.push(_tableRow);
     };
 
     // TABLE
-
     const tableItems = ref([]);
+    const removeRowHandler = (index) => {
+      tableItems.value = tableItems.value
+        .map((row, index) => {
+          return row.map((cell) => {
+            cell.index = index;
+            return cell;
+          });
+        })
+        .filter((row) => {
+          return row[0].index !== index;
+        });
+    };
 
     return {
       form,
@@ -183,6 +202,9 @@ export default defineComponent({
       products,
       selectProduct,
       addProductRowTable,
+      // table
+      tableItems,
+      removeRowHandler,
     };
   },
 });

@@ -1,25 +1,4 @@
-// const _prepareGetProductRes = (res: any) => {
-//   res.results = res.results.map((c: any) => {
-//     let full_address = [c.address_street, c.address_index, c.address_city, c.address_country];
-//     full_address = full_address.filter((i) => i);
-
-//     c.full_address = full_address.reduce((acc, i, index, arr) => {
-//       return acc + `${i}` + (index === arr.length - 1 ? "" : ", ");
-//     }, "");
-
-//     return [
-//       { text: c.name },
-//       { text: c.inn },
-//       { text: c.full_address },
-//       // TODO: сделать ссылкой на тел
-//       // "поле неверно заполнено"
-//       { html: `<span style="white-space: pre">${format(c.phone_number, "+7 (###) ###-##-##")}</span>` },
-//       { html: `<span style="white-space: pre">${c.email}</span>` },
-//     ];
-//   });
-//   return res;
-// };
-
+import { prepareGetProductRes } from "./_prepareFunctions";
 export default class Product {
   private sendRequestService: any;
 
@@ -28,7 +7,7 @@ export default class Product {
   }
 
   getProductList(params = {}) {
-    return this.sendRequestService("GET:PRIVATE", "api://product", { params: params });
+    return this.sendRequestService("GET:PRIVATE", "api://product", { params: params }, prepareGetProductRes);
   }
 
   createProduct(data = {}) {

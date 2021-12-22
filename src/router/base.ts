@@ -47,7 +47,7 @@ const baseLayoutRoutes = [
   },
   {
     path: "technical-task",
-    component: () => import("@pages/TechnicalTask.vue"),
+    component: () => import("@pages/documents/TechDocs/index.vue"),
     meta: {
       title: "Техническое задание",
       showNavLink: true,
