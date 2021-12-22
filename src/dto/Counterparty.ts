@@ -14,17 +14,16 @@ export default class Counterparty {
     
   constructor(data: any) {
     this.id              = data?.id              || null;
-    this.name            = data?.name            || " ";
+    this.name            = data?.name            || "";
     this.inn             = data?.inn             || null;
-    this.address_street  = data?.address_street  || " ";
-    this.address_city    = data?.address_city    || " ";
-    this.address_country = data?.address_country || " ";
+    this.address_street  = data?.address_street  || "";
+    this.address_city    = data?.address_city    || "";
+    this.address_country = data?.address_country || "";
     this.address_index   = data?.address_index   || null;
     this.phone_number    = data?.phone_number    || null;
-    this.email           = data?.email           || " ";
-    this.contact_person  = data?.contact_person  || " ";
-    this.discount        = data?.discount        || 0;
+    this.email           = data?.email           || "";
+    this.contact_person  = data?.contact_person  || "";
+    this.discount        = data?.discount        || "";
   }
-
 }
   

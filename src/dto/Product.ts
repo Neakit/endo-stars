@@ -16,6 +16,4 @@ export default class OfferProduct {
         this.offer    = data?.offer || null
         this.product  = data?.product || null
     }
-
-   
 }

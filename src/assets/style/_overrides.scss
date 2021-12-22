@@ -139,7 +139,8 @@ $form-feedback-icon-invalid: none;
   white-space: normal;
 }
 
-.custom-select {
+.custom-select,
+.custom-select.is-valid {
   background-size: 1rem !important;
   background: #fff url("../img/icons/dropdown.svg") right 0.75rem center/8px 10px no-repeat;
 }
@@ -149,4 +150,10 @@ $form-feedback-icon-invalid: none;
   outline: 0;
   // box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
   box-shadow: none !important;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  color: #fff;
+  border-color: #ffe600;
+  background-color: #ffe600ed;
 }

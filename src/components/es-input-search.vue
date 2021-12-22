@@ -7,7 +7,8 @@
       @focus="focusActive = true"
       @blur="focusActive = false"
     />
-    <b-icon class="search-icon" scale="1.5" icon="search"></b-icon>
+    <b-icon v-if="value" class="search-icon" scale="1.5" icon="x" @click="$emit('clear')"></b-icon>
+    <b-icon v-else class="search-icon" scale="1.5" icon="search"></b-icon>
   </b-input-group>
 </template>
 
@@ -35,6 +36,7 @@ export default defineComponent({
     border-bottom-right-radius: 0.25rem !important;
   }
   .search-icon {
+    cursor: pointer;
     position: absolute;
     right: 14px;
     top: 28%;

@@ -85,10 +85,11 @@ export default defineComponent({
     const { login } = useAuth();
 
     const handlerError = (err) => {
-      for (const key in err) {
-        console.log(err[key], key);
-        validation[key] = false;
-      }
+      console.log(err);
+      // for (const key in err) {
+      // console.log(err[key], key);
+      // validation[key] = false;
+      // }
     };
 
     const loginHandler = async () => {

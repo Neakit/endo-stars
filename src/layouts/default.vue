@@ -5,12 +5,14 @@
       <app-mobile-menu :navigationItems="navigationItems" class="d-lg-none" />
       <router-view />
     </b-container>
+    <AppInfoModal />
   </div>
 </template>
 
 <script lang="ts">
 import AppHeader from "@components/AppHeader.vue";
 import AppMobileMenu from "@components/AppMobileMenu.vue";
+import AppInfoModal from "@components/AppInfoModal.vue";
 import { defineComponent } from "@vue/composition-api";
 // import router from "@router/index";
 // import { Layouts } from "@enum/index";
@@ -19,6 +21,7 @@ export default defineComponent({
   components: {
     AppHeader,
     AppMobileMenu,
+    AppInfoModal,
   },
   setup() {
     // type NavigationItem = {

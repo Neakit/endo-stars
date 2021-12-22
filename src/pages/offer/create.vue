@@ -201,6 +201,7 @@ export default defineComponent({
   },
   setup(_, context) {
     const params = context.root.$route.params;
+    console.log("params", params);
 
     // Form
     const form = ref({ ...new Offer() });
@@ -424,8 +425,8 @@ export default defineComponent({
       const discount = product[5].component.props.value; // 4 - discount +
       const cost = product[6].text; // 5 - cost +
       return new Product({
-        id: id,
-        // product: id.toString(),
+        // id: id,
+        product: id,
         price: price.toString(),
         count: parseFloat(count),
         discount: parseFloat(discount),

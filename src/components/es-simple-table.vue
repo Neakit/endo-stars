@@ -1,5 +1,5 @@
 <template>
-  <div class="table-scroll" ref="table-scroll">
+  <div class="table-scroll" ref="table-scroll" :style="{ height: tableHeight ? tableHeight : '250px' }">
     <VueQuintable :config="config" :rows="items" class="main-table" />
     <b-overlay :show="isBusy" no-wrap opacity="0.5"></b-overlay>
   </div>
@@ -22,12 +22,15 @@ export default defineComponent({
     config: {
       type: Object,
     },
+    tableHeight: {
+      type: String,
+      requred: false,
+    },
   },
   methods: {
     onScroll(event) {
       if (event.target.scrollTop + event.target.clientHeight >= event.target.scrollHeight) {
         this.$emit("infinite");
-        console.log("end");
       }
     },
   },
@@ -49,7 +52,6 @@ export default defineComponent({
   z-index: 1;
   margin: auto;
   overflow: auto;
-  height: 250px;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -104,10 +106,6 @@ export default defineComponent({
   .generated-table {
     .generated-row-cell {
       background: #ffffff;
-      // .cell-inner {
-      //   overflow: hidden;
-      //   white-space: pre;
-      // }
     }
     th,
     td {
@@ -129,25 +127,8 @@ export default defineComponent({
       font-weight: normal;
       line-height: 24px;
       color: #000000;
+      border: none;
     }
   }
 }
-
-// STUPID OVERFLOW
-// .text-overflow {
-//       display: block;
-//       overflow: hidden;
-//       white-space: nowrap;
-//       // text-overflow: ellipsis;
-//       position: relative;
-//     }
-//     .text-overflow:before {
-//       // content: "";
-//       // width: 15%;
-//       // height: 100%;
-//       // position: absolute;
-//       // right: 0;
-//       // top: 0;
-//       // background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,1) 100%);
-//     }
 </style>

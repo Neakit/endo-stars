@@ -9,7 +9,7 @@
       </template>
     </es-form-row>
 
-    <es-form-row>
+    <es-form-row class="mb-5">
       <template v-slot:label>
         <label class="es-form-label" for="input-inn">ИНН</label>
       </template>
@@ -69,11 +69,11 @@
       </template>
     </es-form-row>
 
-    <es-form-row>
-      <template v-slot:label>
+    <b-row class="mb-5">
+      <b-col cols="12" md="4" lg="2">
         <label class="es-form-label" for="input-address_index">Индекс</label>
-      </template>
-      <template v-slot:input>
+      </b-col>
+      <b-col cols="12" md="4" lg="2">
         <b-form-input
           id="input-address_index"
           v-model="form.address_index"
@@ -82,8 +82,8 @@
         <b-form-invalid-feedback id="input-address_index">
           {{ validation.address_index.feedback }}
         </b-form-invalid-feedback>
-      </template>
-    </es-form-row>
+      </b-col>
+    </b-row>
 
     <es-form-row>
       <template v-slot:label>
@@ -152,7 +152,12 @@
         <label class="es-form-label" for="input-director_position">Лого</label>
       </template>
       <template v-slot:input>
-        <b-form-file v-model="form.logo" :state="validation.logo.state"></b-form-file>
+        <b-form-file
+          v-model="form.logo"
+          :state="validation.logo.state"
+          placeholder="Файл не выбран"
+          browse-text="Загрузить"
+        ></b-form-file>
         <b-form-invalid-feedback id="input-logo">
           {{ validation.logo.feedback }}
         </b-form-invalid-feedback>
@@ -164,7 +169,12 @@
         <label class="es-form-label" for="input-director_position">Оттиск печати</label>
       </template>
       <template v-slot:input>
-        <b-form-file v-model="form.blank_photo" :state="validation.blank_photo.state"></b-form-file>
+        <b-form-file
+          v-model="form.blank_photo"
+          :state="validation.blank_photo.state"
+          browse-text="Загрузить"
+          placeholder="Файл не выбран"
+        ></b-form-file>
         <b-form-invalid-feedback id="input-blank_photo">
           {{ validation.blank_photo.feedback }}
         </b-form-invalid-feedback>
@@ -186,6 +196,7 @@ import ESFormRow from "@components/es-form-row.vue";
 import RequestManager from "@services/RequestManager";
 import Company from "@dto/Company";
 import { useValidation } from "@composition/useValidation.ts";
+import { useInfoModal } from "@composition/useInfoModal.ts";
 
 export default defineComponent({
   components: {
@@ -193,10 +204,10 @@ export default defineComponent({
     "es-form-row": ESFormRow,
   },
   setup(_, { emit }) {
+    const { showModal } = useInfoModal();
     const loading = ref(false);
 
     const form = ref({ ...new Company() });
-    // console.log("form", form);
     const { initValidation, validation, clearValidation, handlerFormError } = useValidation(Company);
     initValidation();
 
@@ -206,7 +217,7 @@ export default defineComponent({
       try {
         var formData = new FormData();
         for (const [key, value] of Object.entries(form.value)) {
-          if (key === "phone_number") {
+          if (key === "phone_number" && value) {
             let _value = value.replace(/\D/g, "");
             _value = parseInt(_value);
             formData.append(key, _value);
@@ -214,21 +225,20 @@ export default defineComponent({
             formData.append(key, value);
           }
         }
-        const result = await RequestManager.Company.createCompany(formData);
+        await RequestManager.Company.createCompany(formData);
         form.value = { ...new Company() };
         emit("updateTable");
+        showModal("Успешно сохранено");
       } catch (e) {
         handlerFormError(e);
-        console.error(e);
+        console.error("addCompanyRequisitesHandler error:", { e });
       } finally {
         loading.value = false;
       }
     };
 
     return {
-      // actions
       addCompanyRequisitesHandler,
-      // data
       form,
       validation,
       loading,

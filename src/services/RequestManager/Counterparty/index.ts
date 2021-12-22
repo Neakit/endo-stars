@@ -11,9 +11,9 @@ const _prepareCounterpartyRes = (res: any): any => {
   tableRes.results = res.results
     .map((c: any) => new CounterpartyClass(c))
     .map((c: any) => {
+      // address formatter
       let full_address = [c.address_street, c.address_index, c.address_city, c.address_country];
       full_address = full_address.filter((i) => i);
-
       c.full_address = full_address.reduce((acc, i, index, arr) => {
         return acc + `${i}` + (index === arr.length - 1 ? "" : ", ");
       }, "");
@@ -23,17 +23,15 @@ const _prepareCounterpartyRes = (res: any): any => {
         { text: c.inn },
         { text: c.full_address },
         {
-          // text:  format(c.phone_number, "+7 (###) ###-##-##")
           html: `<span style="white-space: pre">${
-            c.phone_number && format(c.phone_number, "+7 (###) ###-##-##")
+            (c.phone_number && format(c.phone_number, "+7 (###) ###-##-##")) || ""
           }</span>`,
         },
         {
-          // text: c.email
-          html: `<span style="white-space: pre">${c.email}</span>`,
+          html: `<span style="white-space: pre">${(c.email && c.email) || ""}</span>`,
         },
         { text: c.contact_person },
-        { text: c.discount + " %" },
+        { text: c.discount ? c.discount + " %" : "0 %" },
       ];
     });
 

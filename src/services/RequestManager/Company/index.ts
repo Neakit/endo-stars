@@ -9,6 +9,7 @@ const format = (value: number, pattern: string) => {
 const _prepareGetCompanyRes = (res: any) => {
   const tableRes = { ...res };
   tableRes.results = res.results.map((c: any) => {
+    // full address formatter
     let full_address = [c.address_street, c.address_index, c.address_city, c.address_country];
     full_address = full_address.filter((i) => i);
 

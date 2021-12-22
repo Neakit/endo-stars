@@ -183,7 +183,6 @@ export default defineComponent({
   },
   setup(_, { emit }) {
     const form = ref({ ...new Counterparty() });
-    // console.log("form", form);
 
     const loading = ref(false);
     const { initValidation, validation, clearValidation, handlerFormError } = useValidation(Counterparty);
@@ -195,7 +194,7 @@ export default defineComponent({
       try {
         var formData = new FormData();
         for (const [key, value] of Object.entries(form.value)) {
-          if (key === "phone_number") {
+          if (key === "phone_number" && value) {
             let _value = value.replace(/\D/g, "");
             _value = parseInt(_value);
             formData.append(key, _value);
@@ -215,28 +214,11 @@ export default defineComponent({
       }
     };
 
-    // const lpuList = ref([]);
-
-    // const getLPUList = async () => {
-    //   const { results } = await RequestManager.LPU.getLPUList();
-    //   lpuList.value = results.map((i) => {
-    //     return {
-    //       id: i.id,
-    //       title: i.abbreviated_name,
-    //     };
-    //   });
-    // };
-
-    // console.log(lpuList);
-
-    // getLPUList();
-
     return {
       addContractorHandler,
       form,
       validation,
       loading,
-      // lpuList,
     };
   },
 });

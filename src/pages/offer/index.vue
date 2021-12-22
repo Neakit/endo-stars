@@ -4,7 +4,7 @@
 
     <b-row>
       <b-col cols="2">
-        <es-button variant="default" block>Создать КП</es-button>
+        <es-button variant="default" block @click="createOffer">Создать КП</es-button>
       </b-col>
       <b-col cols="2">
         <es-button variant="outline-dark" block @click="copyOffer">Копировать</es-button>
@@ -159,6 +159,10 @@ export default defineComponent({
       root.$router.push({ name: "offer-create", params });
     };
 
+    const createOffer = () => {
+      root.$router.push({ name: "offer-create", params: null });
+    };
+
     return {
       params,
       tableLoading,
@@ -168,6 +172,7 @@ export default defineComponent({
       infiniteHandler,
       // actions
       copyOffer,
+      createOffer,
       // COUNTERPARTY
       counterPartySearch,
       counterPartyList,

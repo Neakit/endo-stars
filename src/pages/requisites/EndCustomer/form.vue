@@ -12,7 +12,7 @@
       </template>
     </es-form-row>
 
-    <es-form-row>
+    <es-form-row class="mb-5">
       <template v-slot:label>
         <label class="es-form-label" for="input-inn">ИНН</label>
       </template>
@@ -36,7 +36,7 @@
       </template>
     </es-form-row>
 
-    <es-form-row>
+    <es-form-row class="mb-5">
       <template v-slot:label>
         <label class="es-form-label" for="input-city">Город</label>
       </template>
@@ -79,6 +79,7 @@ import ESFormRow from "@components/es-form-row.vue";
 import RequestManager from "@services/RequestManager";
 import EndCustomer from "@dto/EndCustomer";
 import { useValidation } from "@composition/useValidation.ts";
+import { useInfoModal } from "@composition/useInfoModal.ts";
 
 export default defineComponent({
   components: {
@@ -87,6 +88,7 @@ export default defineComponent({
   },
   setup(_, { emit }) {
     const form = ref({ ...new EndCustomer() });
+    const { showModal } = useInfoModal();
 
     const loading = ref(false);
 
@@ -101,13 +103,13 @@ export default defineComponent({
         for (const [key, value] of Object.entries(form.value)) {
           formData.append(key, value);
         }
-        const result = await RequestManager.EndCustomer.createEndCustomer(formData);
-        console.log("result", result);
+        await RequestManager.EndCustomer.createEndCustomer(formData);
         form.value = { ...new EndCustomer() };
         emit("updateTable");
+        showModal("Успешно сохранено");
       } catch (e) {
         handlerFormError(e);
-        console.error(e);
+        console.error("addEndClientHandler error", { e });
       } finally {
         loading.value = false;
       }

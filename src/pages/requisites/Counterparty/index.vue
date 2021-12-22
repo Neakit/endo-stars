@@ -1,13 +1,14 @@
 <template>
-  <div>
-    <p class="es-title-h1 my-5">Контрагент</p>
-    <contractor-form v-if="showForm" @updateTable="updateTable" />
-    <contractor-table v-if="showTable" ref="contractorTable" />
+  <div class="pb-5">
+    <AppTitle>Контрагент</AppTitle>
+    <ContractorForm v-if="showForm" @updateTable="updateTable" />
+    <ContractorTable v-if="showTable" ref="contractorTable" />
   </div>
 </template>
 
 <script>
 import { defineComponent, computed, ref } from "@vue/composition-api";
+import AppTitle from "@components/AppTitle";
 import ContractorForm from "./form.vue";
 import ContractorTable from "./table.vue";
 import { useAuth } from "@composition/useAuth";
@@ -17,6 +18,7 @@ export default defineComponent({
   components: {
     ContractorForm,
     ContractorTable,
+    AppTitle,
   },
   setup() {
     const { userRole } = useAuth();

@@ -1,15 +1,23 @@
 <template>
-  <b-container>
-    <b-row class="mt-5 mb-5">
+  <b-container class="px-0 px-sm-3">
+    <b-row class="mt-5 mb-4">
       <b-col cols="12" md="7">
-        <es-input-search class="my-1" v-model="searchQuery" placeholder="Поиск" @input="searchData" />
-      </b-col>
-
-      <b-col cols="12" md="3">
-        <b-button class="my-1" @click="clearTable" variant="default" block>Очистить поиск</b-button>
+        <es-input-search
+          v-model="searchQuery"
+          @input="searchData"
+          @clear="clearTable"
+          class="my-1"
+          placeholder="Поиск"
+        />
       </b-col>
     </b-row>
-    <es-simple-table :items="items" :config="counterPartyConfig" :isBusy="tableLoading" @infinite="infiniteHandler" />
+    <es-simple-table
+      :items="items"
+      :config="counterPartyConfig"
+      :isBusy="tableLoading"
+      @infinite="infiniteHandler"
+      tableHeight="400px"
+    />
   </b-container>
 </template>
 
