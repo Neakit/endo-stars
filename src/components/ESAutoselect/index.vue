@@ -89,7 +89,7 @@ export default {
     },
     minMatchingChars: {
       type: Number,
-      default: 2,
+      default: 1,
     },
     placeholder: String,
     prepend: String,

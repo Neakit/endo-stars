@@ -20,6 +20,12 @@ export default class Offer {
     was_send: string;
     send_datetime: string;
     tech_docs_format: string;
+    kp_exel_file: null;
+    kp_pdf_file: null;
+    krtu_avg_file: null;
+    krtu_file: null;
+    krtu_gost_file: null;
+    ru_file: null;
 
     constructor(data: any) {
         // all
@@ -37,5 +43,12 @@ export default class Offer {
         this.company          = data?.company      && new Company(data.company)           || new Company({ });
         // nested classes
         this.offer_products   = data?.offer_products && data.offer_products.map((p: OfferProduct) => new OfferProduct(p)) || []
+
+        this.kp_exel_file = data?.kp_exel_file || null;
+        this.kp_pdf_file = data?.kp_pdf_file || null;
+        this.krtu_avg_file = data?.krtu_avg_file || null;
+        this.krtu_file = data?.krtu_file || null;
+        this.krtu_gost_file = data?.krtu_gost_file || null;
+        this.ru_file = data?.ru_file || null;
     }
 }

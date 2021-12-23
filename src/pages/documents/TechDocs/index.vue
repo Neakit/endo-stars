@@ -1,96 +1,95 @@
 <template>
-  <b-container class="pt-4">
-    <p class="es-title-h1 my-5">Техническое задание</p>
-
-    <b-row class="mb-4">
-      <b-col cols="2">
-        <p class="es-form-label mt-0" for="input-companyname">Поиск:</p>
-      </b-col>
-      <b-col cols="4">
-        <es-tab @click.native="setTab(0)" :isActive="activeTab === 0">по КП</es-tab>
-        <es-tab @click.native="setTab(1)" :isActive="activeTab === 1"> по артикулу </es-tab>
-      </b-col>
-    </b-row>
-
-    <template v-if="activeTab === 1">
+  <div>
+    <AppTitle>Техническое задание</AppTitle>
+    <b-container class="pb-5">
       <b-row class="mb-4">
-        <b-col cols="12" md="6" class="py-1">
-          <es-autoselect
-            v-model="productSearch"
-            @input="getProducts"
-            :serializer="(item) => item.article"
-            @hit="selectProduct($event)"
-            :data="products"
-            placeholder="Артикул или наименование"
-          />
+        <b-col cols="2" md="2">
+          <p class="es-form-label mt-0" for="input-companyname">Поиск:</p>
         </b-col>
-        <b-col cols="12" md="2" class="py-1">
-          <es-button @click="addProductRowTable" :loading="false" variant="outline-dark" block>Добавить</es-button>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="12" class="mb-4">
-          <ArticleTable :items="tableItems" @removeRow="removeRowHandler" />
-        </b-col>
-      </b-row>
-    </template>
-
-    <template v-if="activeTab === 0">
-      <b-row class="mb-4">
-        <b-col cols="2">
-          <label class="es-form-label" for="input-kpnumber">№ КП</label>
-        </b-col>
-        <b-col cols="4">
-          <!-- <b-form-input
-            id="input-kpnumber"
-            v-model="form.kpnumber"
-            
-          ></b-form-input> -->
-          <b-form-select v-model="form.kpnumber" :options="options" :state="validation.kpnumber"></b-form-select>
+        <b-col cols="8" md="4">
+          <es-tab @click.native="setTab(0)" :isActive="activeTab === 0">по КП</es-tab>
+          <es-tab @click.native="setTab(1)" :isActive="activeTab === 1"> по артикулу </es-tab>
         </b-col>
       </b-row>
 
-      <b-row class="mb-4">
-        <b-col cols="2">
+      <template v-if="activeTab === 0">
+        <es-form-row>
+          <template v-slot:label>
+            <label class="es-form-label" for="input-kpnumber">№ КП</label>
+          </template>
+          <template v-slot:input>
+            <es-autoselect
+              @hit="selectOffer($event)"
+              :serializer="(item) => item.id.toString()"
+              :data="offerList"
+              placeholder="Поиск по номеру КП"
+            />
+            <!-- <b-form-invalid-feedback id="input-director_full_name">
+            {{ validation.director_full_name.feedback }}
+          </b-form-invalid-feedback> -->
+          </template>
+        </es-form-row>
+      </template>
+
+      <template v-if="activeTab === 1">
+        <b-row class="mb-4">
+          <b-col cols="12" md="6" class="py-1">
+            <es-autoselect
+              v-model="productSearch"
+              @input="getProducts"
+              :serializer="(item) => item.article"
+              @hit="selectProduct($event)"
+              :data="products"
+              placeholder="Артикул или наименование"
+            />
+          </b-col>
+          <b-col cols="12" md="2" class="py-1">
+            <es-button @click="addProductRowTable" :loading="false" variant="outline-dark" block>Добавить</es-button>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col cols="12" class="mb-4">
+            <ArticleTable :items="tableItems" @removeRow="removeRowHandler" />
+          </b-col>
+        </b-row>
+      </template>
+
+      <es-form-row>
+        <template v-slot:label>
           <label for="input-email">Эл. почта</label>
+        </template>
+        <template v-slot:input>
+          <b-form-input id="input-email" v-model="email"></b-form-input>
+
+          <!-- <b-form-invalid-feedback id="input-director_full_name">
+            {{ validation.director_full_name.feedback }}
+          </b-form-invalid-feedback> -->
+        </template>
+      </es-form-row>
+
+      <b-row class="mb-4">
+        <b-col cols="2">
+          <label for="input-email">Тип</label>
         </b-col>
         <b-col cols="4">
-          <b-form-input id="input-email" :state="validation.mail" v-model="form.mail"></b-form-input>
+          <b-form-group>
+            <b-form-radio v-model="tech_docs_format" name="some-radios" value="krtu_file"> КТРУ </b-form-radio>
+            <b-form-radio v-model="tech_docs_format" name="some-radios" value="ru_file"> ТУ </b-form-radio>
+            <b-form-radio v-model="tech_docs_format" name="some-radios" value="krtu_avg_file">КТРУ сокр.</b-form-radio>
+          </b-form-group>
         </b-col>
       </b-row>
-    </template>
 
-    <b-row class="mb-4">
-      <b-col cols="2">
-        <label for="input-email">Тип</label>
-      </b-col>
-      <b-col cols="4">
-        <b-form-group v-slot="{ ariaDescribedby }">
-          <b-form-radio :aria-describedby="ariaDescribedby" name="some-radios" value="A">КТРУ</b-form-radio>
-          <b-form-radio :aria-describedby="ariaDescribedby" name="some-radios" value="B">ТУ</b-form-radio>
-          <b-form-radio :aria-describedby="ariaDescribedby" name="some-radios" value="B">КТРУ сокр.</b-form-radio>
-        </b-form-group>
-      </b-col>
-    </b-row>
-
-    <!-- <b-row class="mb-4">
-      <b-col cols="2">
-        <label class="es-form-label" for="input-address">Адрес</label>
-      </b-col>
-      <b-col cols="4">
-        <b-form-textarea id="input-address" v-model="form.address" :state="validation.address"></b-form-textarea>
-      </b-col>
-    </b-row> -->
-
-    <b-row class="background-gray py-4">
-      <b-col cols="2" offset="2">
-        <es-button :loading="false" variant="default" block>Отправить</es-button>
-      </b-col>
-      <b-col cols="2">
-        <es-button variant="outline-dark" block>Скачать</es-button>
-      </b-col>
-    </b-row>
-  </b-container>
+      <b-row class="background-gray py-4">
+        <b-col cols="6" md="2" offset-md="2">
+          <es-button :loading="loading" variant="default" block @click="techDocsSendToEMail">Отправить</es-button>
+        </b-col>
+        <b-col cols="6" md="2">
+          <es-button :loading="loading" variant="outline-dark" block @click="downloadDocs">Скачать</es-button>
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
 </template>
 
 <script>
@@ -105,6 +104,8 @@ import RequestManager from "@services/RequestManager";
 import debounce from "lodash/debounce";
 import { prepareProductForTable } from "@services/RequestManager/Product/_prepareFunctions.ts";
 import ArticleTable from "../ArticleTable.vue";
+import ESFormRow from "@components/es-form-row.vue";
+import AppTitle from "@components/AppTitle";
 
 export default defineComponent({
   components: {
@@ -114,8 +115,12 @@ export default defineComponent({
     "es-tab": ESTab,
     "es-autoselect": ESAutoselect,
     ArticleTable,
+    AppTitle,
+    "es-form-row": ESFormRow,
   },
   setup() {
+    const email = ref("");
+
     const form = reactive({
       kpnumber: "",
       inn: "",
@@ -140,7 +145,7 @@ export default defineComponent({
       activeTab.value = index;
     };
 
-    const sendLoading = ref(true);
+    const loading = ref(false);
 
     const options = [
       { value: null, text: "35/21-ES" },
@@ -173,6 +178,23 @@ export default defineComponent({
       tableItems.value.push(_tableRow);
     };
 
+    // OFFERS
+    const offerSearch = ref("");
+    const offerList = ref([]);
+    const selectedOffer = ref(null);
+
+    const getOffers = async () => {
+      const { orig } = await RequestManager.CommercialOffer.getOfferList();
+      console.log("test", orig.results);
+      offerList.value = orig.results;
+    };
+    const selectOffer = (e) => {
+      console.log("selected offer", e);
+      selectedOffer.value = e;
+    };
+
+    getOffers();
+
     // TABLE
     const tableItems = ref([]);
     const removeRowHandler = (index) => {
@@ -188,7 +210,83 @@ export default defineComponent({
         });
     };
 
+    // FORM
+    const tech_docs_format = ref("krtu_file");
+
+    // Загрузить +
+    const downloadDocs = async () => {
+      // Вкладка КП
+      if (activeTab.value === 0) {
+        await downloadTechDocsByOffer();
+      }
+      // Вкладка артикул
+      if (activeTab.value === 1) {
+        await downloadTechDocsByArticle();
+      }
+    };
+
+    // Загрузить ТехДок по артикулу
+    const downloadTechDocsByArticle = async () => {
+      const articles = tableItems.value.map((row) => row[0].item.id);
+      try {
+        loading.value = true;
+        const response = await RequestManager.Docs.techDocsGetDownloadLink({
+          tech_docs_format: tech_docs_format,
+          articles: articles,
+        });
+        window.open(response.url, "_blank");
+      } catch (e) {
+        console.error("eroror", { e });
+      } finally {
+        loading.value = false;
+      }
+    };
+
+    const downloadTechDocsByOffer = () => {
+      const link = selectedOffer.value[tech_docs_format.value];
+      console.log("link", link);
+      if (!link) {
+        console.error("NO LINK");
+      } else {
+        window.open(link, "_blank");
+      }
+    };
+
+    // Отправить
+    const techDocsSendToEMail = async () => {
+      // Вкладка КП
+      if (activeTab.value === 0) {
+        await sendTechDocsByOffer();
+      }
+      // Вкладка артикул
+      if (activeTab.value === 1) {
+        await sendTechDocsByArticle();
+      }
+    };
+
+    const sendTechDocsByOffer = () => {
+      // techDocsSendToEMailByOffer
+    };
+
+    const sendTechDocsByArticle = async () => {
+      const articles = tableItems.value.map((row) => row[0].item.id);
+      // проверка артикул иили КП
+      try {
+        loading.value = true;
+        const response = await RequestManager.Docs.techDocsSendToEMail({
+          send_to: email.value,
+          tech_docs_format: tech_docs_format.value,
+          articles: articles,
+        });
+      } catch (e) {
+        console.error("eroror", { e });
+      } finally {
+        loading.value = false;
+      }
+    };
+
     return {
+      email,
       form,
       validation,
       search,
@@ -205,6 +303,17 @@ export default defineComponent({
       // table
       tableItems,
       removeRowHandler,
+      // actions
+      downloadDocs,
+      techDocsSendToEMail,
+      tech_docs_format,
+      // offer
+      offerSearch,
+      getOffers,
+      selectOffer,
+      offerList,
+      //
+      loading,
     };
   },
 });

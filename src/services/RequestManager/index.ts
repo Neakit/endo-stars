@@ -9,6 +9,7 @@ import CommercialOffer from "./CommercialOffer";
 import Counterparty from "./Counterparty";
 import EndCustomer from "./EndCustomer";
 import Product from "./Product";
+import Docs from "./Docs";
 class RequestManager {
   Auth: Auth;
   User: User;
@@ -18,6 +19,7 @@ class RequestManager {
   Counterparty: Counterparty;
   EndCustomer: EndCustomer;
   Product: Product;
+  Docs: Docs;
 
   constructor() {
     this.Auth = new Auth(SendRequestService);
@@ -28,6 +30,7 @@ class RequestManager {
     this.Counterparty = new Counterparty(SendRequestService);
     this.EndCustomer = new EndCustomer(SendRequestService);
     this.Product = new Product(SendRequestService);
+    this.Docs = new Docs(SendRequestService);
   }
 }
 
