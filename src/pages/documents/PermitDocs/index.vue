@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppTitle>Техническое задание</AppTitle>
+    <AppTitle>Регистрационное удостоверение</AppTitle>
     <b-container class="pb-5">
       <b-row class="mb-4">
         <b-col cols="2" md="2">
@@ -121,6 +121,8 @@ export default defineComponent({
   setup() {
     const email = ref("");
 
+    const search = ref("");
+
     const activeTab = ref(0);
 
     const setTab = (index) => {
@@ -138,7 +140,6 @@ export default defineComponent({
     // PRODUCTS
     const productSearch = ref("");
     const products = ref([]);
-    const product = ref(null);
     const selectedProduct = ref(null);
 
     const getProducts = debounce(async () => {
@@ -212,7 +213,7 @@ export default defineComponent({
       const articles = tableItems.value.map((row) => row[0].item.id);
       try {
         loading.value = true;
-        const response = await RequestManager.Docs.techDocsGetDownloadLink({
+        const response = await RequestManager.Docs.permitDocsGetDownloadLink({
           tech_docs_format: tech_docs_format,
           articles: articles,
         });
@@ -246,26 +247,8 @@ export default defineComponent({
       }
     };
 
-    const sendTechDocsByOffer = async () => {
-      const articles = tableItems.value.map((row) => row[0].item.id);
-      // проверка артикул иили КП
-      try {
-        loading.value = true;
-        const response = await RequestManager.Docs.techDocsSendToEMailByOffer(
-          {
-            send_to: email.value, // +
-            co_format: "pdf",
-            required_tech_docs: false,
-            tech_docs_format: tech_docs_format.value,
-            required_ru: true,
-          },
-          selectedOffer.value.id,
-        );
-      } catch (e) {
-        console.error("error", { e });
-      } finally {
-        loading.value = false;
-      }
+    const sendTechDocsByOffer = () => {
+      // techDocsSendToEMailByOffer
     };
 
     const sendTechDocsByArticle = async () => {

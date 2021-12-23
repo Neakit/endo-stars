@@ -55,7 +55,7 @@ const baseLayoutRoutes = [
   },
   {
     path: "registration-certificate",
-    component: () => import("@pages/RegistrationCertificate.vue"),
+    component: () => import("@pages/documents/PermitDocs/index.vue"),
     meta: {
       title: "Регистрационное удостоверение",
       showNavLink: true,
