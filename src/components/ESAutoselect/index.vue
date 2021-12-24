@@ -8,7 +8,7 @@
       </div>
       <input
         ref="input"
-        :class="`form-control ${inputClass}`"
+        :class="`form-control ${inputClass} ${!state ? 'is-invalid' : ''}`"
         :placeholder="placeholder"
         :aria-label="placeholder"
         :value="inputValue"
@@ -98,6 +98,11 @@ export default {
       type: String,
       required: false,
       default: "",
+    },
+    state: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
 

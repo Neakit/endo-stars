@@ -40,6 +40,21 @@ Vue.use(PrettyCheckbox);
 
 Vue.config.productionTip = false;
 
+// COMPONENTS
+import ESButton from "@components/es-button.vue";
+import ESInputSearch from "@components/es-input-search.vue";
+import ESSimpleTable from "@components/es-simple-table.vue";
+import ESTab from "@components/es-tab.vue";
+import ESAutoselect from "@components/ESAutoselect/index.vue";
+import ESFormRow from "@components/es-form-row.vue";
+
+Vue.component("es-button", ESButton);
+Vue.component("es-input-search", ESInputSearch);
+Vue.component("es-simple-table", ESSimpleTable);
+Vue.component("es-tab", ESTab);
+Vue.component("es-autoselect", ESAutoselect);
+Vue.component("es-form-row", ESFormRow);
+
 new Vue({
   router,
   render: (h) => h(App),
