@@ -23,5 +23,13 @@ export default class Product {
     return this.sendRequestService("POST:PRIVATE", "api:///permit-document/download", { data: data });
   }
 
-  // /permit-document/send-to-email
+  permitDocsSendToEMail(data = {}) {
+    return this.sendRequestService("POST:PRIVATE", "api://permit-document/send-to-email", { data: data });
+  }
+
+  permitDocsSendToEMailByOffer(data = {}, id: number) {
+    return this.sendRequestService("POST:PRIVATE", `api://offer/${id}/send-to-email`, { data: data });
+  }
+
+  // //send-to-email
 }

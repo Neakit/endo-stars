@@ -8,7 +8,7 @@
         </b-col>
         <b-col cols="8" md="4">
           <es-tab @click.native="setTab(0)" :isActive="activeTab === 0">по КП</es-tab>
-          <es-tab @click.native="setTab(1)" :isActive="activeTab === 1"> по артикулу </es-tab>
+          <es-tab @click.native="setTab(1)" :isActive="activeTab === 1">по артикулу</es-tab>
         </b-col>
       </b-row>
 
@@ -19,14 +19,17 @@
           </template>
           <template v-slot:input>
             <es-autoselect
-              @hit="selectOffer($event)"
+              v-model="offerState.query"
+              @input="getOfferList"
               :serializer="(item) => item.id.toString()"
-              :data="offerList"
+              @hit="selectOffer($event)"
+              :data="offerState.list"
+              :state="validation.kp"
               placeholder="Поиск по номеру КП"
             />
-            <!-- <b-form-invalid-feedback id="input-director_full_name">
-            {{ validation.director_full_name.feedback }}
-          </b-form-invalid-feedback> -->
+            <b-form-invalid-feedback id="input-counterparty" :state="validation.kp">
+              выберите КП
+            </b-form-invalid-feedback>
           </template>
         </es-form-row>
       </template>
@@ -35,13 +38,17 @@
         <b-row class="mb-4">
           <b-col cols="12" md="6" class="py-1">
             <es-autoselect
-              v-model="productSearch"
-              @input="getProducts"
+              v-model="productState.query"
+              @input="getProductList"
               :serializer="(item) => item.article"
               @hit="selectProduct($event)"
-              :data="products"
+              :data="productState.list"
+              :state="validation.article"
               placeholder="Артикул или наименование"
             />
+            <b-form-invalid-feedback id="input-counterparty" :state="validation.article">
+              выберите артикул или наименование
+            </b-form-invalid-feedback>
           </b-col>
           <b-col cols="12" md="2" class="py-1">
             <es-button @click="addProductRowTable" :loading="false" variant="outline-dark" block>Добавить</es-button>
@@ -59,11 +66,10 @@
           <label for="input-email">Эл. почта</label>
         </template>
         <template v-slot:input>
-          <b-form-input id="input-email" v-model="email"></b-form-input>
-
-          <!-- <b-form-invalid-feedback id="input-director_full_name">
-            {{ validation.director_full_name.feedback }}
-          </b-form-invalid-feedback> -->
+          <b-form-input id="input-email" v-model="email" :state="validation.email"></b-form-input>
+          <b-form-invalid-feedback id="input-director_full_name" :state="validation.email">
+            заполните почту
+          </b-form-invalid-feedback>
         </template>
       </es-form-row>
 
@@ -82,10 +88,10 @@
 
       <b-row class="background-gray py-4">
         <b-col cols="6" md="2" offset-md="2">
-          <es-button :loading="loading" variant="default" block @click="techDocsSendToEMail">Отправить</es-button>
+          <es-button :loading="loading" variant="default" block @click="sendHandler">Отправить</es-button>
         </b-col>
         <b-col cols="6" md="2">
-          <es-button :loading="loading" variant="outline-dark" block @click="downloadDocs">Скачать</es-button>
+          <es-button :loading="loading" variant="outline-dark" block @click="downloadHandler">Скачать</es-button>
         </b-col>
       </b-row>
     </b-container>
@@ -93,92 +99,37 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref } from "@vue/composition-api";
-import { BUTTON_PROCCESS_STATE } from "@enum/index";
-import ESButton from "@components/es-button.vue";
-import ESInputSearch from "@components/es-input-search.vue";
-import ESSimpleTable from "@components/es-simple-table.vue";
+import { defineComponent, reactive, ref, watch } from "@vue/composition-api";
 import ESTab from "@components/es-tab.vue";
-import ESAutoselect from "@components/ESAutoselect";
 import RequestManager from "@services/RequestManager";
-import debounce from "lodash/debounce";
 import { prepareProductForTable } from "@services/RequestManager/Product/_prepareFunctions.ts";
 import ArticleTable from "../ArticleTable.vue";
-import ESFormRow from "@components/es-form-row.vue";
 import AppTitle from "@components/AppTitle";
+import { useInfoModal } from "@composition/useInfoModal.ts";
+import { useLoading } from "@composition/useLoading.ts";
+import { useProductAsyncSelect, useOfferAsyncSelect } from "../common.ts";
 
 export default defineComponent({
   components: {
-    "es-button": ESButton,
-    "es-input-search": ESInputSearch,
-    "es-simple-table": ESSimpleTable,
-    "es-tab": ESTab,
-    "es-autoselect": ESAutoselect,
     ArticleTable,
     AppTitle,
-    "es-form-row": ESFormRow,
+    "es-tab": ESTab,
   },
   setup() {
-    const email = ref("");
-
-    const search = ref("");
-
+    const { showModal } = useInfoModal();
+    const { startLoading, stopLoading, loading } = useLoading();
+    // TABS
     const activeTab = ref(0);
-
-    const setTab = (index) => {
-      activeTab.value = index;
-    };
-
-    const loading = ref(false);
-
-    const options = [
-      { value: null, text: "35/21-ES" },
-      { value: null, text: "35/22-ES" },
-      { value: null, text: "35/21-SS" },
-    ];
-
+    const setTab = (index) => (activeTab.value = index);
+    // FORM
+    const email = ref("");
+    const tech_docs_format = ref("krtu_file");
     // PRODUCTS
-    const productSearch = ref("");
-    const products = ref([]);
-    const selectedProduct = ref(null);
-
-    const getProducts = debounce(async () => {
-      try {
-        const { orig } = await RequestManager.Product.getProductList({ search: productSearch.value });
-        products.value = orig.results;
-      } catch (e) {
-        console.error("getProducts error:", { e });
-      }
-    }, 500);
-
-    const selectProduct = (e) => {
-      selectedProduct.value = e;
-    };
-
-    const addProductRowTable = () => {
-      const index = tableItems.value.length;
-      const _tableRow = prepareProductForTable(selectedProduct.value, index);
-      tableItems.value.push(_tableRow);
-    };
-
+    const { productState, getProductList, selectProduct } = useProductAsyncSelect();
     // OFFERS
-    const offerSearch = ref("");
-    const offerList = ref([]);
-    const selectedOffer = ref(null);
+    const { offerState, getOfferList, selectOffer } = useOfferAsyncSelect();
 
-    const getOffers = async () => {
-      const { orig } = await RequestManager.CommercialOffer.getOfferList();
-      console.log("test", orig.results);
-      offerList.value = orig.results;
-    };
-    const selectOffer = (e) => {
-      console.log("selected offer", e);
-      selectedOffer.value = e;
-    };
-
-    getOffers();
-
-    // TABLE
+    // TABLE ACTIONS
     const tableItems = ref([]);
     const removeRowHandler = (index) => {
       tableItems.value = tableItems.value
@@ -192,107 +143,156 @@ export default defineComponent({
           return row[0].index !== index;
         });
     };
+    const addProductRowTable = () => {
+      clearValidation();
+      const index = tableItems.value.length;
+      const _tableRow = prepareProductForTable(productState.selected, index);
+      tableItems.value.push(_tableRow);
+    };
 
-    // FORM
-    const tech_docs_format = ref("krtu_file");
+    // VALIDATION
+    const validation = reactive({
+      kp: true,
+      email: true,
+      article: true,
+    });
 
-    // Загрузить +
-    const downloadDocs = async () => {
-      // Вкладка КП
-      if (activeTab.value === 0) {
-        await downloadTechDocsByOffer();
+    const clearValidation = () => {
+      validation.kp = true;
+      validation.email = true;
+      validation.article = true;
+    };
+
+    watch(activeTab, clearValidation);
+
+    const isFormValid = () => {
+      if (!email.value) {
+        validation.email = false;
       }
-      // Вкладка артикул
-      if (activeTab.value === 1) {
-        await downloadTechDocsByArticle();
+      if (activeTab.value === 0 && !offerState.query && !offerState.selected) {
+        validation.kp = false;
+      }
+      if (activeTab.value === 1 && !productState.query && !productState.selected) {
+        validation.article = false;
+      }
+      return Object.values(validation).every((i) => i);
+    };
+
+    // ACTIONS
+    const sendHandler = async () => {
+      clearValidation();
+      const valid = isFormValid();
+      if (valid) {
+        // Вкладка КП
+        if (activeTab.value === 0) await sendTechDocsByOffer();
+        // Вкладка артикул
+        if (activeTab.value === 1) await sendTechDocsByArticle();
       }
     };
 
-    // Загрузить ТехДок по артикулу
-    const downloadTechDocsByArticle = async () => {
-      const articles = tableItems.value.map((row) => row[0].item.id);
-      try {
-        loading.value = true;
-        const response = await RequestManager.Docs.permitDocsGetDownloadLink({
-          tech_docs_format: tech_docs_format,
-          articles: articles,
-        });
-        window.open(response.url, "_blank");
-      } catch (e) {
-        console.error("eroror", { e });
-      } finally {
-        loading.value = false;
+    const downloadHandler = async () => {
+      clearValidation();
+      const valid = isFormValid();
+      if (valid) {
+        // Вкладка КП
+        if (activeTab.value === 0) await downloadTechDocsByOffer();
+        // Вкладка артикул
+        if (activeTab.value === 1) await downloadTechDocsByArticle();
       }
     };
 
+    // ЗАГРУЗИТЬ ПО КП
     const downloadTechDocsByOffer = () => {
-      const link = selectedOffer.value[tech_docs_format.value];
-      console.log("link", link);
+      const link = offerState.selected[tech_docs_format.value];
       if (!link) {
-        console.error("NO LINK");
+        console.error("NO LINK PRESENTED");
       } else {
         window.open(link, "_blank");
       }
     };
-
-    // Отправить
-    const techDocsSendToEMail = async () => {
-      // Вкладка КП
-      if (activeTab.value === 0) {
-        await sendTechDocsByOffer();
-      }
-      // Вкладка артикул
-      if (activeTab.value === 1) {
-        await sendTechDocsByArticle();
+    // ЗАГРУЗИТЬ ПО АРТИКУЛУ
+    const downloadTechDocsByArticle = async () => {
+      const articles = tableItems.value.map((row) => row[0].item.id);
+      try {
+        startLoading();
+        const response = await RequestManager.Docs.permitDocsGetDownloadLink({
+          tech_docs_format: tech_docs_format.value,
+          articles: articles,
+        });
+        window.open(response.url, "_blank");
+      } catch (e) {
+        console.error("downloadTechDocsByArticle error", { e });
+      } finally {
+        stopLoading();
       }
     };
+    // ОТПРАВИТЬ ПО КП
+    const sendTechDocsByOffer = async () => {
+      try {
+        startLoading();
 
-    const sendTechDocsByOffer = () => {
-      // techDocsSendToEMailByOffer
+        await RequestManager.Docs.permitDocsSendToEMailByOffer(
+          {
+            send_to: email.value, // +
+            co_format: "pdf",
+            required_tech_docs: false,
+            tech_docs_format: tech_docs_format.value,
+            required_ru: true,
+          },
+          offerState.selected.id,
+        );
+        showModal("Успешно отправлено");
+      } catch (e) {
+        console.error("sendTechDocsByOffer error", { e });
+      } finally {
+        stopLoading();
+      }
     };
-
+    // ОТПРАВИТЬ ПО АРТИКУЛУ
     const sendTechDocsByArticle = async () => {
       const articles = tableItems.value.map((row) => row[0].item.id);
       // проверка артикул иили КП
       try {
-        loading.value = true;
-        const response = await RequestManager.Docs.techDocsSendToEMail({
+        startLoading();
+        await RequestManager.Docs.permitDocsSendToEMail({
           send_to: email.value,
           tech_docs_format: tech_docs_format.value,
           articles: articles,
         });
+        showModal("Успешно отправлено");
       } catch (e) {
-        console.error("eroror", { e });
+        console.error("sendTechDocsByArticle error", { e });
       } finally {
-        loading.value = false;
+        stopLoading();
       }
     };
 
     return {
+      // products
+      productState,
+      getProductList,
+      selectProduct,
+      // offers
+      offerState,
+      getOfferList,
+      selectOffer,
+      // form
       email,
+      tech_docs_format,
+      // validation
+      validation,
+      // tab
       activeTab,
       setTab,
-      options,
-      BUTTON_PROCCESS_STATE,
-      // products
-      getProducts,
-      productSearch,
-      products,
-      selectProduct,
+      //
       addProductRowTable,
       // table
       tableItems,
       removeRowHandler,
       // actions
-      downloadDocs,
-      techDocsSendToEMail,
-      tech_docs_format,
-      // offer
-      offerSearch,
-      getOffers,
-      selectOffer,
-      offerList,
-      //
+      sendHandler,
+      downloadHandler,
+      // use
       loading,
     };
   },
