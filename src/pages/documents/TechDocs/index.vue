@@ -144,8 +144,9 @@ export default defineComponent({
         });
     };
     const addProductRowTable = () => {
+      clearValidation();
       const index = tableItems.value.length;
-      const _tableRow = prepareProductForTable(productState.selectedProduct, index);
+      const _tableRow = prepareProductForTable(productState.selected, index);
       tableItems.value.push(_tableRow);
     };
 
@@ -215,7 +216,7 @@ export default defineComponent({
       try {
         startLoading();
         const response = await RequestManager.Docs.techDocsGetDownloadLink({
-          tech_docs_format: tech_docs_format,
+          tech_docs_format: tech_docs_format.value,
           articles: articles,
         });
         window.open(response.url, "_blank");
