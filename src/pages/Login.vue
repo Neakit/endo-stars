@@ -17,26 +17,17 @@
         </b-form-group>
 
         <b-form-group id="fieldset-1" label-for="input-password" :invalid-feedback="invalidFeedback.password">
-          <b-form-input
-            type="password"
-            placeholder="Пароль"
-            id="input-password"
-            v-model="form.password"
-            :state="validation.password"
-            trim
-          />
-          <!-- <b-form-invalid-feedback id="input-password">
-            {{ invalidFeedback.password }}
-          </b-form-invalid-feedback> -->
+          <b-form-input type="password" placeholder="Пароль" id="input-password" v-model="form.password" trim />
+          <b-form-invalid-feedback :state="false" id="input-password">
+            <!--  -->
+          </b-form-invalid-feedback>
         </b-form-group>
 
-        <b-button @click="loginHandler" variant="default" block>Войти</b-button>
+        <es-button @click="loginHandler" variant="default" block>Войти</es-button>
 
-        <p class="px-5 mt-3 text-center">
-          <b-link class="text-gray" href="#foo">
-            Если забыли пароль, <br />
-            обратитесь к администратору
-          </b-link>
+        <p class="px-5 mt-4 text-center login-forgot-password">
+          Если забыли пароль, <br />
+          обратитесь к администратору
         </p>
       </b-col>
     </b-row>
@@ -122,5 +113,14 @@ export default defineComponent({
 .login-page-logo {
   width: 100%;
   max-width: 198px;
+}
+.login-forgot-password {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #acacac;
 }
 </style>

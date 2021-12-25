@@ -26,6 +26,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.btn {
+  border: none;
+  height: 40px;
+}
 .es-button {
   font-family: "Roboto", sans-serif;
   font-style: normal;
@@ -51,7 +55,10 @@ export default defineComponent({
   color: #000;
   background-color: transparent;
 }
-.btn-default:hover {
-  background: #ffd300;
+
+.btn-default:hover,
+.btn-default:focus {
+  background: #d9c400;
+  box-shadow: none;
 }
 </style>

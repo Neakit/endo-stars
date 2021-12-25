@@ -157,3 +157,21 @@ $form-feedback-icon-invalid: none;
   border-color: #ffe600;
   background-color: #ffe600ed;
 }
+
+// FORM
+.form-group {
+  margin-bottom: 22px;
+  input {
+    height: 40px;
+  }
+  .invalid-feedback {
+    width: 100%;
+    margin-top: 6px;
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+
+    color: #ff0000;
+  }
+}

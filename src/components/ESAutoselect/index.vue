@@ -102,7 +102,7 @@ export default {
     state: {
       type: Boolean,
       required: false,
-      default: false,
+      default: true,
     },
   },
 
