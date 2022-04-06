@@ -14,15 +14,10 @@ enum METHOD_TYPES {
 }
 
 const HOST_SCHEMA = {
-  HTTP: "https://tranquil-bayou-55359.herokuapp.com/",
-  HTTPS: "https://tranquil-bayou-55359.herokuapp.com/",
-  API: "https://51.250.6.131/api/v1/",
+  HTTP: "https://",
+  HTTPS: "https://",
+  API: "https://",
 };
-// const HOST_SCHEMA = {
-//   HTTP: "https://tranquil-bayou-55359.herokuapp.com/",
-//   HTTPS: "https://tranquil-bayou-55359.herokuapp.com/",
-//   API: "https://tranquil-bayou-55359.herokuapp.com/",
-// };
 
 type RequestData = {
   params?: any;
